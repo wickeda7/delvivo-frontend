@@ -46,3 +46,6 @@ export const products_url =
 export const image_url = `http://127.0.0.1:1337`;
 //export const single_product_url = `https://course-api.com/react-store-single-product?id=`;
 export const single_product_url = `http://127.0.0.1:1337/api/products`;
+export const API = "http://127.0.0.1:1337/api";
+export const AUTH_TOKEN = "authToken";
+export const BEARER = "Bearer";

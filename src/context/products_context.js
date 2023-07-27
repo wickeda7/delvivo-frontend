@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useReducer } from "react";
 import reducer from "../reducers/products_reducer";
-import { products_url as url } from "../utils/constants";
+import { products_url as url, image_url } from "../utils/constants";
 import {
   SIDEBAR_OPEN,
   SIDEBAR_CLOSE,
@@ -40,7 +40,6 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
     try {
       const response = await axios.get(url);
-      // console.log(response.data.data);
       const output = response.data.data.map((a) => {
         const { url: image } = a.attributes.picture.data.attributes;
         return {
@@ -62,12 +61,12 @@ export const ProductsProvider = ({ children }) => {
       const response = await axios.get(url);
       let output = response.data.data.attributes;
       output.id = response.data.data.id;
-      img.push({ url: output.picture.data.attributes.url });
+      img.push({ url: `${image_url}${output.picture.data.attributes.url}` });
       output.images = img;
       output.stock = 200;
       output.colors = ["#000", "#00f", "#f00"];
+      output.price = output.price * 100;
       delete output.picture;
-      console.log(output);
       const singleProduct = output;
       dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct });
     } catch (error) {

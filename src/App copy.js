@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar, Sidebar, Footer } from './components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,41 +15,11 @@ import {
   Products,
   loader as productsLoader,
   PrivateRoute,
-  Layout,
 } from './pages';
 
 const queryClient = new QueryClient();
-export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      {
-        path: 'cart',
-        element: <Cart />,
-      },
-      {
-        path: '/:categoryId?',
-        exact: true,
-        loader: productsLoader(queryClient),
-        element: <Products />,
-      },
-      { path: 'products/:id', element: <SingleProduct /> },
-      {
-        path: 'checkout',
-        element: (
-          <PrivateRoute>
-            <Checkout />
-          </PrivateRoute>
-        ),
-      },
-    ],
-  },
 
-  { path: '*', element: <Error /> },
-]);
-
-function App1() {
+function App() {
   return (
     <Router>
       <Navbar />
@@ -87,4 +52,4 @@ function App1() {
   );
 }
 
-//export default App;
+export default App;

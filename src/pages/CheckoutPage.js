@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import { PageHero, StripeCheckout } from '../components'
+import React from 'react';
+import styled from 'styled-components';
+import { PageHero, CloverCheckout } from '../components';
 
 // extra imports
 
-import { useCartContext } from '../context/cart_context'
-import { Link } from 'react-router-dom'
+import { useCartContext } from '../context/cart_context';
+import { Link } from 'react-router-dom';
 
 const CheckoutPage = () => {
-  const { cart } = useCartContext()
+  const { cart } = useCartContext();
 
   return (
     <main>
@@ -22,12 +22,12 @@ const CheckoutPage = () => {
             </Link>
           </div>
         ) : (
-          <StripeCheckout />
+          <CloverCheckout />
         )}
       </Wrapper>
     </main>
-  )
-}
+  );
+};
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -35,5 +35,5 @@ const Wrapper = styled.div`
   .empty {
     text-align: center;
   }
-`
-export default CheckoutPage
+`;
+export default CheckoutPage;

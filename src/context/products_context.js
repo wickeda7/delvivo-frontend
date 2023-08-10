@@ -1,27 +1,14 @@
-import axios from "axios";
-import React, { useContext, useEffect, useReducer } from "react";
-import reducer from "../reducers/products_reducer";
-import { products_url as url, image_url } from "../utils/constants";
-import {
-  SIDEBAR_OPEN,
-  SIDEBAR_CLOSE,
-  GET_PRODUCTS_BEGIN,
-  GET_PRODUCTS_SUCCESS,
-  GET_PRODUCTS_ERROR,
-  GET_SINGLE_PRODUCT_BEGIN,
-  GET_SINGLE_PRODUCT_SUCCESS,
-  GET_SINGLE_PRODUCT_ERROR,
-} from "../actions";
+import axios from 'axios';
+import React, { useContext, useReducer } from 'react';
+
+import reducer from '../reducers/products_reducer';
+import { image_url } from '../utils/constants';
+
+import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions';
 
 const initialState = {
   isSidebarOpen: false,
-  products_loading: false,
-  products_error: false,
-  products: [],
   featured_products: [],
-  single_product_loading: false,
-  single_product_error: false,
-  single_product: {},
 };
 
 const ProductsContext = React.createContext();
@@ -30,32 +17,15 @@ export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const openSidebar = () => {
+    //// update this to different reducer
     dispatch({ type: SIDEBAR_OPEN });
   };
   const closeSidebar = () => {
+    //// update this to different reducer
     dispatch({ type: SIDEBAR_CLOSE });
   };
 
-  const fetchProducts = async (url) => {
-    dispatch({ type: GET_PRODUCTS_BEGIN });
-    try {
-      const response = await axios.get(url);
-      const output = response.data.data.map((a) => {
-        const { url: image } = a.attributes.picture.data.attributes;
-        return {
-          ...a.attributes,
-          id: a.id,
-          image,
-        };
-      });
-      const products = output;
-      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
-    } catch (error) {
-      dispatch({ type: GET_PRODUCTS_ERROR });
-    }
-  };
   const fetchSingleProduct = async (url) => {
-    dispatch({ type: GET_SINGLE_PRODUCT_BEGIN });
     try {
       let img = [];
       const response = await axios.get(url);
@@ -64,27 +34,18 @@ export const ProductsProvider = ({ children }) => {
       img.push({ url: `${image_url}${output.picture.data.attributes.url}` });
       output.images = img;
       output.stock = 200;
-      output.colors = ["#000", "#00f", "#f00"];
+      output.colors = ['#000', '#00f', '#f00'];
       output.price = output.price * 100;
       delete output.picture;
       const singleProduct = output;
-      dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct });
-    } catch (error) {
-      dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
-    }
+    } catch (error) {}
   };
-
-  useEffect(() => {
-    fetchProducts(url);
-  }, []);
-
   return (
     <ProductsContext.Provider
       value={{
         ...state,
         openSidebar,
         closeSidebar,
-        fetchSingleProduct,
       }}
     >
       {children}

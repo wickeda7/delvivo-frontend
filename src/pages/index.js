@@ -1,11 +1,12 @@
-import Home from "./HomePage";
-import Products from "./ProductsPage";
-import SingleProduct from "./SingleProductPage";
-import About from "./AboutPage";
-import Cart from "./CartPage";
-import Error from "./ErrorPage";
-import Checkout from "./CheckoutPage";
-import PrivateRoute from "./PrivateRoute";
+import Home from './HomePage';
+import Products, { loader } from './ProductsPage';
+import SingleProduct from './SingleProductPage';
+import About from './AboutPage';
+import Cart from './CartPage';
+import Error from './ErrorPage';
+import Checkout from './CheckoutPage';
+import PrivateRoute from './PrivateRoute';
+import { Layout } from './Layout';
 export {
   Home,
   SingleProduct,
@@ -14,5 +15,7 @@ export {
   Error,
   Checkout,
   Products,
+  loader,
   PrivateRoute,
+  Layout,
 };

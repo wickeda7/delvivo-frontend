@@ -4,7 +4,7 @@ import {
   LOGIN_ERROR,
   LOGIN_USER_LOADED,
   LOGOUT,
-} from "../actions";
+} from '../actions';
 
 const user_reducer = (state, action) => {
   if (action.type === LOGIN) {

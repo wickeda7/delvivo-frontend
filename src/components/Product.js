@@ -1,21 +1,22 @@
-import React from "react";
-import styled from "styled-components";
-import { formatPrice } from "../utils/helpers";
-import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { image_url } from "../utils/constants";
-const Product = ({ image, title, price, id }) => {
+import React from 'react';
+import styled from 'styled-components';
+import { formatPrice } from '../utils/helpers';
+import { FaSearch } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { image_url } from '../utils/constants';
+const Product = ({ name, price, id, menuItem }) => {
+  const image = menuItem.imageFilename;
   return (
     <Wrapper>
-      <div className="container">
-        <img src={`${image_url}${image}`} alt={title} />
-        <Link to={`/products/${id}`} className="link">
+      <div className='container'>
+        <img src={image} alt={name} />
+        <Link to={`/products/${id}`} className='link'>
           <FaSearch />
         </Link>
       </div>
       <footer>
-        <h5>{title}</h5>
-        <p>{formatPrice(price * 100)}</p>
+        <h5>{name}</h5>
+        <p>{formatPrice(price)}</p>
       </footer>
     </Wrapper>
   );

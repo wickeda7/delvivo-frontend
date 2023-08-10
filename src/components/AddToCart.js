@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { FaCheck } from "react-icons/fa";
-import { useCartContext } from "../context/cart_context";
-import AmountButtons from "./AmountButtons";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaCheck } from 'react-icons/fa';
+import { useCartContext } from '../context/cart_context';
+import AmountButtons from './AmountButtons';
 const AddToCart = ({ product }) => {
   // add to cart
   const { addToCart } = useCartContext();
   const { id, stock, colors } = product;
-  const [mainColor, setMainColor] = useState(colors[0]);
+  //const [mainColor, setMainColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
 
   const increase = () => {
@@ -29,7 +29,6 @@ const AddToCart = ({ product }) => {
       return tempAmount;
     });
   };
-  console.log(product);
   return (
     <Wrapper>
       {/* <div className="colors">
@@ -51,7 +50,7 @@ const AddToCart = ({ product }) => {
           })}
         </div>
       </div> */}
-      <div className="btn-container">
+      <div className='btn-container'>
         <AmountButtons
           increase={increase}
           decrease={decrease}
@@ -59,9 +58,9 @@ const AddToCart = ({ product }) => {
         />
 
         <Link
-          to="/cart"
-          className="btn"
-          onClick={() => addToCart(id, mainColor, amount, product)}
+          to='/cart'
+          className='btn'
+          onClick={() => addToCart(amount, product)}
         >
           add to cart
         </Link>

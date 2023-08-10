@@ -1,7 +1,30 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Filters, ProductList, Sort, PageHero } from '../components'
+import React from 'react';
+import styled from 'styled-components';
+import { useLoaderData } from 'react-router-dom';
+import { Filters, ProductList, Sort, PageHero } from '../components';
+import { merchantInfo } from '../utils/merchantInfo';
+import { getCategories } from '../services/apiProducts';
+import { QueryCache, useQuery } from '@tanstack/react-query';
+
+const queryCache = new QueryCache();
+const categoriesListQuery = (info) => ({
+  queryKey: ['categories'],
+  queryFn: () => getCategories(info),
+  cache: queryCache,
+  refetchOnMount: false,
+});
+
+export const loader = (queryClient) => async () => {
+  const info = merchantInfo();
+  if (!queryClient.getQueryData(categoriesListQuery(info))) {
+    await queryClient.fetchQuery(categoriesListQuery(info));
+  }
+  return { info };
+};
+
 const ProductsPage = () => {
+  const { info } = useLoaderData();
+  const { data } = useQuery(categoriesListQuery(info));
   return (
     <main>
       <PageHero title='products' />
@@ -15,8 +38,8 @@ const ProductsPage = () => {
         </div>
       </Wrapper>
     </main>
-  )
-}
+  );
+};
 
 const Wrapper = styled.div`
   .products {
@@ -29,6 +52,6 @@ const Wrapper = styled.div`
       grid-template-columns: 200px 1fr;
     }
   }
-`
+`;
 
-export default ProductsPage
+export default ProductsPage;

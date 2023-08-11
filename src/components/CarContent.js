@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useCartContext } from '../context/cart_context'
-import { Link } from 'react-router-dom'
-import CartColumns from './CartColumns'
-import CartItem from './CartItem'
-import CartTotals from './CartTotals'
+import React from 'react';
+import styled from 'styled-components';
+import { useCartContext } from '../context/cart_context';
+import { Link } from 'react-router-dom';
+import CartColumns from './CartColumns';
+import CartItem from './CartItem';
+
 const CartItems = () => {
-  const { cart, clearCart } = useCartContext()
+  const { cart, clearCart } = useCartContext();
 
   return (
     <Wrapper className='section section-center'>
       <CartColumns />
       {cart.map((item) => {
-        return <CartItem key={item.id} {...item} />
+        return <CartItem key={item.id} {...item} />;
       })}
       <hr />
       <div className='link-container'>
@@ -27,11 +27,11 @@ const CartItems = () => {
           clear shopping cart
         </button>
       </div>
-      <CartTotals />
     </Wrapper>
-  )
-}
+  );
+};
 const Wrapper = styled.section`
+  margin-left: 2rem;
   .link-container {
     display: flex;
     justify-content: space-between;
@@ -52,5 +52,5 @@ const Wrapper = styled.section`
   .clear-btn {
     background: var(--clr-black);
   }
-`
-export default CartItems
+`;
+export default CartItems;

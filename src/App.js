@@ -9,7 +9,7 @@ import { Navbar, Sidebar, Footer } from './components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient } from '@tanstack/react-query';
-
+import 'font-awesome/css/font-awesome.min.css';
 import {
   //Home,
   SingleProduct,

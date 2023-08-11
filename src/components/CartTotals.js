@@ -23,11 +23,7 @@ const CartTotals = () => {
             order total :<span>{formatPrice(total_amount + shipping_fee)}</span>
           </h4>
         </article>
-        {user ? (
-          <Link to='/checkout' className='btn'>
-            proceed to checkout
-          </Link>
-        ) : (
+        {!user && (
           <button onClick={loginWithRedirect} className='btn'>
             login
           </button>
@@ -38,7 +34,8 @@ const CartTotals = () => {
 };
 
 const Wrapper = styled.section`
-  margin-top: 3rem;
+  margin-right: 2rem;
+  margin-top: 5rem;
   display: flex;
   justify-content: center;
   article {

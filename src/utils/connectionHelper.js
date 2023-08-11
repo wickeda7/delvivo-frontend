@@ -73,6 +73,7 @@ export default class ConnectionHelper {
   }
 
   escapeRegExp(stringToGoIntoTheRegex) {
+    /* eslint-disable */
     return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   }
 }

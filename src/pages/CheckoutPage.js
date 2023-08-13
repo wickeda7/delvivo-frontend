@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PageHero, CloverCheckout } from '../components';
-
+import { PageHero } from '../components';
+import { CloverCheckout } from '../components/cart';
 // extra imports
 
 import { useCartContext } from '../context/cart_context';

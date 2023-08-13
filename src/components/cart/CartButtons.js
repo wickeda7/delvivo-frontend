@@ -2,26 +2,19 @@ import React from 'react';
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useProductsContext } from '../context/products_context';
-import { useCartContext } from '../context/cart_context';
-import { useUserContext } from '../context/user_context';
-import { useModalContext } from '../context/modal_context';
-import { getToken } from '../utils/helpers';
-import { CLOVER } from '../utils/constants';
+import { useProductsContext } from '../../context/products_context';
+import { useCartContext } from '../../context/cart_context';
+import { useUserContext } from '../../context/user_context';
+import { useModalContext } from '../../context/modal_context';
+import { getToken } from '../../utils/helpers';
+import { CLOVER } from '../../utils/constants';
 
 const CartButton = () => {
   const { closeSidebar } = useProductsContext();
   const { total_items, clearCart } = useCartContext();
   const { user, logout, loginClover, clover } = useUserContext();
   const { loginWithRedirect } = useModalContext();
-  const {
-    merchant_id,
-    employee_id,
-    client_id,
-    code,
-    access_token,
-    isCloverLoading,
-  } = clover;
+  const { access_token, isCloverLoading } = clover;
   let clover_access_token = access_token;
   if (!clover_access_token) {
     let info = getToken(CLOVER);

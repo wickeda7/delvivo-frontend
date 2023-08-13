@@ -1,9 +1,5 @@
-import axios from 'axios';
 import React, { useContext, useReducer } from 'react';
-
 import reducer from '../reducers/products_reducer';
-import { image_url } from '../utils/constants';
-
 import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions';
 
 const initialState = {
@@ -25,21 +21,6 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSE });
   };
 
-  const fetchSingleProduct = async (url) => {
-    try {
-      let img = [];
-      const response = await axios.get(url);
-      let output = response.data.data.attributes;
-      output.id = response.data.data.id;
-      img.push({ url: `${image_url}${output.picture.data.attributes.url}` });
-      output.images = img;
-      output.stock = 200;
-      output.colors = ['#000', '#00f', '#f00'];
-      output.price = output.price * 100;
-      delete output.picture;
-      const singleProduct = output;
-    } catch (error) {}
-  };
   return (
     <ProductsContext.Provider
       value={{

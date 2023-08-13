@@ -49,11 +49,6 @@ export const UserProvider = ({ children }) => {
     }
   }, [authToken]);
 
-  useEffect(() => {
-    const url = window.location.href;
-    getMerchantInfo(url);
-  }, []);
-
   const getMerchantInfo = (url) => {
     if (url.includes('merchant')) {
       const merchant_regex = new RegExp('merchant_id=(.*)&em.*');
@@ -81,6 +76,10 @@ export const UserProvider = ({ children }) => {
       }
     }
   };
+  useEffect(() => {
+    const url = window.location.href;
+    getMerchantInfo(url);
+  }, []);
   const getAccessToken = async (clientId, secret, code) => {
     const connectionHelper = new ConnectionHelper();
     const token = connectionHelper.getOAuthTokenUrl(

@@ -1,20 +1,13 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { formatPrice } from '../utils/helpers';
 import { useGetProduct } from '../hooks/useProducts';
-import {
-  Loading,
-  Error,
-  ProductImages,
-  AddToCart,
-  Stars,
-  PageHero,
-} from '../components';
+import { Loading, Error, ProductImages, Stars, PageHero } from '../components';
+import { AddToCart } from '../components/cart';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const SingleProductPage = () => {
   const { id: productId } = useParams();
-  const navigate = useNavigate();
   const { isLoading, error, product } = useGetProduct(productId);
 
   if (isLoading) {
@@ -24,7 +17,7 @@ const SingleProductPage = () => {
     return <Error />;
   }
 
-  const { name, price, id, sku, menuItem } = product;
+  const { name, price, sku, menuItem } = product;
   const { imageFilename, description } = menuItem;
   const images = [{ url: imageFilename }];
   const stock = 200;

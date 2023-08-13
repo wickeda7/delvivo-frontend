@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useCartContext } from '../context/cart_context';
+import { useCartContext } from '../../context/cart_context';
 import { Link } from 'react-router-dom';
 import CartColumns from './CartColumns';
 import CartItem from './CartItem';
@@ -9,7 +9,9 @@ const CartItems = () => {
   const { cart, clearCart } = useCartContext();
 
   return (
-    <Wrapper className='section section-center'>
+    <Wrapper className=' section-center'>
+      {' '}
+      sfdasfsadf
       <CartColumns />
       {cart.map((item) => {
         return <CartItem key={item.id} {...item} />;
@@ -31,7 +33,7 @@ const CartItems = () => {
   );
 };
 const Wrapper = styled.section`
-  margin-left: 2rem;
+  padding: 2rem 0;
   .link-container {
     display: flex;
     justify-content: space-between;

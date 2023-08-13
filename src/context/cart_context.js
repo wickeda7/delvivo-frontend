@@ -6,6 +6,7 @@ import {
   TOGGLE_CART_ITEM_AMOUNT,
   CLEAR_CART,
   COUNT_CART_TOTALS,
+  SHIPPING_INFO,
 } from '../actions';
 
 const getLocalStorage = () => {
@@ -22,12 +23,36 @@ const initialState = {
   total_items: 0,
   total_amount: 0,
   shipping_fee: 534,
+  shipping_method: undefined,
+  shipping_info: {},
 };
 
 const CartContext = React.createContext();
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // needs to get business address from Clover API
+  const storeAddress = {
+    address: '8227 Bleeker Ave',
+    city: 'Rosemead',
+    state: 'CA',
+    zip: '91770',
+  };
+  const updateShippingInfo = (isDelivery, isPickup, shipping_info) => {
+    console.log('context', isDelivery, isPickup, shipping_info);
+    let shipping_method = undefined;
+    if (isDelivery) {
+      shipping_method = 'delivery';
+    }
+    if (isPickup) {
+      shipping_method = 'pickup';
+    }
+    dispatch({
+      type: SHIPPING_INFO,
+      payload: { shipping_method, shipping_info },
+    });
+  };
   // add to cart
   const addToCart = (amount, product) => {
     dispatch({ type: ADD_TO_CART, payload: { amount, product } });
@@ -56,7 +81,14 @@ export const CartProvider = ({ children }) => {
   }, [state.cart]);
   return (
     <CartContext.Provider
-      value={{ ...state, addToCart, removeItem, toggleAmount, clearCart }}
+      value={{
+        ...state,
+        addToCart,
+        removeItem,
+        toggleAmount,
+        clearCart,
+        updateShippingInfo,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -18,3 +18,4 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_USER_LOADED = 'LOGIN_USER_LOADED';
 export const LOGOUT = 'LOGOUT';
+export const SHIPPING_INFO = 'SHIPPING_INFO';

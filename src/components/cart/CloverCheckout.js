@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { API } from '../utils/constants';
+import { API } from '../../utils/constants';
 import {
   cardHelper,
   GetCardType,
   cc_format,
   expriy_format,
-} from '../utils/cardHelper';
-import { useCartContext } from '../context/cart_context';
-import { FormRow } from '../components';
+} from '../../utils/cardHelper';
+import { useCartContext } from '../../context/cart_context';
 
 const initialState = {
   name: '',
@@ -21,7 +20,7 @@ const initialState = {
   cardtype: 'fa fa-credit-card',
 };
 const CloverCheckout = () => {
-  const { cart, clearCart } = useCartContext();
+  const { cart } = useCartContext();
   const [values, setValues] = useState(initialState);
   const pay = async () => {
     const card = cardHelper(values);

@@ -1,13 +1,19 @@
-import { BsArrowReturnRight } from 'react-icons/bs';
 import {
   ADD_TO_CART,
   CLEAR_CART,
   COUNT_CART_TOTALS,
   REMOVE_CART_ITEM,
   TOGGLE_CART_ITEM_AMOUNT,
+  SHIPPING_INFO,
 } from '../actions';
 
 const cart_reducer = (state, action) => {
+  if (action.type === SHIPPING_INFO) {
+    const { shipping_method, shipping_info } = action.payload;
+
+    return { ...state, shipping_method, shipping_info };
+  }
+
   if (action.type === ADD_TO_CART) {
     const { amount, product } = action.payload;
 

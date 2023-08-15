@@ -6,20 +6,23 @@ import { useProductsContext } from '../../context/products_context';
 import { useCartContext } from '../../context/cart_context';
 import { useUserContext } from '../../context/user_context';
 import { useModalContext } from '../../context/modal_context';
-import { getToken } from '../../utils/helpers';
+import { getStorage } from '../../utils/helpers';
 import { CLOVER } from '../../utils/constants';
 
 const CartButton = () => {
   const { closeSidebar } = useProductsContext();
   const { total_items, clearCart } = useCartContext();
   const { user, logout, loginClover, clover } = useUserContext();
-  const { loginWithRedirect } = useModalContext();
+  const { loginWithRedirect, closeModal } = useModalContext();
   const { access_token, isCloverLoading } = clover;
   let clover_access_token = access_token;
   if (!clover_access_token) {
-    let info = getToken(CLOVER);
+    let info = getStorage(CLOVER);
     info = JSON.parse(info);
     clover_access_token = info.access_token;
+  }
+  if (user) {
+    closeModal();
   }
   return (
     <Wrapper className='cart-btn-wrapper'>
@@ -54,7 +57,7 @@ const CartButton = () => {
         disabled={isCloverLoading}
       >
         {!clover_access_token && <span>Connect to </span>}
-        <img src='/clover2.png' alt='comfy sloth' height={24} />
+        <img src='/clover2.png' alt='' height={24} />
         {clover_access_token && <span>Connected</span>}
       </button>
     </Wrapper>

@@ -10,8 +10,6 @@ const CartItems = () => {
 
   return (
     <Wrapper className=' section-center'>
-      {' '}
-      sfdasfsadf
       <CartColumns />
       {cart.map((item) => {
         return <CartItem key={item.id} {...item} />;

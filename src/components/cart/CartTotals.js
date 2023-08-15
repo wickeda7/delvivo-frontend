@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useCartContext } from '../../context/cart_context';
-import { useUserContext } from '../../context/user_context';
 import { formatPrice } from '../../utils/helpers';
-const CartTotals = () => {
+const CartTotals = ({ user, loginWithRedirect }) => {
   const { total_amount, shipping_fee } = useCartContext();
-  const { user, loginWithRedirect } = useUserContext();
-
   return (
     <Wrapper>
       <div>
@@ -33,10 +30,6 @@ const CartTotals = () => {
 };
 
 const Wrapper = styled.section`
-  margin-right: 2rem;
-  margin-top: 5rem;
-  display: flex;
-  justify-content: center;
   article {
     border: 1px solid var(--clr-grey-8);
     border-radius: var(--radius);

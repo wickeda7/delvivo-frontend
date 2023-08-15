@@ -4,8 +4,13 @@ import { useCartContext } from '../context/cart_context';
 import { Link } from 'react-router-dom';
 import { ShippingMethods, CartContent, PageHero } from '../components';
 import { CartTotals, CloverCheckout } from '../components/cart';
+import { useModalContext } from '../context/modal_context';
+import { useUserContext } from '../context/user_context';
+
 const CartPage = () => {
   const { cart } = useCartContext();
+  const { user } = useUserContext();
+  const { loginWithRedirect, closeModal } = useModalContext();
 
   return (
     <main>
@@ -21,12 +26,15 @@ const CartPage = () => {
         ) : (
           <>
             <section className='right-padding'>
-              <ShippingMethods />
+              <ShippingMethods
+                user={user}
+                loginWithRedirect={loginWithRedirect}
+              />
               <CartContent />
             </section>
             <section>
-              <CloverCheckout />
-              <CartTotals />
+              {user && <CloverCheckout />}
+              <CartTotals user={user} loginWithRedirect={loginWithRedirect} />
             </section>
           </>
         )}

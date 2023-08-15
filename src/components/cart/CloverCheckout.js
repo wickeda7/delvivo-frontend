@@ -226,7 +226,6 @@ const CloverCheckout = () => {
   );
 };
 const Wrapper = styled.section`
-  margin-top: 5rem;
   display: flex;
   justify-content: center;
   .icon-relative {

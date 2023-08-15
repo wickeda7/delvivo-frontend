@@ -1,26 +1,21 @@
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import styled from "styled-components";
-import { FormRow } from "../components";
-import { useModalContext } from "../context/modal_context";
-import { useUserContext } from "../context/user_context";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import styled from 'styled-components';
+import { FormRow } from '../components';
+import { useModalContext } from '../context/modal_context';
+import { useUserContext } from '../context/user_context';
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
+  name: '',
+  email: '',
+  password: '',
   isMember: true,
 };
 
 const Register = () => {
   const [values, setValues] = useState(initialState);
-  const { loginUser, isLoading, isModalOpen, setIsModalOpen, registerUser } =
-    useUserContext();
+  const { loginUser, isLoading, registerUser } = useUserContext();
   const { closeModal } = useModalContext();
-  if (isModalOpen) {
-    closeModal();
-    setIsModalOpen(false);
-  }
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -31,7 +26,7 @@ const Register = () => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
-      toast.error("Please fill out all fields");
+      toast.error('Please fill out all fields');
       return;
     }
     if (isMember) {
@@ -44,53 +39,52 @@ const Register = () => {
     setValues({ ...values, isMember: !values.isMember });
   };
 
-  const btnText = values.isMember ? "Login" : "Register";
+  const btnText = values.isMember ? 'Login' : 'Register';
 
   return (
     <Wrapper>
-      <form className="form" onSubmit={onSubmit}>
-        <h3>{values.isMember ? "Login" : "Register"}</h3>
+      <form className='form' onSubmit={onSubmit}>
+        <h3>{values.isMember ? 'Login' : 'Register'}</h3>
         {/* name field */}
         {!values.isMember && (
           <FormRow
-            type="text"
-            name="name"
+            type='text'
+            name='name'
             value={values.name}
             handleChange={handleChange}
           />
         )}
         {/* email field */}
         <FormRow
-          type="email"
-          name="email"
+          type='email'
+          name='email'
           value={values.email}
           handleChange={handleChange}
         />
         {/* password field */}
         <FormRow
-          type="password"
-          name="password"
+          type='password'
+          name='password'
           value={values.password}
           handleChange={handleChange}
         />
-        <button type="button" className="btn btn-cancel" onClick={closeModal}>
+        <button type='button' className='btn btn-cancel' onClick={closeModal}>
           Cancel
         </button>
-        <button type="submit" className="btn btn-block" disabled={isLoading}>
-          {isLoading ? "loading..." : `${btnText}`}
+        <button type='submit' className='btn btn-block' disabled={isLoading}>
+          {isLoading ? 'loading...' : `${btnText}`}
         </button>
         <p>
-          {values.isMember ? "Not a member yet? " : "Already a member? "}
-          <button type="button" onClick={toggleMember} className="member-btn">
-            {values.isMember ? "Register" : "Login"}
+          {values.isMember ? 'Not a member yet? ' : 'Already a member? '}
+          <button type='button' onClick={toggleMember} className='member-btn'>
+            {values.isMember ? 'Register' : 'Login'}
           </button>
         </p>
       </form>
     </Wrapper>
   );
 };
-const Wrapper = styled.section`
-  display: grid;
+const Wrapper = styled.div`
   p {
     margin: 0;
     margin-top: 1rem;

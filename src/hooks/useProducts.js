@@ -3,13 +3,18 @@ import { getProducts, getSingleProduct } from '../services/apiProducts';
 import { merchantInfo } from '../utils/merchantInfo';
 import { toast } from 'react-toastify';
 import { useGetFetchQuery } from '../hooks/useGetFetchQuery';
+import { QueryCache } from '@tanstack/react-query';
+import { getCategories } from '../services/apiProducts';
+import { useLoaderData } from 'react-router-dom';
+
+const queryCache = new QueryCache();
 
 export function useProducts(categoryId) {
   let enableFetch = true;
-  //if (!categoryId) enableFetch = false;
-  const data = useGetFetchQuery(['categories']);
+  const loaderData = useLoaderData();
+  const elements = loaderData?.data;
   if (!categoryId) {
-    categoryId = data?.elements[0].id;
+    categoryId = elements[0].id;
   }
   const info = merchantInfo();
   if (!info || !categoryId) {
@@ -65,3 +70,10 @@ export function useGetProduct(productId) {
 
   return { isLoading, error, product };
 }
+
+export const categoriesListQuery = (info) => ({
+  queryKey: ['categories'],
+  queryFn: () => getCategories(info),
+  cache: queryCache,
+  refetchOnMount: false,
+});

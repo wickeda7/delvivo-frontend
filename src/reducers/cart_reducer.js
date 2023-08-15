@@ -10,7 +10,6 @@ import {
 const cart_reducer = (state, action) => {
   if (action.type === SHIPPING_INFO) {
     const { shipping_method, shipping_info } = action.payload;
-
     return { ...state, shipping_method, shipping_info };
   }
 

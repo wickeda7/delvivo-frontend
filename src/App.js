@@ -6,7 +6,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import { Navbar, Sidebar, Footer } from './components';
-import { ToastContainer } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient } from '@tanstack/react-query';
 import 'font-awesome/css/font-awesome.min.css';
@@ -82,7 +82,6 @@ function App1() {
         <Route path='*' element={<Error />} />
       </Routes>
       <Footer />
-      <ToastContainer position='top-center' />
     </Router>
   );
 }

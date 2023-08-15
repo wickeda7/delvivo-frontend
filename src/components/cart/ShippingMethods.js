@@ -2,16 +2,34 @@ import React from 'react';
 import styled from 'styled-components';
 import ShippingButton from './ShippingButton';
 import { useCartContext } from '../../context/cart_context';
-const ShippingMethods = () => {
-  const { shipping_method } = useCartContext();
+import PickupInfo from './PickupInfo';
+import DeliveryInfo from './DeliveryInfo';
 
+const ShippingMethods = ({ user, loginWithRedirect }) => {
+  const { shipping_method } = useCartContext();
   return (
     <Wrapper>
       <article>
         <h4>Shipping Methods</h4>
-        <ShippingButton />
-        {shipping_method === 'delivery' && <p>Delivery!!!</p>}
-        {shipping_method === 'pickup' && <p>Pickup!!!!</p>}
+        {user ? (
+          <>
+            <ShippingButton />
+            {shipping_method === 'delivery' && <DeliveryInfo />}
+            {shipping_method === 'pickup' && <PickupInfo />}
+          </>
+        ) : (
+          <p>
+            Please{' '}
+            <button
+              type='button'
+              className='member-btn'
+              onClick={loginWithRedirect}
+            >
+              Log In
+            </button>{' '}
+            for delivery or pickuo.
+          </p>
+        )}
       </article>
     </Wrapper>
   );
@@ -28,25 +46,13 @@ const Wrapper = styled.section`
     display: inline-block;
     margin-right: 1.5rem;
   }
-  .link-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  .link-btn {
+
+  .member-btn {
     background: transparent;
-    border-color: transparent;
-    text-transform: capitalize;
-    padding: 0.25rem 0.5rem;
-    background: var(--clr-primary-5);
-    color: var(--clr-white);
-    border-radius: var(--radius);
-    letter-spacing: var(--spacing);
-    font-weight: 400;
+    border: transparent;
+    color: var(--clr-primary-5);
     cursor: pointer;
-  }
-  .clear-btn {
-    background: var(--clr-black);
+    letter-spacing: var(--letterSpacing);
   }
 `;
 export default ShippingMethods;

@@ -1,5 +1,7 @@
 import React, { useEffect, useContext, useReducer } from 'react';
 import reducer from '../reducers/cart_reducer';
+import { getStoreName } from '../utils/merchantInfo';
+//import dayjs from 'dayjs';
 import {
   ADD_TO_CART,
   REMOVE_CART_ITEM,
@@ -32,15 +34,9 @@ const CartContext = React.createContext();
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // needs to get business address from Clover API
-  const storeAddress = {
-    address: '8227 Bleeker Ave',
-    city: 'Rosemead',
-    state: 'CA',
-    zip: '91770',
-  };
-  const updateShippingInfo = (isDelivery, isPickup, shipping_info) => {
-    console.log('context', isDelivery, isPickup, shipping_info);
+  const updateShippingInfo = (isDelivery, isPickup, info) => {
+    // console.log('context', isDelivery, isPickup, shipping_info);
+    let shipping_info = {};
     let shipping_method = undefined;
     if (isDelivery) {
       shipping_method = 'delivery';
@@ -48,6 +44,16 @@ export const CartProvider = ({ children }) => {
     if (isPickup) {
       shipping_method = 'pickup';
     }
+    if (shipping_info) {
+      shipping_info[shipping_method] = info;
+    }
+    // console.log('context', info);
+    // console.log(
+    //   'context2',
+    //   shipping_method,
+    //   dayjs.unix(shipping_info).format('h:mm A')
+    // );
+    // @todo: need to save this info to the database
     dispatch({
       type: SHIPPING_INFO,
       payload: { shipping_method, shipping_info },
@@ -55,6 +61,7 @@ export const CartProvider = ({ children }) => {
   };
   // add to cart
   const addToCart = (amount, product) => {
+    getStoreName();
     dispatch({ type: ADD_TO_CART, payload: { amount, product } });
   };
   // remove item

@@ -14,16 +14,16 @@ export const getUniqueValues = (data, type) => {
   return ['all', ...new Set(unique)];
 };
 
-export const getToken = (key) => {
+export const getStorage = (key) => {
   return localStorage.getItem(key);
 };
 
-export const setToken = (key, value) => {
+export const setStorage = (key, value) => {
   if (value) {
     localStorage.setItem(key, value);
   }
 };
 
-export const removeToken = (key) => {
+export const removeStorage = (key) => {
   localStorage.removeItem(key);
 };

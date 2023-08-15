@@ -10,6 +10,7 @@ import { ModalProvider } from './context/modal_context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { router } from './App';
+import { ToastContainer } from 'react-toastify';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,5 +31,6 @@ root.render(
         </ProductsProvider>
       </ModalProvider>
     </UserProvider>
+    <ToastContainer position='top-center' />
   </QueryClientProvider>
 );

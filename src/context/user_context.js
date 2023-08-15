@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import {
   LOGIN,
   LOGIN_SUCCESS,
@@ -8,7 +8,7 @@ import {
 } from '../actions';
 import reducer from '../reducers/user_reducers';
 import { API, BEARER, CLOVER, AUTH_TOKEN } from '../utils/constants';
-import { getToken, setToken, removeToken } from '../utils/helpers';
+import { getStorage, setStorage, removeStorage } from '../utils/helpers';
 import { toast } from 'react-toastify';
 import ConnectionHelper from '../utils/connectionHelper';
 const initialState = {
@@ -28,8 +28,7 @@ const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const authToken = getToken(AUTH_TOKEN);
+  const authToken = getStorage(AUTH_TOKEN);
   const fetchLoggedInUser = async (token) => {
     try {
       const response = await fetch(`${API}/users/me`, {
@@ -65,7 +64,7 @@ export const UserProvider = ({ children }) => {
           code: queryParameters.get('code'),
           access_token: access_token,
         };
-        setToken(CLOVER, JSON.stringify(clover));
+        setStorage(CLOVER, JSON.stringify(clover));
         if (!token_array[1]) {
           getAccessToken(
             queryParameters.get('client_id'),
@@ -88,9 +87,6 @@ export const UserProvider = ({ children }) => {
       secret,
       code
     );
-    //https://sandbox.dev.clover.com/oauth/token?response_type=token&client_id=2A7R5WP9NSMFY&client_secret=e38d8891-7e6b-2d3c-fc87-56cf372e84d0&code=53939831-e60c-a113-f1dc-b57951754563
-    //https://sandbox.dev.clover.com/oauth/token?client_id=2A7R5WP9NSMFY&client_secret=e38d8891-7e6b-2d3c-fc87-56cf372e84d0&code=53939831-e60c-a113-f1dc-b57951754563
-    //http://localhost:3000/?merchant_id=M04E9FZBWVB71&employee_id=TRHWGB67A362J&client_id=2A7R5WP9NSMFY#access_token=e1535f80-f828-e0aa-d123-4ad09da104c3
   };
   const loginClover = async () => {
     let finalRedirect = window.location.href.replace(window.location.hash, '');
@@ -102,25 +98,6 @@ export const UserProvider = ({ children }) => {
       finalRedirect
     );
     window.location.href = oAuthRedirectUrl;
-
-    // dispatch({ type: LOGIN_CLOVER }); //
-    // try {
-    //   const response = await fetch(`http://localhost:1337/api/clover`, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-    //   const data = await response.json();
-    //   if (data?.error) {
-    //     toast.error(data.error.message);
-    //   } else {
-    //     // // set the token
-    //     // setToken(data.jwt);
-    //     // dispatch({ type: LOGIN_SUCCESS, payload: data.user });
-    //     // setIsModalOpen(true);
-    //   }
-    // } catch (error) {}
   };
   const loginUser = async (email, password) => {
     dispatch({ type: LOGIN }); //
@@ -166,15 +143,15 @@ export const UserProvider = ({ children }) => {
   const userInfo = (data) => {
     if (data?.error) {
       toast.error(data.error.message);
+      dispatch({ type: LOGIN_ERROR, payload: data.error.message });
     } else {
       // set the token
-      setToken(AUTH_TOKEN, data.jwt);
+      setStorage(AUTH_TOKEN, data.jwt);
       dispatch({ type: LOGIN_SUCCESS, payload: data.user });
-      setIsModalOpen(true);
     }
   };
   const logout = () => {
-    removeToken(AUTH_TOKEN);
+    removeStorage(AUTH_TOKEN);
     dispatch({ type: LOGOUT });
   };
   return (
@@ -182,8 +159,6 @@ export const UserProvider = ({ children }) => {
       value={{
         ...state,
         logout,
-        setIsModalOpen,
-        isModalOpen,
         loginUser,
         registerUser,
         loginClover,

@@ -2,23 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Filters, ProductList, Sort, PageHero } from '../components';
 import { merchantInfo } from '../utils/merchantInfo';
-import { getCategories } from '../services/apiProducts';
-import { QueryCache } from '@tanstack/react-query';
-
-const queryCache = new QueryCache();
-const categoriesListQuery = (info) => ({
-  queryKey: ['categories'],
-  queryFn: () => getCategories(info),
-  cache: queryCache,
-  refetchOnMount: false,
-});
+import { categoriesListQuery } from '../hooks/useProducts';
 
 export const loader = (queryClient) => async () => {
   const info = merchantInfo();
-  if (!queryClient.getQueryData(categoriesListQuery(info))) {
-    await queryClient.fetchQuery(categoriesListQuery(info));
+  let data = queryClient.getQueryData(categoriesListQuery(info));
+  if (!data) {
+    data = await queryClient.fetchQuery(categoriesListQuery(info));
   }
-  return { info };
+  return { data };
 };
 
 const ProductsPage = () => {

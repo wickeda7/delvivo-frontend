@@ -38,6 +38,7 @@ export async function getProducts(token, merchantId, categoryId) {
 }
 
 export async function getCategories(info) {
+  console.log('getCategories');
   const { access_token, merchant_id } = info;
   try {
     const response = await axios({

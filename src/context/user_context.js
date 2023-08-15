@@ -49,6 +49,7 @@ export const UserProvider = ({ children }) => {
   }, [authToken]);
 
   const getMerchantInfo = (url) => {
+    console.log('getMerchantInfo');
     if (url.includes('merchant')) {
       const merchant_regex = new RegExp('merchant_id=(.*)&em.*');
       const token_regex = new RegExp('access_token=(.*)');

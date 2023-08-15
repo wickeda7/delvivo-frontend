@@ -14,6 +14,7 @@ const CartButton = () => {
   const { total_items, clearCart } = useCartContext();
   const { user, logout, loginClover, clover } = useUserContext();
   const { loginWithRedirect, closeModal } = useModalContext();
+  console.log('cart button');
   const { access_token, isCloverLoading } = clover;
   let clover_access_token = access_token;
   if (!clover_access_token) {

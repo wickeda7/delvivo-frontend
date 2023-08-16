@@ -45,6 +45,12 @@ export async function getCategories() {
   const isMerchant = url.includes('merchant');
   console.log('info', info);
   console.log('isMerchant', isMerchant);
+  if (!info) {
+    console.log('no info');
+  }
+  if (!isMerchant) {
+    console.log('no isMerchant');
+  }
   if (!info && !isMerchant) {
     /// still need to check the url for merchantid
     //get id from db

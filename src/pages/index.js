@@ -6,7 +6,7 @@ import Cart from './CartPage';
 import Error from './ErrorPage';
 import Checkout from './CheckoutPage';
 import PrivateRoute from './PrivateRoute';
-import { Layout } from './Layout';
+import { Layout, loader as layoutLoader } from './Layout';
 export {
   Home,
   SingleProduct,
@@ -18,4 +18,5 @@ export {
   loader,
   PrivateRoute,
   Layout,
+  layoutLoader,
 };

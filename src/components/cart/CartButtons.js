@@ -13,17 +13,13 @@ const CartButton = () => {
   const { closeSidebar } = useProductsContext();
   const { total_items, clearCart } = useCartContext();
   const { user, logout, loginClover, clover } = useUserContext();
-  const { loginWithRedirect, closeModal } = useModalContext();
-  console.log('cart button');
+  const { loginWithRedirect } = useModalContext();
   const { access_token, isCloverLoading } = clover;
   let clover_access_token = access_token;
   if (!clover_access_token) {
     let info = getStorage(CLOVER);
     info = JSON.parse(info);
     clover_access_token = info.access_token;
-  }
-  if (user) {
-    closeModal();
   }
   return (
     <Wrapper className='cart-btn-wrapper'>
@@ -51,7 +47,7 @@ const CartButton = () => {
           Login <FaUserPlus />
         </button>
       )}
-      <button
+      {/* <button
         type='button'
         className='auth-btn last'
         onClick={loginClover}
@@ -60,7 +56,7 @@ const CartButton = () => {
         {!clover_access_token && <span>Connect to </span>}
         <img src='/clover2.png' alt='' height={24} />
         {clover_access_token && <span>Connected</span>}
-      </button>
+      </button> */}
     </Wrapper>
   );
 };

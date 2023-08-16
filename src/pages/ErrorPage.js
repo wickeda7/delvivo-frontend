@@ -1,7 +1,29 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import styled from 'styled-components';
+import { Link, useRouteError } from 'react-router-dom';
 const ErrorPage = () => {
+  const error = useRouteError();
+  if (error.status == 426) {
+    return (
+      <Wrapper className='page-100'>
+        <section>
+          <h3>Welcome to Delvivo please click continue to synch data.</h3>
+          <Link to='/' className='btn' reloadDocument>
+            Continue
+          </Link>
+        </section>
+      </Wrapper>
+    );
+  }
+  if (error.status == 403) {
+    return (
+      <Wrapper className='page-100'>
+        <section>
+          <h3>There is something wrong please contact Clover</h3>
+        </section>
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper className='page-100'>
       <section>
@@ -12,8 +34,8 @@ const ErrorPage = () => {
         </Link>
       </section>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.main`
   background: var(--clr-primary-10);
@@ -28,6 +50,6 @@ const Wrapper = styled.main`
     text-transform: none;
     margin-bottom: 2rem;
   }
-`
+`;
 
-export default ErrorPage
+export default ErrorPage;

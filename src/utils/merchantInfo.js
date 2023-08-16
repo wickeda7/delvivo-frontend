@@ -1,6 +1,7 @@
-import { getStorage } from '../utils/helpers';
+import { getStorage, setStorage } from '../utils/helpers';
 import { CLOVER } from '../utils/constants';
 import { getAddress } from '../services/apiProducts';
+
 
 export const merchantInfo = () => {
   let info = getStorage(CLOVER);

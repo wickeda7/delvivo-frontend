@@ -21,12 +21,15 @@ import {
   loader as productsLoader,
   PrivateRoute,
   Layout,
+  layoutLoader,
 } from './pages';
 
 const queryClient = new QueryClient();
 export const router = createBrowserRouter([
   {
     path: '/',
+    loader: layoutLoader,
+    errorElement: <Error />,
     element: <Layout />,
     children: [
       {
@@ -53,37 +56,3 @@ export const router = createBrowserRouter([
 
   { path: '*', element: <Error /> },
 ]);
-
-function App1() {
-  return (
-    <Router>
-      <Navbar />
-      <Sidebar />
-      <Routes>
-        {/* <Route path='/' exact element={<Home />} />
-          <Route path='about' element={<About />} /> */}
-        <Route path='cart' element={<Cart />} />
-        {/* <Route path='products' element={<Products />} /> */}
-        <Route
-          path='/'
-          exact
-          loader={productsLoader(queryClient)}
-          element={<Products />}
-        />
-        <Route path='products/:id' element={<SingleProduct />} />
-        <Route
-          path='checkout'
-          element={
-            <PrivateRoute>
-              <Checkout />
-            </PrivateRoute>
-          }
-        />
-        <Route path='*' element={<Error />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
-}
-
-//export default App;

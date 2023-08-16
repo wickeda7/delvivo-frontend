@@ -48,38 +48,6 @@ export const UserProvider = ({ children }) => {
     }
   }, [authToken]);
 
-  const getMerchantInfo = (url) => {
-    console.log('getMerchantInfo');
-    if (url.includes('merchant')) {
-      const merchant_regex = new RegExp('merchant_id=(.*)&em.*');
-      const token_regex = new RegExp('access_token=(.*)');
-      const merchant_array = merchant_regex.exec(window.location.search);
-      const token_array = token_regex.exec(window.location.hash);
-      if (merchant_array) {
-        const queryParameters = new URLSearchParams(merchant_array[0]);
-        const access_token = token_array[1];
-        const clover = {
-          merchant_id: queryParameters.get('merchant_id'),
-          employee_id: queryParameters.get('employee_id'),
-          client_id: queryParameters.get('client_id'),
-          code: queryParameters.get('code'),
-          access_token: access_token,
-        };
-        setStorage(CLOVER, JSON.stringify(clover));
-        if (!token_array[1]) {
-          getAccessToken(
-            queryParameters.get('client_id'),
-            clientSecret,
-            queryParameters.get('code')
-          );
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    const url = window.location.href;
-    getMerchantInfo(url);
-  }, []);
   const getAccessToken = async (clientId, secret, code) => {
     const connectionHelper = new ConnectionHelper();
     const token = connectionHelper.getOAuthTokenUrl(

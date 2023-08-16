@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Outlet,
-  Await,
-  defer,
-  useLoaderData,
-  json,
-  useLocation,
-} from 'react-router-dom';
+import { Outlet, Await, defer, useLoaderData, json } from 'react-router-dom';
 import { getCategories } from '../services/apiProducts';
 import { Navbar, Sidebar, Loading } from '../components';
 
@@ -18,10 +11,7 @@ export const loader = async () => {
       categories: categoriesPromise,
     });
   } catch (err) {
-    if (err.status == 403) {
-      throw json({ message: 'Forbidden' }, { status: 403 });
-    }
-    throw json({ message: 'no merchant' }, { status: 426 });
+    throw err;
   }
 };
 

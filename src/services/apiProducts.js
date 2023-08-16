@@ -43,18 +43,12 @@ export async function getCategories() {
   const info = merchantInfo();
   const url = window.location.href;
   const isMerchant = url.includes('merchant');
-  console.log('info', info);
-  console.log('isMerchant', isMerchant);
-  if (!info) {
-    console.log('no info');
-  }
-  if (!isMerchant) {
-    console.log('no isMerchant');
-  }
+
   if (!info && !isMerchant) {
     /// still need to check the url for merchantid
     //get id from db
-    throw new Error(403);
+    throw { message: 'unauthorized', status: 403 };
+    //throw new Response('Bad unauthorized', { status: 403 });
   }
   if (isMerchant) {
     const merchant_regex = new RegExp('merchant_id=(.*)&em.*');
@@ -73,8 +67,9 @@ export async function getCategories() {
       };
       setStorage(CLOVER, JSON.stringify(clover));
     }
-    throw new Error(426);
+    throw { message: 'No', status: 426 };
   }
+  console.log('wtf');
   const { access_token, merchant_id } = info;
   try {
     const response = await axios({

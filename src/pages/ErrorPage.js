@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Link, useRouteError } from 'react-router-dom';
 const ErrorPage = () => {
   const error = useRouteError();
-  console.log(error);
-  if (error.status == 426) {
+  if (error.status === 426) {
     return (
       <Wrapper className='page-100'>
         <section>
@@ -16,7 +15,7 @@ const ErrorPage = () => {
       </Wrapper>
     );
   }
-  if (error.status == 403) {
+  if (error.status === 403) {
     return (
       <Wrapper className='page-100'>
         <section>

@@ -10,17 +10,17 @@ export const loader = async () => {
   const info = merchantInfo();
   const url = window.location.href;
   const isMerchant = url.includes('merchant');
-  if (!info) {
-    //const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
-    const clover = {
-      merchant_id: mInfo.merchant_id,
-      employee_id: mInfo.employee_id,
-      client_id: mInfo.client_id,
-      access_token: mInfo.access_token,
-    };
-    setStorage(CLOVER, JSON.stringify(clover));
-    console.log('TODO: remove this after this is for Netlify only');
-  }
+  // if (!info) {
+  //   //const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
+  //   const clover = {
+  //     merchant_id: mInfo.merchant_id,
+  //     employee_id: mInfo.employee_id,
+  //     client_id: mInfo.client_id,
+  //     access_token: mInfo.access_token,
+  //   };
+  //   setStorage(CLOVER, JSON.stringify(clover));
+  //   console.log('TODO: remove this after this is for Netlify only');
+  // }
 
   if (!info && !isMerchant) {
     console.log('todo:still need to check the url for merchantid');

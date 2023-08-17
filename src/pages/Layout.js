@@ -11,7 +11,7 @@ export const loader = async () => {
   const url = window.location.href;
   const isMerchant = url.includes('merchant');
   if (!info) {
-    const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
+    //const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
     const clover = {
       merchant_id: mInfo.merchant_id,
       employee_id: mInfo.employee_id,

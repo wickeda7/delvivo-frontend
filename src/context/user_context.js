@@ -69,6 +69,7 @@ export const UserProvider = ({ children }) => {
     window.location.href = oAuthRedirectUrl;
   };
   const loginUser = async (email, password) => {
+    console.log(`${API}/auth/local`);
     dispatch({ type: LOGIN }); //
     try {
       const value = {
@@ -95,6 +96,7 @@ export const UserProvider = ({ children }) => {
       email,
       password,
     };
+    console.log(`${API}/auth/local/register!!!`);
     try {
       dispatch({ type: LOGIN });
       const response = await fetch(`${API}/auth/local/register`, {

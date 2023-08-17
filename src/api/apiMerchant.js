@@ -6,6 +6,7 @@ import { setStorage } from '../utils/helpers';
 export const apiMerchant = {
   getAddress: async function (info, cancel = false) {
     const { access_token, merchant_id } = info;
+    console.log(access_token, merchant_id);
     const response = await api.request({
       url: `${RESTURL}/v3/merchants/${merchant_id}/address`,
       method: 'get',

@@ -5,14 +5,18 @@ import ListView from './ListView';
 import { useProducts } from '../hooks/useProducts';
 import Loading from './Loading';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useAsyncValue } from 'react-router-dom';
 
 const ProductList = () => {
   const { grid_view } = useFilterContext();
-  let categoryId = undefined;
+  const { categories } = useAsyncValue();
   const params = useParams();
-  if (params) {
+  let categoryId = undefined;
+
+  if (params.categoryId) {
     categoryId = params.categoryId;
+  } else {
+    categoryId = categories[0].id;
   }
   const { isLoading, products } = useProducts(categoryId);
 

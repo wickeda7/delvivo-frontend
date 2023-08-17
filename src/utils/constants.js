@@ -43,7 +43,7 @@ export const services = [
 const url = process.env.REACT_APP_STRAPI_URL;
 export const products_url = `${url}/api/products?populate=picture`;
 
-export const image_url = url;
+export const strapi_url = url;
 //export const single_product_url = `https://course-api.com/react-store-single-product?id=`;
 export const single_product_url = `${url}/api/products`;
 export const API = `${url}/api`;

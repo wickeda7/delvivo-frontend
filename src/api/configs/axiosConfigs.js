@@ -1,16 +1,16 @@
-import axios from "axios";
-import { image_url } from "../../utils/constants";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import { strapi_url } from '../../utils/constants';
+import { toast } from 'react-toastify';
 export const api = axios.create({
-  baseURL: image_url,
+  baseURL: strapi_url,
 });
 
 // defining a custom error handler for all APIs
 const errorHandler = (error) => {
   const statusCode = error.response?.status;
 
-  if (error.code === "ERR_CANCELED") {
-    toast.error("API canceled!");
+  if (error.code === 'ERR_CANCELED') {
+    toast.error('API canceled!');
     return Promise.resolve();
   }
 

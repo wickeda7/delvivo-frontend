@@ -1,13 +1,11 @@
-import { api } from "./configs/axiosConfigs";
-import { defineCancelApiObject } from "./configs/axiosUtils";
-
-import React from "react";
+import { api } from './configs/axiosConfigs';
+import { defineCancelApiObject } from './configs/axiosUtils';
 
 export const UserApi = {
   get: async function (name, cancel = false) {
     const response = await api.request({
       url: `/pokemon/${name}`,
-      method: "GET",
+      method: 'GET',
       signal: cancel
         ? cancelApiObject[this.get.name].handleRequestCancellation().signal
         : undefined,
@@ -18,7 +16,7 @@ export const UserApi = {
   post: async function (name, cancel = false) {
     const response = await api.request({
       url: `/pokemon/${name}`,
-      method: "GET",
+      method: 'GET',
       signal: cancel
         ? cancelApiObject[this.get.name].handleRequestCancellation().signal
         : undefined,

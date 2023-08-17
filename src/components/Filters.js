@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filter_context';
 import { NavLink } from 'react-router-dom';
-import { useLoaderData } from 'react-router-dom';
+import { useAsyncValue } from 'react-router-dom';
 const Filters = () => {
   const {
     filters: {
@@ -19,8 +19,9 @@ const Filters = () => {
     all_products,
     clearFilters,
   } = useFilterContext();
-  const loaderData = useLoaderData();
-  const elements = loaderData?.data;
+
+  const data = useAsyncValue();
+  const elements = data?.categories;
   return (
     <Wrapper>
       <div className='content'>

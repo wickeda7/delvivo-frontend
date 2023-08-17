@@ -18,7 +18,6 @@ import {
   Error,
   // About,
   Products,
-  loader as productsLoader,
   PrivateRoute,
   Layout,
   layoutLoader,
@@ -39,7 +38,6 @@ export const router = createBrowserRouter([
       {
         path: '/:categoryId?',
         exact: true,
-        loader: productsLoader(queryClient),
         element: <Products />,
       },
       { path: 'products/:id', element: <SingleProduct /> },

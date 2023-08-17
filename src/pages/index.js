@@ -1,5 +1,5 @@
 import Home from './HomePage';
-import Products, { loader } from './ProductsPage';
+import Products from './ProductsPage';
 import SingleProduct from './SingleProductPage';
 import About from './AboutPage';
 import Cart from './CartPage';
@@ -15,7 +15,6 @@ export {
   Error,
   Checkout,
   Products,
-  loader,
   PrivateRoute,
   Layout,
   layoutLoader,

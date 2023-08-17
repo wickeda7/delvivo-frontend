@@ -1,7 +1,6 @@
-import { getStorage, setStorage } from '../utils/helpers';
+import { getStorage } from '../utils/helpers';
 import { CLOVER } from '../utils/constants';
-import { getAddress } from '../services/apiProducts';
-
+import { apiMerchant } from '../api/apiMerchant';
 
 export const merchantInfo = () => {
   let info = getStorage(CLOVER);
@@ -12,7 +11,7 @@ export const merchantInfo = () => {
 export const getStoreName = () => {
   let address = getStorage('address');
   if (!address) {
-    getAddress(merchantInfo());
+    apiMerchant.getAddress(merchantInfo());
   }
 };
 export const getStoreAddress = () => {

@@ -13,18 +13,13 @@ export const loader = async () => {
   const info = merchantInfo();
   const url = window.location.href;
   const isMerchant = url.includes('merchant');
-
-  console.log(environment);
-
   if (!info && !isMerchant) {
-    console.log('todo:still need to check the url for merchantid');
     //get id from db
     console.log('TODO: need to check db if merchant exist');
     // for production only testing purposes B65VCADF79ZR1
     if (environment === 'production') {
       try {
         const tempInfo = await apiMerchant.getMechant('B65VCADF79ZR1');
-        console.log(tempInfo);
         const clover = {
           merchant_id: tempInfo.merchant_id,
           employee_id: tempInfo.employee_id,

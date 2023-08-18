@@ -15,23 +15,27 @@ export const loader = async () => {
   const isMerchant = url.includes('merchant');
 
   console.log(environment);
-  // if (!info) {
-  //   //const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
-  //   const clover = {
-  //     merchant_id: mInfo.merchant_id,
-  //     employee_id: mInfo.employee_id,
-  //     client_id: mInfo.client_id,
-  //     access_token: mInfo.access_token,
-  //   };
-  //   setStorage(CLOVER, JSON.stringify(clover));
-  //   console.log('TODO: remove this after this is for Netlify only');
-  // }
 
   if (!info && !isMerchant) {
     console.log('todo:still need to check the url for merchantid');
     //get id from db
     console.log('TODO: need to check db if merchant exist');
-    throw { message: 'unauthorized', status: 403 };
+    // for production only testing purposes B65VCADF79ZR1
+    if (environment === 'production') {
+      try {
+        const tempInfo = await apiMerchant.getMechant('B65VCADF79ZR1');
+        console.log(tempInfo);
+        const clover = {
+          merchant_id: tempInfo.merchant_id,
+          employee_id: tempInfo.employee_id,
+          client_id: tempInfo.client_id,
+          access_token: tempInfo.access_token,
+        };
+        setStorage(CLOVER, JSON.stringify(clover));
+      } catch (error) {
+        throw { message: 'unauthorized', status: 403 };
+      }
+    }
   }
   if (isMerchant) {
     const merchant_regex = new RegExp('merchant_id=(.*)&em.*');

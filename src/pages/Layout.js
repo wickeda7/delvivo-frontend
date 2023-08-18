@@ -6,10 +6,15 @@ import { setStorage } from '../utils/helpers';
 import { CLOVER } from '../utils/constants';
 import { apiProducts } from '../api/apiProducts';
 import { apiMerchant } from '../api/apiMerchant';
+
+const environment = process.env.REACT_APP_NODE_ENV;
+
 export const loader = async () => {
   const info = merchantInfo();
   const url = window.location.href;
   const isMerchant = url.includes('merchant');
+
+  console.log(environment);
   // if (!info) {
   //   //const mInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
   //   const clover = {

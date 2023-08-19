@@ -9,7 +9,7 @@ import {
 } from '../../utils/cardHelper';
 import { useCartContext } from '../../context/cart_context';
 import { merchantInfo } from '../../utils/merchantInfo';
-
+import { Alert } from 'antd';
 const initialState = {
   name: '',
   number: '',
@@ -21,10 +21,14 @@ const initialState = {
   cardtype: 'fa fa-credit-card',
 };
 const CloverCheckout = () => {
-  const { cart } = useCartContext();
+  const { cart, updatePaidInfo } = useCartContext();
   const [values, setValues] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const { merchant_id } = merchantInfo();
+
   const pay = async () => {
+    setIsLoading(true);
     const card = cardHelper(values);
     delete card.cardtype;
     delete card.exp;
@@ -37,7 +41,8 @@ const CloverCheckout = () => {
         price: val.price,
         refunded: 'false',
         isRevenue: 'false',
-        unitQty: val.amount,
+        unitQty: val.amount * 1000,
+        priceType: 'PER_UNIT',
         currency: 'usd',
         name: val.name,
       });
@@ -104,9 +109,15 @@ const CloverCheckout = () => {
     });
 
     const resp = await response.json();
-    console.log(resp);
-    if (response.status !== 200) {
-      throw Error(resp.message);
+    if (resp) {
+      setIsLoading(false);
+      if (resp.error) {
+        setError(resp.error.message);
+      } else {
+        setError('');
+        setValues(initialState);
+        updatePaidInfo(resp);
+      }
     }
   };
 
@@ -128,7 +139,7 @@ const CloverCheckout = () => {
     } else {
       cartype_new = ' fa fa-credit-card';
     }
-
+    setError('');
     setValues({
       ...values,
       brand: cardtype,
@@ -138,7 +149,7 @@ const CloverCheckout = () => {
   };
   const onChangeExp = (e) => {
     const value = e.target.value;
-
+    setError('');
     const exp = expriy_format(value);
     setValues({
       ...values,
@@ -150,6 +161,7 @@ const CloverCheckout = () => {
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
+    setError('');
     setValues({ ...values, [name]: value });
   };
   const onSubmit = (e) => {
@@ -158,6 +170,9 @@ const CloverCheckout = () => {
   return (
     <Wrapper>
       <form className='form' onSubmit={onSubmit}>
+        <div className='form-row gridspan2 icon-relative'>
+          {error && <Alert variant='danger' type='error' message={error} />}
+        </div>
         <div className='form-row gridspan2 icon-relative'>
           <label htmlFor=''>Card Number</label>
           <input
@@ -221,8 +236,8 @@ const CloverCheckout = () => {
           <i className='fa fa-user far' id='cardtype'></i>
         </div>
 
-        <button onClick={pay} className='btn gridspan2'>
-          Pay
+        <button onClick={pay} className='btn gridspan2' disabled={isLoading}>
+          Pay {isLoading}
         </button>
       </form>
     </Wrapper>
@@ -231,6 +246,10 @@ const CloverCheckout = () => {
 const Wrapper = styled.section`
   display: flex;
   justify-content: center;
+  margin-bottom: 2rem;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
   .icon-relative {
     position: relative;
   }

@@ -6,12 +6,17 @@ import CartColumns from './CartColumns';
 import CartItem from './CartItem';
 
 const CartItems = () => {
-  const { cart, clearCart } = useCartContext();
+  const { cart, clearCart, tempCart } = useCartContext();
+
+  let cartItems = cart;
+  if (cartItems.length === 0) {
+    cartItems = tempCart;
+  }
 
   return (
     <Wrapper className=' section-center'>
       <CartColumns />
-      {cart.map((item) => {
+      {cartItems.map((item) => {
         return <CartItem key={item.id} {...item} />;
       })}
       <hr />

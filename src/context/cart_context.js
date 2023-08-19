@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useReducer } from 'react';
+import React, { useEffect, useContext, useReducer, useState } from 'react';
 import reducer from '../reducers/cart_reducer';
 //import dayjs from 'dayjs';
 import {
@@ -32,6 +32,8 @@ const CartContext = React.createContext();
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [paidInfo, setPaidInfo] = useState();
+  const [tempCart, setTempCart] = useState([]);
 
   const updateShippingInfo = (isDelivery, isPickup, info) => {
     // console.log('context', isDelivery, isPickup, shipping_info);
@@ -80,6 +82,12 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     dispatch({ type: CLEAR_CART });
   };
+
+  const updatePaidInfo = (res) => {
+    setPaidInfo(res);
+    setTempCart(state.cart);
+    clearCart();
+  };
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(state.cart));
     dispatch({ type: COUNT_CART_TOTALS });
@@ -93,6 +101,9 @@ export const CartProvider = ({ children }) => {
         toggleAmount,
         clearCart,
         updateShippingInfo,
+        updatePaidInfo,
+        paidInfo,
+        tempCart,
       }}
     >
       {children}

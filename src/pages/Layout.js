@@ -11,8 +11,6 @@ export const loader = async () => {
 
   try {
     console.log('todo: add categories to reducer');
-    // const access_token = 'a1a4a7f2-5c2b-6e1d-0d4e-4b0a9a1b0d8e';
-    // const merchant_id = 'B65VCADF79ZR1';
     const categoriesPromise = await apiProducts.getCategories(
       access_token,
       merchant_id

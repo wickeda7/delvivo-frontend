@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useCartContext } from '../context/cart_context';
 import { Link } from 'react-router-dom';
 import { ShippingMethods, CartContent, PageHero } from '../components';
-import { CartTotals, CloverCheckout } from '../components/cart';
+import { CartTotals, CloverCheckout, PaidInfo } from '../components/cart';
 import { useModalContext } from '../context/modal_context';
 import { useUserContext } from '../context/user_context';
 import { setStoreAddress } from '../utils/merchantInfo';
 
 const CartPage = () => {
-  const { cart } = useCartContext();
+  const { cart, paidInfo, tempCart } = useCartContext();
   const { user } = useUserContext();
   const { loginWithRedirect } = useModalContext();
-
+  let cartItems = cart;
+  if (cartItems.length === 0) {
+    cartItems = tempCart;
+  }
   useEffect(() => {
     setStoreAddress();
   }, []);
@@ -20,7 +23,7 @@ const CartPage = () => {
     <main>
       <PageHero title='cart' />
       <Wrapper className='page-100'>
-        {cart.length < 1 ? (
+        {cartItems.length < 1 ? (
           <div className='empty'>
             <h2>Your cart is empty</h2>
             <Link to='/products' className='btn'>
@@ -37,7 +40,8 @@ const CartPage = () => {
               <CartContent />
             </section>
             <section>
-              {user && <CloverCheckout />}
+              {paidInfo && <PaidInfo info={paidInfo} />}
+              {user && !paidInfo && <CloverCheckout />}
               <CartTotals user={user} loginWithRedirect={loginWithRedirect} />
             </section>
           </>

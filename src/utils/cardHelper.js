@@ -44,18 +44,33 @@ export const expriy_format = (value) => {
 export const cardHelper = (data) => {
   let res = {};
   const cnumber = data.number.replace(/\D/g, '');
-  const brand = GetCardType(cnumber);
+  let brand = GetCardType(cnumber);
+  switch (brand) {
+    case 'Mastercard':
+      brand = 'MC';
+      break;
+    case 'Diners':
+    case 'Diners - Carte Blanche':
+      brand = 'DINERS_CLUB';
+      break;
+    case 'Visa Electron':
+      brand = 'VISA';
+      break;
+    case 'Discover':
+      brand = 'DISCOVER';
+      break;
+    default:
+      brand = '';
+  }
   res.first6 = cnumber.substr(0, 6);
   res.last4 = cnumber.substr(-4);
-  res.brand = brand === 'Mastercard' ? 'MC' : brand.toLowerCase();
+  res.brand = brand;
   res.exp_month = data.exp_month;
   res.exp_year = '2025';
   res.cvv = data.cvv;
   res.name = data.name;
   res.number = cnumber;
   res.country = 'us';
-  console.log('res', res);
-  console.log('data', data);
   return res;
 };
 

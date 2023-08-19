@@ -4,6 +4,28 @@ import { RESTURL } from '../utils/constants';
 import { setStorage } from '../utils/helpers';
 
 export const apiMerchant = {
+  getAuthToken: async function (
+    code,
+    employee_id,
+    merchant_id,
+    cancel = false
+  ) {
+    const data = { code, employee_id, merchant_id };
+    const response = await api.request({
+      method: 'POST',
+      url: `/api/clover`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({ code, employee_id, merchant_id }),
+      signal: cancel
+        ? cancelApiObject[this.get.merchant_id].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    const res = await response.data;
+    return res;
+  },
   getAddress: async function (info, cancel = false) {
     const { access_token, merchant_id } = info;
     console.log(access_token, merchant_id);

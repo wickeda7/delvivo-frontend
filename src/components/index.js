@@ -14,7 +14,6 @@ import Sort from './Sort';
 import Stars from './Stars';
 import CartContent from './cart/CarContent';
 import PageHero from './PageHero';
-import StripeCheckout from './StripeCheckout';
 import Modal from './Modal';
 import Register from './Register';
 import FormRow from './FormRow';
@@ -36,7 +35,6 @@ export {
   Stars,
   CartContent,
   PageHero,
-  StripeCheckout,
   Modal,
   Register,
   FormRow,

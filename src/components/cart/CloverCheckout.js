@@ -8,6 +8,7 @@ import {
   expriy_format,
 } from '../../utils/cardHelper';
 import { useCartContext } from '../../context/cart_context';
+import { merchantInfo } from '../../utils/merchantInfo';
 
 const initialState = {
   name: '',
@@ -22,6 +23,7 @@ const initialState = {
 const CloverCheckout = () => {
   const { cart } = useCartContext();
   const [values, setValues] = useState(initialState);
+  const { merchant_id } = merchantInfo();
   const pay = async () => {
     const card = cardHelper(values);
     delete card.cardtype;
@@ -82,6 +84,7 @@ const CloverCheckout = () => {
       token: null,
       customerId: '',
       currency: 'usd',
+      merchant_id,
       user: {
         firstName: 'John',
         lastName: 'Doe',
@@ -92,7 +95,7 @@ const CloverCheckout = () => {
     };
 
     const data = JSON.stringify(state);
-    const response = await fetch(`${API}/clover`, {
+    const response = await fetch(`${API}/clover/pay`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

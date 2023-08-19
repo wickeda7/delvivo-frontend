@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useReducer } from 'react';
 import reducer from '../reducers/cart_reducer';
-import { getStoreName } from '../utils/merchantInfo';
 //import dayjs from 'dayjs';
 import {
   ADD_TO_CART,
@@ -61,7 +60,6 @@ export const CartProvider = ({ children }) => {
   };
   // add to cart
   const addToCart = (amount, product) => {
-    getStoreName();
     dispatch({ type: ADD_TO_CART, payload: { amount, product } });
   };
   // remove item

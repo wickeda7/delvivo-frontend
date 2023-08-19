@@ -19,21 +19,35 @@ const Register = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
     setValues({ ...values, [name]: value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
+    let data = null;
     if (!email || !password || (!isMember && !name)) {
       toast.error('Please fill out all fields');
       return;
     }
     if (isMember) {
-      loginUser(email, password);
-      return;
+      loginUser(email, password).then((res) => {
+        if (res.user) {
+          setValues(initialState);
+          closeModal();
+        }
+      });
+    } else {
+      registerUser(name, email, password).then((res) => {
+        if (res.user) {
+          setValues(initialState);
+          closeModal();
+        }
+      });
     }
-    registerUser(name, email, password);
+  };
+  const close = () => {
+    setValues(initialState);
+    closeModal();
   };
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -68,7 +82,7 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type='button' className='btn btn-cancel' onClick={closeModal}>
+        <button type='button' className='btn btn-cancel' onClick={close}>
           Cancel
         </button>
         <button type='submit' className='btn btn-block' disabled={isLoading}>

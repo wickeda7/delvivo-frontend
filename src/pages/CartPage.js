@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useCartContext } from '../context/cart_context';
 import { Link } from 'react-router-dom';
@@ -6,12 +6,16 @@ import { ShippingMethods, CartContent, PageHero } from '../components';
 import { CartTotals, CloverCheckout } from '../components/cart';
 import { useModalContext } from '../context/modal_context';
 import { useUserContext } from '../context/user_context';
+import { setStoreAddress } from '../utils/merchantInfo';
 
 const CartPage = () => {
   const { cart } = useCartContext();
   const { user } = useUserContext();
-  const { loginWithRedirect, closeModal } = useModalContext();
+  const { loginWithRedirect } = useModalContext();
 
+  useEffect(() => {
+    setStoreAddress();
+  }, []);
   return (
     <main>
       <PageHero title='cart' />

@@ -69,7 +69,6 @@ export const UserProvider = ({ children }) => {
     window.location.href = oAuthRedirectUrl;
   };
   const loginUser = async (email, password) => {
-    console.log(`${API}/auth/local`);
     dispatch({ type: LOGIN }); //
     try {
       const value = {
@@ -85,6 +84,7 @@ export const UserProvider = ({ children }) => {
       });
       const data = await response.json();
       userInfo(data);
+      return data;
     } catch (error) {
       dispatch({ type: LOGIN_ERROR, payload: error });
     }
@@ -108,6 +108,7 @@ export const UserProvider = ({ children }) => {
       });
       const data = await response.json();
       userInfo(data);
+      return data;
     } catch (error) {}
   };
 

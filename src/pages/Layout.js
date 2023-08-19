@@ -1,71 +1,18 @@
 import React from 'react';
 import { Outlet, Await, defer, useLoaderData } from 'react-router-dom';
 import { Navbar, Sidebar, Loading } from '../components';
-import { merchantInfo } from '../utils/merchantInfo';
-import { setStorage } from '../utils/helpers';
-import { CLOVER } from '../utils/constants';
+import { initMerchant } from '../utils/merchantInfo';
 import { apiProducts } from '../api/apiProducts';
-import { apiMerchant } from '../api/apiMerchant';
-
-const environment = process.env.REACT_APP_NODE_ENV;
 
 export const loader = async () => {
-  const info = merchantInfo();
   const url = window.location.href;
-  const isMerchant = url.includes('merchant');
-  if (!info && !isMerchant) {
-    //get id from db
-    console.log('TODO: need to check db if merchant exist');
-    // for production only testing purposes B65VCADF79ZR1
-    if (environment === 'production') {
-      try {
-        const tempInfo = await apiMerchant.getMechant('B65VCADF79ZR1');
-        const clover = {
-          merchant_id: tempInfo.merchant_id,
-          employee_id: tempInfo.employee_id,
-          client_id: tempInfo.client_id,
-          access_token: tempInfo.access_token,
-        };
-        setStorage(CLOVER, JSON.stringify(clover));
-      } catch (error) {
-        throw { message: 'unauthorized', status: 403 };
-      }
-    }
-  }
-  if (isMerchant) {
-    const merchant_regex = new RegExp('merchant_id=(.*)&em.*');
-    const token_regex = new RegExp('access_token=(.*)');
-    const merchant_array = merchant_regex.exec(window.location.search);
-    const token_array = token_regex.exec(window.location.hash);
-    if (merchant_array) {
-      const queryParameters = new URLSearchParams(merchant_array[0]);
-      const access_token = token_array[1];
-      const clover = {
-        merchant_id: queryParameters.get('merchant_id'),
-        employee_id: queryParameters.get('employee_id'),
-        client_id: queryParameters.get('client_id'),
-        code: queryParameters.get('code'),
-        access_token: access_token,
-      };
-      setStorage(CLOVER, JSON.stringify(clover));
-      try {
-        apiMerchant.postMerchant(
-          clover.merchant_id,
-          clover.employee_id,
-          clover.client_id,
-          clover.access_token
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    throw { message: 'No', status: 426 };
-  }
-
+  const info = await initMerchant(url);
   const { access_token, merchant_id } = info;
 
   try {
     console.log('todo: add categories to reducer');
+    // const access_token = 'a1a4a7f2-5c2b-6e1d-0d4e-4b0a9a1b0d8e';
+    // const merchant_id = 'B65VCADF79ZR1';
     const categoriesPromise = await apiProducts.getCategories(
       access_token,
       merchant_id

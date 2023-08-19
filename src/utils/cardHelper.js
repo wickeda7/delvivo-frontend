@@ -1,11 +1,9 @@
 export const cardCheckoutCss = (inputtxt) => {
   var matches = inputtxt.match(/(\d+)/);
   var cardno = '';
-  console.log('matches', matches);
   if (matches) {
     cardno = inputtxt.split(' - ').join('');
   }
-  console.log('cardno', cardno);
   var cardtype1 = '';
   //var visa = /^(?:4[0-9]{16}(?:[0-9]{3})?)$/;
   var visa = /^(?:4[0-9]{2}?)$/;
@@ -46,9 +44,10 @@ export const expriy_format = (value) => {
 export const cardHelper = (data) => {
   let res = {};
   const cnumber = data.number.replace(/\D/g, '');
+  const brand = GetCardType(cnumber);
   res.first6 = cnumber.substr(0, 6);
   res.last4 = cnumber.substr(-4);
-  res.brand = GetCardType(cnumber);
+  res.brand = brand === 'Mastercard' ? 'MC' : brand.toLowerCase();
   res.exp_month = data.exp_month;
   res.exp_year = '2025';
   res.cvv = data.cvv;

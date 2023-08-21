@@ -30,6 +30,9 @@ const CloverCheckout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { merchant_id } = merchantInfo();
+  let orderTypeId = '';
+  let note = '';
+
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />
   );
@@ -37,6 +40,7 @@ const CloverCheckout = () => {
   useEffect(() => {
     setError('');
   }, [cart, updatePaidInfo, shipping_info, total_amount]);
+
   const pay = async () => {
     const errors = checkErrors(shipping_info, total_amount);
     setError(errors);
@@ -63,13 +67,20 @@ const CloverCheckout = () => {
       });
     });
 
-    console.log('need to add order type!!!', shipping_info.orderType);
-    return;
+    if (shipping_info.orderType.delivery) {
+      orderTypeId = shipping_info.orderType.delivery.id;
+      note = `Deliver to:  ${shipping_info.info.destination}`;
+    } else {
+      orderTypeId = shipping_info.orderType.pickup.id;
+      note = `Pickup at:  ${shipping_info.info}`;
+    }
+
     const orderCart = {
       lineItems: items,
-      orderTyoe: {
-        id: shipping_info.orderType.id,
+      orderType: {
+        id: orderTypeId,
       },
+      note: note,
     };
     const state2 = {
       token: null,
@@ -106,6 +117,7 @@ const CloverCheckout = () => {
         },
       ],
     };
+    console.log('TODO register User to local db and clover customer db');
     const state = {
       token: null,
       customerId: '',

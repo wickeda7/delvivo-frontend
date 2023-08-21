@@ -42,7 +42,6 @@ export const apiProducts = {
     return response.data;
   },
   getCategories: async function (access_token, merchant_id, cancel = false) {
-    console.log('resturl', RESTURL);
     const response = await api.request({
       url: `${RESTURL}/v3/merchants/${merchant_id}/categories`,
       method: 'get',

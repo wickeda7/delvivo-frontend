@@ -8,7 +8,6 @@ import DeliveryInfo from './DeliveryInfo';
 const ShippingMethods = ({ user, loginWithRedirect }) => {
   let method = [];
   const { shipping_info } = useCartContext();
-  console.log('shipping_info', shipping_info);
   if (shipping_info.orderType) {
     method = Object.keys(shipping_info.orderType);
   }

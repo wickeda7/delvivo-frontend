@@ -5,15 +5,16 @@ import { TimePicker } from 'antd';
 import { useCartContext } from '../../context/cart_context';
 const PickupInfo = () => {
   const { updateShippingInfo } = useCartContext();
+  const format = 'h:mm A';
+  let now = dayjs();
 
   const onChange = (time) => {
-    const setTime = time.format('X');
-    console.log('onChange');
+    const setTime = time.format('h:mm A');
     updateShippingInfo('pickup', setTime);
   };
-  let now = dayjs();
+
   // To do: Needs to get store hours from Clover API
-  const format = 'h:mm A';
+
   return (
     <Wrapper>
       Please select time to pickup your order:

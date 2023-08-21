@@ -10,7 +10,6 @@ export const cardCheckoutCss = (inputtxt) => {
   var mastercardRegEx = /^(?:5[1-5][0-9]{3})$/;
   var amexpRegEx = /^(?:3[47][0-9]{3})$/;
   var discovRegEx = /^(?:6(?:011|5[0-9][0-9])[0-9]{5})$/;
-  console.log(visa.test(cardno), 'visa');
   if (visa.test(cardno) === true) {
     //eg:4651970022334445
     cardtype1 = 'fa fa-3x fa-cc-visa';
@@ -131,12 +130,11 @@ export const checkErrors = (shipping_info, total_amount) => {
   if (!shipping_info.orderType) {
     error = 'Please select shipping method';
   }
-  console.log('shipping_info.orderType', shipping_info.orderType.delivery);
   if (shipping_info.orderType.delivery) {
     const minAmount = shipping_info.orderType.delivery.minOrderAmount;
     const radius = shipping_info.orderType.delivery.maxRadius;
 
-    if (!shipping_info.info || radius < shipping_info.info.distance) {
+    if (!shipping_info.info || radius < shipping_info.info.range) {
       error = 'Please enter valid address';
     }
     if (total_amount < minAmount) {

@@ -28,10 +28,13 @@ const DeliveryInfo = () => {
 
   const { orderTypes } = merchantInfo();
   const storeAddress = getStoreAddress();
-  const { total_amount, updateShippingInfo } = useCartContext();
+  const { total_amount, updateShippingInfo, paidInfo } = useCartContext();
   let errorText =
     total_amount < orderTypes.delivery.minOrderAmount ? 'amount' : '';
 
+  if (paidInfo) {
+    errorText = '';
+  }
   useEffect(() => {
     setError(errorText);
   }, [errorText]);
@@ -43,7 +46,7 @@ const DeliveryInfo = () => {
       toast.error('Please fill out all fields');
       return;
     }
-    setIsLoading(true);
+
     const addresses = {
       origins: `${storeAddress.address}, ${storeAddress.city}, ${storeAddress.state}, ${storeAddress.zip}`,
       destinations: `${address}, ${city}, ${state}, ${zipcode}`,
@@ -52,22 +55,26 @@ const DeliveryInfo = () => {
       'Content-Type': 'application/json',
       accept: 'application/json',
     };
+    setIsLoading(true);
     try {
       const response = await axios.post(`${API}/clover/map`, addresses, {
         headers: headers,
       });
       const res = response.data.data;
-      if (
-        orderTypes.delivery.maxRadius < res.rows[0].elements[0].distance.value
-      ) {
+      const tempRange = res.rows[0].elements[0].distance.text.split(' ');
+      const range = tempRange[1] === 'ft' ? 1 : tempRange[0];
+
+      if (orderTypes.delivery.maxRadius < range) {
         setError('radius');
-        setIsLoading(false);
+      } else {
+        setError('');
       }
       updateShippingInfo('delivery', {
         origin: res.origin_addresses[0],
         destination: res.destination_addresses[0],
         distance: res.rows[0].elements[0].distance.text,
         duration: res.rows[0].elements[0].duration.text,
+        range: range,
       });
       setMapGoogle({
         origin: res.origin_addresses[0],
@@ -78,7 +85,6 @@ const DeliveryInfo = () => {
 
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };

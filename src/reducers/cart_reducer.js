@@ -9,8 +9,16 @@ import {
 
 const cart_reducer = (state, action) => {
   if (action.type === SHIPPING_INFO) {
-    const { shipping_method, shipping_info } = action.payload;
-    return { ...state, shipping_method, shipping_info };
+    const { orderType, info } = action.payload;
+    let shipping_info = {};
+    if (orderType) {
+      shipping_info = { ...state.shipping_info, orderType };
+    }
+    if (info) {
+      shipping_info = { ...state.shipping_info, info };
+    }
+
+    return { ...state, shipping_info };
   }
 
   if (action.type === ADD_TO_CART) {

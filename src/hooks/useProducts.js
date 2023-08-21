@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { merchantInfo } from '../utils/merchantInfo';
 import { toast } from 'react-toastify';
-import { useLoaderData } from 'react-router-dom';
 import { apiProducts } from '../api/apiProducts';
 
 export function useProducts(categoryId) {

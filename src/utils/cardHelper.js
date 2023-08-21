@@ -125,3 +125,24 @@ export const GetCardType = (number) => {
 
   return '';
 };
+export const checkErrors = (shipping_info, total_amount) => {
+  let error = '';
+
+  if (!shipping_info.orderType) {
+    error = 'Please select shipping method';
+  }
+  console.log('shipping_info.orderType', shipping_info.orderType.delivery);
+  if (shipping_info.orderType.delivery) {
+    const minAmount = shipping_info.orderType.delivery.minOrderAmount;
+    const radius = shipping_info.orderType.delivery.maxRadius;
+
+    if (!shipping_info.info || radius < shipping_info.info.distance) {
+      error = 'Please enter valid address';
+    }
+    if (total_amount < minAmount) {
+      error = 'Minimum order amount is $' + minAmount;
+    }
+  }
+
+  return error;
+};

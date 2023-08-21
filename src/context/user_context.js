@@ -7,10 +7,11 @@ import {
   LOGOUT,
 } from '../actions';
 import reducer from '../reducers/user_reducers';
-import { API, BEARER, CLOVER, AUTH_TOKEN } from '../utils/constants';
+import { API, BEARER, AUTH_TOKEN } from '../utils/constants';
 import { getStorage, setStorage, removeStorage } from '../utils/helpers';
 import { toast } from 'react-toastify';
-import ConnectionHelper from '../utils/connectionHelper';
+import { apiMerchant } from '../api/apiMerchant';
+
 const initialState = {
   isLoading: false,
   user: undefined,
@@ -21,9 +22,6 @@ const initialState = {
   },
 };
 
-const oAuthDomain = process.env.REACT_APP_CLOVER;
-const clientId = process.env.REACT_APP_ID;
-const clientSecret = process.env.REACT_APP__SECRET;
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -48,25 +46,19 @@ export const UserProvider = ({ children }) => {
     }
   }, [authToken]);
 
-  const getAccessToken = async (clientId, secret, code) => {
-    const connectionHelper = new ConnectionHelper();
-    const token = connectionHelper.getOAuthTokenUrl(
-      oAuthDomain,
-      clientId,
-      secret,
-      code
-    );
-  };
   const loginClover = async () => {
-    let finalRedirect = window.location.href.replace(window.location.hash, '');
-    const connectionHelper = new ConnectionHelper();
-    const oAuthRedirectUrl = connectionHelper.getOAuthUrl(
-      oAuthDomain,
-      clientId,
-      null,
-      finalRedirect
-    );
-    window.location.href = oAuthRedirectUrl;
+    const orderType = await apiMerchant.getOrderType();
+    console.log(orderType);
+
+    // let finalRedirect = window.location.href.replace(window.location.hash, '');
+    // const connectionHelper = new ConnectionHelper();
+    // const oAuthRedirectUrl = connectionHelper.getOAuthUrl(
+    //   oAuthDomain,
+    //   clientId,
+    //   null,
+    //   finalRedirect
+    // );
+    // window.location.href = oAuthRedirectUrl;
   };
   const loginUser = async (email, password) => {
     dispatch({ type: LOGIN }); //

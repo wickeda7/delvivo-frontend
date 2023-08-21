@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { API } from '../../utils/constants';
 import {
@@ -6,10 +6,13 @@ import {
   GetCardType,
   cc_format,
   expriy_format,
+  checkErrors,
 } from '../../utils/cardHelper';
 import { useCartContext } from '../../context/cart_context';
 import { merchantInfo } from '../../utils/merchantInfo';
-import { Alert } from 'antd';
+import { Alert, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+
 const initialState = {
   name: '',
   number: '',
@@ -21,14 +24,26 @@ const initialState = {
   cardtype: 'fa fa-credit-card',
 };
 const CloverCheckout = () => {
-  const { cart, updatePaidInfo } = useCartContext();
+  const { cart, updatePaidInfo, shipping_info, total_amount } =
+    useCartContext();
   const [values, setValues] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { merchant_id } = merchantInfo();
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />
+  );
 
+  useEffect(() => {
+    setError('');
+  }, [cart, updatePaidInfo, shipping_info, total_amount]);
   const pay = async () => {
+    const errors = checkErrors(shipping_info, total_amount);
+    setError(errors);
+
+    if (errors) return;
     setIsLoading(true);
+
     const card = cardHelper(values);
     delete card.cardtype;
     delete card.exp;
@@ -47,8 +62,14 @@ const CloverCheckout = () => {
         name: val.name,
       });
     });
+
+    console.log('need to add order type!!!', shipping_info.orderType);
+    return;
     const orderCart = {
       lineItems: items,
+      orderTyoe: {
+        id: shipping_info.orderType.id,
+      },
     };
     const state2 = {
       token: null,
@@ -237,7 +258,7 @@ const CloverCheckout = () => {
         </div>
 
         <button onClick={pay} className='btn gridspan2' disabled={isLoading}>
-          Pay {isLoading}
+          Pay {isLoading && <Spin indicator={antIcon} />}
         </button>
       </form>
     </Wrapper>

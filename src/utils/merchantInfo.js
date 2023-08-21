@@ -16,8 +16,9 @@ export const initMerchant = async (url) => {
         const tempInfo = await apiMerchant.getMechant('B65VCADF79ZR1');
         if (tempInfo) {
           const clover = {
-            merchant_id: tempInfo.merchant_id,
+            merchant_id: 'B65VCADF79ZR1',
             access_token: tempInfo.access_token,
+            orderTypes: tempInfo.orderTypes,
           };
           setStorage(CLOVER, JSON.stringify(clover));
           return clover;
@@ -39,7 +40,6 @@ export const initMerchant = async (url) => {
       //const client_id = queryParameters.get('client_id');
       const merchant_id = queryParameters.get('merchant_id');
       const employee_id = queryParameters.get('employee_id');
-      let access_token = '';
       // get auth token if code is present send merchantID and code to stapi server
       if (code) {
         try {
@@ -48,17 +48,16 @@ export const initMerchant = async (url) => {
             employee_id,
             merchant_id
           );
-          access_token = res.data.access_token;
+          const clover = {
+            merchant_id: queryParameters.get('merchant_id'),
+            access_token: res.data.access_token,
+            orderTypes: res.data.orderTypes,
+          };
+          setStorage(CLOVER, JSON.stringify(clover));
         } catch (error) {
           console.log(error);
         }
       }
-      console.log(access_token);
-      const clover = {
-        merchant_id: queryParameters.get('merchant_id'),
-        access_token: access_token,
-      };
-      setStorage(CLOVER, JSON.stringify(clover));
     }
     throw { message: 'No', status: 426 }; // eslint-disable-line
   }

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import FormRow from '../FormRow';
 import { API } from '../../utils/constants';
-import { getStoreAddress } from '../../utils/merchantInfo';
+import { getStoreAddress, merchantInfo } from '../../utils/merchantInfo';
+import { formatPrice } from '../../utils/helpers';
+import { useCartContext } from '../../context/cart_context';
 
-const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 const initialState = {
   address: '',
   city: '',
@@ -23,8 +24,17 @@ const DeliveryInfo = () => {
   const [values, setValues] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [mapGoogle, setMapGoogle] = useState(mapRes);
+  const [error, setError] = useState('');
 
+  const { orderTypes } = merchantInfo();
   const storeAddress = getStoreAddress();
+  const { total_amount, updateShippingInfo } = useCartContext();
+  let errorText =
+    total_amount < orderTypes.delivery.minOrderAmount ? 'amount' : '';
+
+  useEffect(() => {
+    setError(errorText);
+  }, [errorText]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +48,6 @@ const DeliveryInfo = () => {
       origins: `${storeAddress.address}, ${storeAddress.city}, ${storeAddress.state}, ${storeAddress.zip}`,
       destinations: `${address}, ${city}, ${state}, ${zipcode}`,
     };
-    const data = addresses;
     const headers = {
       'Content-Type': 'application/json',
       accept: 'application/json',
@@ -48,19 +57,30 @@ const DeliveryInfo = () => {
         headers: headers,
       });
       const res = response.data.data;
+      if (
+        orderTypes.delivery.maxRadius < res.rows[0].elements[0].distance.value
+      ) {
+        setError('radius');
+        setIsLoading(false);
+      }
+      updateShippingInfo('delivery', {
+        origin: res.origin_addresses[0],
+        destination: res.destination_addresses[0],
+        distance: res.rows[0].elements[0].distance.text,
+        duration: res.rows[0].elements[0].duration.text,
+      });
       setMapGoogle({
         origin: res.origin_addresses[0],
         destination: res.destination_addresses[0],
         distance: res.rows[0].elements[0].distance.text,
         duration: res.rows[0].elements[0].duration.text,
       });
-      console.log(
-        'response',
-        res.origin_addresses[0],
-        res.destination_addresses[0]
-      );
-      console.log('mapGoogle', res.rows[0].elements[0].distance.text);
-    } catch (error) {}
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
   const handleChange = (e) => {
     const name = e.target.name;
@@ -77,12 +97,14 @@ const DeliveryInfo = () => {
           name='address'
           value={values.address}
           handleChange={handleChange}
+          disabled={error === 'amount'}
         />
         <FormRow
           type='text'
           name='city'
           value={values.city}
           handleChange={handleChange}
+          disabled={error === 'amount'}
         />
         <FormRow
           type='text'
@@ -90,14 +112,22 @@ const DeliveryInfo = () => {
           value={values.state}
           handleChange={handleChange}
           max='2'
+          disabled={error === 'amount'}
         />
         <FormRow
           type='text'
           name='zipcode'
           value={values.zipcode}
           handleChange={handleChange}
+          disabled={error === 'amount'}
         />
       </form>
+      <em className={error == 'amount' ? 'error' : ''}>
+        Minimum order {formatPrice(orderTypes.delivery.minOrderAmount)}
+      </em>
+      <em className={error == 'radius' ? 'error' : ''}>
+        Delivery radius: {orderTypes.delivery.maxRadius} miles
+      </em>
       <button
         type='submit'
         className='btn btn-block'
@@ -133,6 +163,13 @@ const Wrapper = styled.div`
     justify-content: flex-end;
     margin-left: auto;
     margin-right: 0;
+  }
+  em {
+    font-size: 0.7rem;
+    margin-right: 1rem;
+  }
+  .error {
+    color: var(--clr-red-dark);
   }
 `;
 export default DeliveryInfo;

@@ -6,7 +6,12 @@ import PickupInfo from './PickupInfo';
 import DeliveryInfo from './DeliveryInfo';
 
 const ShippingMethods = ({ user, loginWithRedirect }) => {
-  const { shipping_method } = useCartContext();
+  let method = [];
+  const { shipping_info } = useCartContext();
+  console.log('shipping_info', shipping_info);
+  if (shipping_info.orderType) {
+    method = Object.keys(shipping_info.orderType);
+  }
   return (
     <Wrapper>
       <article>
@@ -14,8 +19,8 @@ const ShippingMethods = ({ user, loginWithRedirect }) => {
         {user ? (
           <>
             <ShippingButton />
-            {shipping_method === 'delivery' && <DeliveryInfo />}
-            {shipping_method === 'pickup' && <PickupInfo />}
+            {method[0] === 'delivery' && <DeliveryInfo />}
+            {method[0] === 'pickup' && <PickupInfo />}
           </>
         ) : (
           <p>

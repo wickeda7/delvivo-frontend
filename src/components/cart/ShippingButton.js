@@ -4,31 +4,28 @@ import { AiOutlineCar } from 'react-icons/ai';
 import { RiShoppingBasket2Line } from 'react-icons/ri';
 import { useCartContext } from '../../context/cart_context';
 const ShippingButton = () => {
-  const [isPickup, setIsPickup] = useState(false);
-  const [isDelivery, setIsDekivery] = useState(false);
+  const [type, setType] = useState(false);
   const { updateShippingInfo } = useCartContext();
 
   const onClickDelivery = () => {
-    setIsDekivery(!isDelivery);
-    setIsPickup(false);
+    setType('delivery');
   };
   const onClickPickup = () => {
-    setIsPickup(!isPickup);
-    setIsDekivery(false);
+    setType('pickup');
   };
   useEffect(() => {
-    updateShippingInfo(isDelivery, isPickup);
-  }, [isPickup, isDelivery]);
+    updateShippingInfo(type);
+  }, [type]);
   return (
     <Wrapper>
       <button
-        className={isDelivery ? 'active btn' : 'btn'}
+        className={type == 'delivery' ? 'active btn' : 'btn'}
         onClick={onClickDelivery}
       >
         <AiOutlineCar className='font' /> Delivery
       </button>
       <button
-        className={isPickup ? 'active btn' : 'btn'}
+        className={type == 'pickup' ? 'active btn' : 'btn'}
         onClick={onClickPickup}
       >
         <RiShoppingBasket2Line className='font' /> Pickup

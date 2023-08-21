@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useReducer, useState } from 'react';
 import reducer from '../reducers/cart_reducer';
+import { merchantInfo } from '../utils/merchantInfo';
 //import dayjs from 'dayjs';
 import {
   ADD_TO_CART,
@@ -23,8 +24,7 @@ const initialState = {
   cart: getLocalStorage(),
   total_items: 0,
   total_amount: 0,
-  shipping_fee: 534,
-  shipping_method: undefined,
+  shipping_fee: 0,
   shipping_info: {},
 };
 
@@ -34,31 +34,25 @@ export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [paidInfo, setPaidInfo] = useState();
   const [tempCart, setTempCart] = useState([]);
+  const { orderTypes } = merchantInfo();
 
-  const updateShippingInfo = (isDelivery, isPickup, info) => {
-    // console.log('context', isDelivery, isPickup, shipping_info);
+  const updateShippingInfo = (type, info = undefined) => {
     let shipping_info = {};
-    let shipping_method = undefined;
-    if (isDelivery) {
-      shipping_method = 'delivery';
+    if (type) {
+      if (info) {
+        shipping_info = info;
+        dispatch({
+          type: SHIPPING_INFO,
+          payload: { info: shipping_info },
+        });
+      } else {
+        shipping_info[type] = orderTypes[type];
+        dispatch({
+          type: SHIPPING_INFO,
+          payload: { orderType: shipping_info },
+        });
+      }
     }
-    if (isPickup) {
-      shipping_method = 'pickup';
-    }
-    if (shipping_info) {
-      shipping_info[shipping_method] = info;
-    }
-    // console.log('context', info);
-    // console.log(
-    //   'context2',
-    //   shipping_method,
-    //   dayjs.unix(shipping_info).format('h:mm A')
-    // );
-    // @todo: need to save this info to the database
-    dispatch({
-      type: SHIPPING_INFO,
-      payload: { shipping_method, shipping_info },
-    });
   };
   // add to cart
   const addToCart = (amount, product) => {

@@ -2,15 +2,34 @@ import { api } from './configs/axiosConfigs';
 import { defineCancelApiObject } from './configs/axiosUtils';
 import { RESTURL } from '../utils/constants';
 import { setStorage } from '../utils/helpers';
+import { merchantInfo } from '../utils/merchantInfo';
 
 export const apiMerchant = {
+  setOrderType: async function (cancel = false) {},
+  getOrderType: async function (cancel = false) {
+    const { access_token, merchant_id } = merchantInfo();
+    console.log('loginClover');
+    const response = await api.request({
+      url: `${RESTURL}/v3/merchants/${merchant_id}/order_types`,
+      method: 'get',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${access_token}`,
+      },
+      signal: cancel
+        ? cancelApiObject[this.get.merchant_id].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    const data = await response.data;
+    console.log(data);
+  },
   getAuthToken: async function (
     code,
     employee_id,
     merchant_id,
     cancel = false
   ) {
-    const data = { code, employee_id, merchant_id };
     const response = await api.request({
       method: 'POST',
       url: `/api/clover`,
@@ -28,7 +47,6 @@ export const apiMerchant = {
   },
   getAddress: async function (info, cancel = false) {
     const { access_token, merchant_id } = info;
-    console.log(access_token, merchant_id);
     const response = await api.request({
       url: `${RESTURL}/v3/merchants/${merchant_id}/address`,
       method: 'get',
@@ -74,7 +92,7 @@ export const apiMerchant = {
       client_id,
       access_token,
     };
-    const response = await api.request({
+    await api.request({
       method: 'POST',
       url: `/api/merchants`,
       data: JSON.stringify({ data: info }),

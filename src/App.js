@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  createBrowserRouter,
-} from 'react-router-dom';
-import { Navbar, Sidebar, Footer } from './components';
+import { createBrowserRouter } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { QueryClient } from '@tanstack/react-query';
 import 'font-awesome/css/font-awesome.min.css';
 import {
   //Home,
@@ -23,7 +16,6 @@ import {
   layoutLoader,
 } from './pages';
 
-const queryClient = new QueryClient();
 export const router = createBrowserRouter([
   {
     path: '/',

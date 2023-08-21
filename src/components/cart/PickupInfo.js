@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import { TimePicker } from 'antd';
@@ -8,7 +8,8 @@ const PickupInfo = () => {
 
   const onChange = (time) => {
     const setTime = time.format('X');
-    updateShippingInfo(false, true, setTime);
+    console.log('onChange');
+    updateShippingInfo('pickup', setTime);
   };
   let now = dayjs();
   // To do: Needs to get store hours from Clover API

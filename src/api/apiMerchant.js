@@ -5,7 +5,6 @@ import { setStorage } from '../utils/helpers';
 import { merchantInfo } from '../utils/merchantInfo';
 
 export const apiMerchant = {
-  setOrderType: async function (cancel = false) {},
   getOrderType: async function (cancel = false) {
     const { access_token, merchant_id } = merchantInfo();
     console.log('loginClover');

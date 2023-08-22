@@ -6,7 +6,8 @@ import { useModalContext } from '../context/modal_context';
 import { useUserContext } from '../context/user_context';
 
 const initialState = {
-  name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
   isMember: true,
@@ -23,9 +24,9 @@ const Register = () => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
+    const { firstName, lastName, email, password, isMember } = values;
     let data = null;
-    if (!email || !password || (!isMember && !name)) {
+    if (!email || !password || (!isMember && !firstName && !lastName)) {
       toast.error('Please fill out all fields');
       return;
     }
@@ -37,7 +38,7 @@ const Register = () => {
         }
       });
     } else {
-      registerUser(name, email, password).then((res) => {
+      registerUser(firstName, lastName, email, password).then((res) => {
         if (res.user) {
           setValues(initialState);
           closeModal();
@@ -63,8 +64,18 @@ const Register = () => {
         {!values.isMember && (
           <FormRow
             type='text'
-            name='name'
-            value={values.name}
+            name='firstName'
+            labelText='First Name'
+            value={values.firstName}
+            handleChange={handleChange}
+          />
+        )}
+        {!values.isMember && (
+          <FormRow
+            type='text'
+            name='lastName'
+            labelText='Last Name'
+            value={values.lastName}
             handleChange={handleChange}
           />
         )}

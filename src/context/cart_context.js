@@ -97,6 +97,7 @@ export const CartProvider = ({ children }) => {
         updateShippingInfo,
         updatePaidInfo,
         paidInfo,
+        setPaidInfo,
         tempCart,
       }}
     >

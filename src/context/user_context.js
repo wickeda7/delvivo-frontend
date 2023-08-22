@@ -11,6 +11,7 @@ import { API, BEARER, AUTH_TOKEN } from '../utils/constants';
 import { getStorage, setStorage, removeStorage } from '../utils/helpers';
 import { toast } from 'react-toastify';
 import { apiMerchant } from '../api/apiMerchant';
+import { apiUser } from '../api/apiUser';
 
 const initialState = {
   isLoading: false,
@@ -82,25 +83,23 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const registerUser = async (name, email, password) => {
+  const registerUser = async (firstName, lastName, email, password) => {
     const value = {
-      username: name,
+      firstName,
+      lastName,
       email,
       password,
     };
-    console.log(`${API}/auth/local/register!!!`);
     try {
       dispatch({ type: LOGIN });
-      const response = await fetch(`${API}/auth/local/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(value),
+      const res = await apiUser.register({
+        firstName,
+        lastName,
+        email,
+        password,
       });
-      const data = await response.json();
-      userInfo(data);
-      return data;
+      userInfo(res.data);
+      return res.data;
     } catch (error) {}
   };
 

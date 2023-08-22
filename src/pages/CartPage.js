@@ -9,7 +9,7 @@ import { useUserContext } from '../context/user_context';
 import { setStoreAddress } from '../utils/merchantInfo';
 
 const CartPage = () => {
-  const { cart, paidInfo, tempCart } = useCartContext();
+  const { cart, paidInfo, tempCart, setPaidInfo } = useCartContext();
   const { user } = useUserContext();
   const { loginWithRedirect } = useModalContext();
   let cartItems = cart;
@@ -18,6 +18,7 @@ const CartPage = () => {
   }
   useEffect(() => {
     setStoreAddress();
+    setPaidInfo('');
   }, []);
   return (
     <main>

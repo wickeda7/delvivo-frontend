@@ -62,7 +62,6 @@ export const UserProvider = ({ children }) => {
     // window.location.href = oAuthRedirectUrl;
   };
   const members = async (data) => {
-    console.log(data, data.isMember);
     let user = null;
     if (data.admin) {
       user = await registerUser(data);
@@ -76,22 +75,15 @@ export const UserProvider = ({ children }) => {
     return user;
   };
   const loginUser = async (email, password) => {
-    dispatch({ type: LOGIN }); //
     try {
       const value = {
         identifier: email,
         password: password,
       };
-      const response = await fetch(`${API}/auth/local`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(value),
-      });
-      const data = await response.json();
-      userInfo(data);
-      return data;
+      dispatch({ type: LOGIN }); //
+      const res = await apiUser.login(value);
+      userInfo(res.data);
+      return res.data;
     } catch (error) {
       dispatch({ type: LOGIN_ERROR, payload: error });
     }

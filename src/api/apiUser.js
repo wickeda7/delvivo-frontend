@@ -23,6 +23,7 @@ export const apiUser = {
   }, ///api/users/login
   login: async function (value, cancel = false) {
     const { merchant_id } = merchantInfo();
+    value.merchant_id = merchant_id;
     const response = await api.request({
       method: 'POST',
       url: `/api/users/login`,

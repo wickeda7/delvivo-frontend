@@ -24,7 +24,6 @@ const Register = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
     const { firstName, lastName, email, password, isMember } = values;
     if (!email || !password || (!isMember && !firstName && !lastName)) {
       toast.error('Please fill out all fields');

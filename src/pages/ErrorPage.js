@@ -1,18 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useRouteError } from 'react-router-dom';
+import { SetUp } from '../components';
 const ErrorPage = () => {
   const error = useRouteError();
   console.log(error);
   if (error.status === 426) {
     return (
       <Wrapper className='page-100'>
-        <section>
-          <h3>Welcome to Delvivo please click continue to synch data.</h3>
-          <Link to='/' className='btn' reloadDocument>
-            Continue
-          </Link>
-        </section>
+        <SetUp />
       </Wrapper>
     );
   }

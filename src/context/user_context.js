@@ -61,6 +61,20 @@ export const UserProvider = ({ children }) => {
     // );
     // window.location.href = oAuthRedirectUrl;
   };
+  const members = async (data) => {
+    console.log(data, data.isMember);
+    let user = null;
+    if (data.admin) {
+      user = await registerUser(data);
+      return user;
+    }
+    if (!data.isMember) {
+      user = await registerUser(data);
+    } else {
+      user = await loginUser(data.email, data.password);
+    }
+    return user;
+  };
   const loginUser = async (email, password) => {
     dispatch({ type: LOGIN }); //
     try {
@@ -83,21 +97,10 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const registerUser = async (firstName, lastName, email, password) => {
-    const value = {
-      firstName,
-      lastName,
-      email,
-      password,
-    };
+  const registerUser = async (value) => {
     try {
       dispatch({ type: LOGIN });
-      const res = await apiUser.register({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
+      const res = await apiUser.register(value);
       userInfo(res.data);
       return res.data;
     } catch (error) {}
@@ -125,6 +128,7 @@ export const UserProvider = ({ children }) => {
         loginUser,
         registerUser,
         loginClover,
+        members,
       }}
     >
       {children}

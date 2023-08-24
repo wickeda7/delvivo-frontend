@@ -18,6 +18,9 @@ import Modal from './Modal';
 import Register from './Register';
 import FormRow from './FormRow';
 import ShippingMethods from './cart/ShippingMethods';
+import SetUp from './SetUp';
+import RegisterForm from './RegisterForm';
+
 export {
   FeaturedProducts,
   Navbar,
@@ -39,4 +42,6 @@ export {
   Register,
   FormRow,
   ShippingMethods,
+  SetUp,
+  RegisterForm,
 };

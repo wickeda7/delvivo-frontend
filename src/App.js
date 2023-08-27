@@ -16,7 +16,7 @@ import {
   layoutLoader,
 } from './pages';
 
-import { AdminLayout, PrivateAdminRoute } from './pages/admin';
+import { AdminLayout, PrivateAdminRoute, Orders, Drivers } from './pages/admin';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -45,12 +45,23 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/admin/',
+    path: '/admin',
     element: (
       <PrivateAdminRoute>
         <AdminLayout />
       </PrivateAdminRoute>
     ),
+    children: [
+      {
+        index: true,
+        path: '/admin',
+        element: <Orders />,
+      },
+      {
+        path: '/admin/drivers',
+        element: <Drivers />,
+      },
+    ],
   },
   { path: '*', element: <Error /> },
 ]);

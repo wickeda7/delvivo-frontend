@@ -4,7 +4,6 @@ import { Link, useRouteError } from 'react-router-dom';
 import { SetUp } from '../components';
 const ErrorPage = () => {
   const error = useRouteError();
-  console.log(error);
   if (error.status === 426) {
     return (
       <Wrapper className='page-100'>

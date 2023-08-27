@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import { FormRow } from '../components';
 
-const RegisterForm = ({ values, setValues, handleChange }) => {
+const RegisterForm = ({ values, admin, handleChange }) => {
   return (
     <>
       <FormRow
@@ -19,6 +18,44 @@ const RegisterForm = ({ values, setValues, handleChange }) => {
         value={values.lastName}
         handleChange={handleChange}
       />
+      {!admin && (
+        <>
+          <FormRow
+            type='text'
+            name='address'
+            labelText='Address'
+            value={values.address}
+            handleChange={handleChange}
+          />
+          <FormRow
+            type='text'
+            name='city'
+            labelText='City'
+            value={values.city}
+            handleChange={handleChange}
+          />
+          <FormRow
+            type='text'
+            name='state'
+            labelText='State'
+            value={values.state}
+            handleChange={handleChange}
+            max={2}
+            optClass='stateField'
+          />
+          <FormRow
+            type='text'
+            name='zip'
+            labelText='Zip'
+            value={values.zip}
+            handleChange={handleChange}
+            max={8}
+            optClass='zipcodeField'
+          />
+          <br style={{ clear: 'both' }} />
+        </>
+      )}
+
       <FormRow
         type='email'
         name='email'
@@ -34,25 +71,5 @@ const RegisterForm = ({ values, setValues, handleChange }) => {
     </>
   );
 };
-const Wrapper = styled.div`
-  p {
-    margin: 0;
-    margin-top: 1rem;
-    text-align: center;
-  }
-  .btn-cancel {
-    background: var(--grey-900);
-    margin-right: 1rem;
-  }
-  .btn {
-    margin-top: 1rem;
-  }
-  .member-btn {
-    background: transparent;
-    border: transparent;
-    color: var(--clr-primary-5);
-    cursor: pointer;
-    letter-spacing: var(--letterSpacing);
-  }
-`;
+
 export default RegisterForm;

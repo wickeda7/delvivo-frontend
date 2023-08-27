@@ -7,7 +7,6 @@ import { merchantInfo } from '../utils/merchantInfo';
 export const apiMerchant = {
   getOrderType: async function (cancel = false) {
     const { access_token, merchant_id } = merchantInfo();
-    console.log('loginClover');
     const response = await api.request({
       url: `${RESTURL}/v3/merchants/${merchant_id}/order_types`,
       method: 'get',

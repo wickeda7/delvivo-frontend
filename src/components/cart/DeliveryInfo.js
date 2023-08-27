@@ -7,8 +7,9 @@ import { API } from '../../utils/constants';
 import { getStoreAddress, merchantInfo } from '../../utils/merchantInfo';
 import { formatPrice } from '../../utils/helpers';
 import { useCartContext } from '../../context/cart_context';
+import { useUserContext } from '../../context/user_context';
 
-const initialState = {
+let initialState = {
   address: '',
   city: '',
   state: 'CA',
@@ -21,7 +22,6 @@ const mapRes = {
   duration: '',
 };
 const DeliveryInfo = () => {
-  const [values, setValues] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [mapGoogle, setMapGoogle] = useState(mapRes);
   const [error, setError] = useState('');
@@ -29,6 +29,15 @@ const DeliveryInfo = () => {
   const { orderTypes } = merchantInfo();
   const storeAddress = getStoreAddress();
   const { total_amount, updateShippingInfo, paidInfo } = useCartContext();
+  const { user } = useUserContext();
+
+  if (user.address) {
+    initialState.address = user.address;
+    initialState.city = user.city;
+    initialState.state = user.state;
+    initialState.zipcode = user.zip;
+  }
+  const [values, setValues] = useState(initialState);
   let errorText =
     total_amount < orderTypes.delivery.minOrderAmount ? 'amount' : '';
 
@@ -39,17 +48,10 @@ const DeliveryInfo = () => {
     setError(errorText);
   }, [errorText]);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const { address, city, state, zipcode } = values;
-    if (!address || !city || !state || !zipcode) {
-      toast.error('Please fill out all fields');
-      return;
-    }
-
+  const getDistance = async () => {
     const addresses = {
       origins: `${storeAddress.address}, ${storeAddress.city}, ${storeAddress.state}, ${storeAddress.zip}`,
-      destinations: `${address}, ${city}, ${state}, ${zipcode}`,
+      destinations: `${values.address}, ${values.city}, ${values.state}, ${values.zipcode}`,
     };
     const headers = {
       'Content-Type': 'application/json',
@@ -88,6 +90,18 @@ const DeliveryInfo = () => {
       setIsLoading(false);
     }
   };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const { address, city, state, zipcode } = values;
+    if (!address || !city || !state || !zipcode) {
+      toast.error('Please fill out all fields');
+      return;
+    }
+
+    getDistance();
+  };
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -128,10 +142,10 @@ const DeliveryInfo = () => {
           disabled={error === 'amount'}
         />
       </form>
-      <em className={error == 'amount' ? 'error' : ''}>
+      <em className={error === 'amount' ? 'error' : ''}>
         Minimum order {formatPrice(orderTypes.delivery.minOrderAmount)}
       </em>
-      <em className={error == 'radius' ? 'error' : ''}>
+      <em className={error === 'radius' ? 'error' : ''}>
         Delivery radius: {orderTypes.delivery.maxRadius} miles
       </em>
       <button

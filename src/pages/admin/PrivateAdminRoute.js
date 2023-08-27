@@ -4,11 +4,11 @@ import { useUserContext } from '../../context/user_context';
 
 const PrivateAdminRoute = ({ children }) => {
   const { user } = useUserContext();
-  //   console.log(user);
   //   console.log(user.role); // admin123
-  if (!user) {
-    return <Navigate to='/' />;
-  }
+
+  // if (!user || user.roleId !== 3) {
+  //   return <Navigate to='/' />;
+  // }
   return children;
 };
 

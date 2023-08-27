@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,16 +12,21 @@ import { getStorage } from '../../utils/helpers';
 import { CLOVER } from '../../utils/constants';
 
 const CartButton = () => {
+  const navigate = useNavigate();
   const { closeSidebar } = useProductsContext();
   const { total_items, clearCart } = useCartContext();
   const { user, logout, clover } = useUserContext();
   const { loginWithRedirect } = useModalContext();
   const { access_token } = clover;
+
   let clover_access_token = access_token;
   if (!clover_access_token) {
     let info = getStorage(CLOVER);
     info = JSON.parse(info);
     clover_access_token = info.access_token;
+  }
+  if (user && user.roleId === 3) {
+    navigate('/admin');
   }
   return (
     <Wrapper className='cart-btn-wrapper'>

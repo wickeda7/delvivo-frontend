@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [paidInfo, setPaidInfo] = useState();
   const [tempCart, setTempCart] = useState([]);
-  const { orderTypes } = merchantInfo();
+  const merchInfo = merchantInfo();
 
   const updateShippingInfo = (type, info = undefined) => {
     let shipping_info = {};
@@ -46,7 +46,9 @@ export const CartProvider = ({ children }) => {
           payload: { info: shipping_info },
         });
       } else {
-        shipping_info[type] = orderTypes[type];
+        if (merchInfo.orderTypes[type]) {
+          shipping_info[type] = merchInfo.orderTypes[type];
+        }
         dispatch({
           type: SHIPPING_INFO,
           payload: { orderType: shipping_info },

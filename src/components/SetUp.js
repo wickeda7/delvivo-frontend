@@ -46,7 +46,11 @@ const SetUp = () => {
         </Link> */}
         <form className='form'>
           <h3>Register</h3>
-          <RegisterForm values={values} handleChange={handleChange} />
+          <RegisterForm
+            values={values}
+            handleChange={handleChange}
+            admin={true}
+          />
         </form>
         <div className='container'>
           <button

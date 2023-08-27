@@ -1,14 +1,8 @@
-import React, { useContext, useEffect, useReducer } from 'react';
-import {
-  LOGIN,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  LOGIN_USER_LOADED,
-  LOGOUT,
-} from '../actions';
+import React, { useContext, useReducer } from 'react';
+import { LOGIN, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from '../actions';
 import reducer from '../reducers/user_reducers';
-import { API, BEARER, AUTH_TOKEN } from '../utils/constants';
-import { getStorage, setStorage, removeStorage } from '../utils/helpers';
+import { AUTH_TOKEN } from '../utils/constants';
+import { setStorage, removeStorage } from '../utils/helpers';
 import { toast } from 'react-toastify';
 import { apiMerchant } from '../api/apiMerchant';
 import { apiUser } from '../api/apiUser';
@@ -27,29 +21,28 @@ const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const authToken = getStorage(AUTH_TOKEN);
-  const fetchLoggedInUser = async (token) => {
-    try {
-      const response = await fetch(`${API}/users/me`, {
-        headers: { Authorization: `${BEARER} ${token}` },
-      });
-      const data = await response.json();
-      dispatch({ type: LOGIN_USER_LOADED, payload: data });
-    } catch (error) {
-      toast.error('Error While Getting Logged In User Details');
-    } finally {
-    }
-  };
+  // const authToken = getStorage(AUTH_TOKEN);
+  // const fetchLoggedInUser = async (token) => {
+  //   try {
+  //     const response = await fetch(`${API}/users/me`, {
+  //       headers: { Authorization: `${BEARER} ${token}` },
+  //     });
+  //     const data = await response.json();
+  //     dispatch({ type: LOGIN_USER_LOADED, payload: data });
+  //   } catch (error) {
+  //     toast.error('Error While Getting Logged In User Details');
+  //   } finally {
+  //   }
+  // };
 
-  useEffect(() => {
-    if (authToken) {
-      fetchLoggedInUser(authToken);
-    }
-  }, [authToken]);
+  // useEffect(() => {
+  //   if (authToken) {
+  //     fetchLoggedInUser(authToken);
+  //   }
+  // }, [authToken]);
 
   const loginClover = async () => {
     const orderType = await apiMerchant.getOrderType();
-    console.log(orderType);
 
     // let finalRedirect = window.location.href.replace(window.location.hash, '');
     // const connectionHelper = new ConnectionHelper();
@@ -83,9 +76,13 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: LOGIN }); //
       const res = await apiUser.login(value);
       userInfo(res.data);
+
       return res.data;
     } catch (error) {
-      dispatch({ type: LOGIN_ERROR, payload: error });
+      const { response } = error;
+      const { request, ...errorObject } = response; // take everything but 'request'
+      toast.error(errorObject.data.error.message);
+      dispatch({ type: LOGIN_ERROR, payload: errorObject.data.error.message });
     }
   };
 
@@ -95,18 +92,17 @@ export const UserProvider = ({ children }) => {
       const res = await apiUser.register(value);
       userInfo(res.data);
       return res.data;
-    } catch (error) {}
+    } catch (error) {
+      const { response } = error;
+      const { request, ...errorObject } = response; // take everything but 'request'
+      toast.error(errorObject.data.error.message);
+      dispatch({ type: LOGIN_ERROR, payload: errorObject.data.error.message });
+    }
   };
 
   const userInfo = (data) => {
-    if (data?.error) {
-      toast.error(data.error.message);
-      dispatch({ type: LOGIN_ERROR, payload: data.error.message });
-    } else {
-      // set the token
-      setStorage(AUTH_TOKEN, data.jwt);
-      dispatch({ type: LOGIN_SUCCESS, payload: data.user });
-    }
+    setStorage(AUTH_TOKEN, data.jwt);
+    dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   };
   const logout = () => {
     removeStorage(AUTH_TOKEN);
@@ -117,8 +113,6 @@ export const UserProvider = ({ children }) => {
       value={{
         ...state,
         logout,
-        loginUser,
-        registerUser,
         loginClover,
         members,
       }}

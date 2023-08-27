@@ -6,9 +6,10 @@ const FormRow = ({
   labelText,
   max = '',
   disabled = false,
+  optClass = '',
 }) => {
   return (
-    <div className='form-row'>
+    <div className={`form-row ${optClass}`}>
       <label htmlFor={name} className='form-label'>
         {labelText || name}
       </label>

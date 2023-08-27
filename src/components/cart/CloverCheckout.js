@@ -12,6 +12,8 @@ import { useCartContext } from '../../context/cart_context';
 import { merchantInfo } from '../../utils/merchantInfo';
 import { Alert, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useUserContext } from '../../context/user_context';
+import { apiOrders } from '../../api/apiOrders';
 
 const initialState = {
   name: '',
@@ -23,9 +25,11 @@ const initialState = {
   cvv: '',
   cardtype: 'fa fa-credit-card',
 };
+
 const CloverCheckout = () => {
   const { cart, updatePaidInfo, shipping_info, total_amount } =
     useCartContext();
+  const { user } = useUserContext();
   const [values, setValues] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,21 +40,11 @@ const CloverCheckout = () => {
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />
   );
-
   useEffect(() => {
     setError('');
   }, [cart, updatePaidInfo, shipping_info, total_amount]);
 
-  const pay = async () => {
-    const errors = checkErrors(shipping_info, total_amount);
-    setError(errors);
-
-    if (errors) return;
-    setIsLoading(true);
-
-    const card = cardHelper(values);
-    delete card.cardtype;
-    delete card.exp;
+  const getCartItems = () => {
     let items = [];
     cart.forEach((val) => {
       items.push({
@@ -75,59 +69,36 @@ const CloverCheckout = () => {
       note = `Pickup at:  ${shipping_info.info}`;
     }
 
-    const orderCart = {
+    return {
       lineItems: items,
       orderType: {
         id: orderTypeId,
       },
       note: note,
     };
-    const state2 = {
-      token: null,
-      showUserInfo: false,
-      customerId: '',
-      currency: 'usd',
-      user: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'John.Doe@corona.com',
-      },
-      card: {
-        brand: 'VISA',
-        number: '4005562231212123',
-        exp_month: '04',
-        exp_year: '2025',
-        cvv: '123',
-        country: 'us',
-      },
-      items: [
-        {
-          amount: 350,
-          currency: 'usd',
-          quantity: 1,
-          inventory_id: 'M5X6AGB6T4JCJ',
-          name: 'Cup of Soup',
-        },
-        {
-          amount: 750,
-          currency: 'usd',
-          quantity: 1,
-          inventory_id: 'WNJ0DWTEQ38VM',
-          name: 'California Salad',
-        },
-      ],
-    };
-    console.log('TODO register User to local db and clover customer db');
+  };
+
+  const pay = async () => {
+    const errors = checkErrors(shipping_info, total_amount);
+    setError(errors);
+
+    if (errors) return;
+    setIsLoading(true);
+
+    const card = cardHelper(values);
+    delete card.cardtype;
+    delete card.exp;
+
+    const orderCart = getCartItems();
     const state = {
-      token: null,
-      customerId: '',
-      currency: 'usd',
-      merchant_id,
-      user: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'John.Doe@corona.com',
+      customerInfo: {
+        customerId: user.cloverId,
+        currency: 'usd',
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
       },
+      merchant_id,
       card: card,
       orderCart,
     };
@@ -150,6 +121,8 @@ const CloverCheckout = () => {
         setError('');
         setValues(initialState);
         updatePaidInfo(resp);
+        resp['cloverId'] = user.cloverId;
+        apiOrders.postOrder(resp);
       }
     }
   };

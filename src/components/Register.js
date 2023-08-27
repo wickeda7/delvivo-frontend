@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
+
 import { FormRow, RegisterForm } from '../components';
 import { useModalContext } from '../context/modal_context';
 import { useUserContext } from '../context/user_context';
@@ -8,6 +9,11 @@ import { useUserContext } from '../context/user_context';
 const initialState = {
   firstName: '',
   lastName: '',
+  address: '',
+  city: '',
+  state: '',
+  zip: '',
+  country: 'US',
   email: '',
   password: '',
   isMember: true,
@@ -17,6 +23,7 @@ const Register = () => {
   const [values, setValues] = useState(initialState);
   const { isLoading, members } = useUserContext();
   const { closeModal } = useModalContext();
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -24,8 +31,28 @@ const Register = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { firstName, lastName, email, password, isMember } = values;
-    if (!email || !password || (!isMember && !firstName && !lastName)) {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      address,
+      city,
+      state,
+      zip,
+      isMember,
+    } = values;
+    if (
+      !email ||
+      !password ||
+      (!isMember &&
+        !firstName &&
+        !lastName &&
+        !address &&
+        !city &&
+        !state &&
+        !zip)
+    ) {
       toast.error('Please fill out all fields');
       return;
     }
@@ -51,7 +78,11 @@ const Register = () => {
         <h3>{values.isMember ? 'Login' : 'Register'}</h3>
         {/* name field */}
         {!values.isMember ? (
-          <RegisterForm values={values} handleChange={handleChange} />
+          <RegisterForm
+            values={values}
+            handleChange={handleChange}
+            admin={false}
+          />
         ) : (
           <>
             <FormRow

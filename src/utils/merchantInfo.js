@@ -54,9 +54,7 @@ export const initMerchant = async (url) => {
             orderTypes: res.data.orderTypes,
           };
           setStorage(CLOVER, JSON.stringify(clover));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
     }
     throw { message: 'No', status: 426 }; // eslint-disable-line

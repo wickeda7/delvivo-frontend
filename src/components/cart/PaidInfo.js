@@ -6,7 +6,6 @@ import Card from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 
 const PaidInfo = ({ info }) => {
-  console.log('paidInfo', info);
   return (
     <Wrapper>
       <div>

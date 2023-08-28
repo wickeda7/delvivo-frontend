@@ -39,5 +39,16 @@ export const apiUser = {
     const res = await response.data;
     return res;
   },
+  getUser: async function (value, cancel = false) {
+    const { merchant_id, access_token } = merchantInfo();
+    const response = await api.request({
+      method: 'GET',
+      url: `/api/users/${value}/${merchant_id}/${access_token}`,
+      signal: cancel
+        ? cancelApiObject[this.get.id].handleRequestCancellation().signal
+        : undefined,
+    });
+    return response.data;
+  },
 };
 const cancelApiObject = defineCancelApiObject(apiUser);

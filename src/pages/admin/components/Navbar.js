@@ -28,6 +28,9 @@ const Navbar = () => {
           <li>
             <Link to='/admin/drivers'>Drivers</Link>
           </li>
+          <li>
+            <Link to='/admin/synch'>Synch Data</Link>
+          </li>
         </ul>
         <div>
           <button

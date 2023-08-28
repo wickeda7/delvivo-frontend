@@ -16,6 +16,7 @@ const CartPage = () => {
   if (cartItems.length === 0) {
     cartItems = tempCart;
   }
+  console.log(user);
   useEffect(() => {
     setStoreAddress();
     setPaidInfo('');

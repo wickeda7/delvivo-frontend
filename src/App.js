@@ -16,7 +16,13 @@ import {
   layoutLoader,
 } from './pages';
 
-import { AdminLayout, PrivateAdminRoute, Orders, Drivers } from './pages/admin';
+import {
+  AdminLayout,
+  PrivateAdminRoute,
+  Orders,
+  Drivers,
+  Synch,
+} from './pages/admin';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -60,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: '/admin/drivers',
         element: <Drivers />,
+      },
+      {
+        path: '/admin/synch',
+        element: <Synch />,
       },
     ],
   },

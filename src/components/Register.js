@@ -16,6 +16,7 @@ const initialState = {
   country: 'US',
   email: '',
   password: '',
+  phoneNumber: '',
   isMember: true,
 };
 
@@ -40,6 +41,7 @@ const Register = () => {
       city,
       state,
       zip,
+      phoneNumber,
       isMember,
     } = values;
     if (
@@ -51,7 +53,8 @@ const Register = () => {
         !address &&
         !city &&
         !state &&
-        !zip)
+        !zip &&
+        !phoneNumber)
     ) {
       toast.error('Please fill out all fields');
       return;

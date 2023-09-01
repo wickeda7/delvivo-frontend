@@ -7,6 +7,7 @@ import { FilterProvider } from './context/filter_context';
 import { CartProvider } from './context/cart_context';
 import { UserProvider } from './context/user_context';
 import { ModalProvider } from './context/modal_context';
+import { OrderProvider } from './pages/admin/context/oders_context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { router } from './App';
@@ -15,7 +16,10 @@ import { ToastContainer } from 'react-toastify';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: 1000 * 60 * 10 },
+    queries: {
+      staleTime: 5 * (60 * 1000), // 5 mins
+      cacheTime: 10 * (60 * 1000), // 10 mins
+    },
   },
 });
 root.render(
@@ -26,7 +30,9 @@ root.render(
         <ProductsProvider>
           <FilterProvider>
             <CartProvider>
-              <RouterProvider router={router} />
+              <OrderProvider>
+                <RouterProvider router={router} />
+              </OrderProvider>
             </CartProvider>
           </FilterProvider>
         </ProductsProvider>
@@ -35,4 +41,4 @@ root.render(
     <ToastContainer position='top-center' />
   </QueryClientProvider>
 );
-console.log('V 0.1.0');
+console.log('V 0.1.1');

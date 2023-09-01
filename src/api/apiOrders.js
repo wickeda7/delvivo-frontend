@@ -4,46 +4,68 @@ import { defineCancelApiObject } from './configs/axiosUtils';
 import { merchantInfo } from '../utils/merchantInfo';
 
 export const apiOrders = {
-  getOrders: async function (from = null, to = null, cancel = false) {
-    const { merchant_id, access_token } = merchantInfo();
-    const now = dayjs();
-    const res = dayjs('2018-04-13 19:18');
-    console.log('res', res.unix());
-    console.log('now', now.unix());
-    console.log(merchant_id, access_token);
+  getStoreOrders: async function (date, cancel = false) {
     const response = await api.request({
       method: 'GET',
-      url: `/api/orders/cloverorders/${res.unix()}/${now.unix()}/${merchant_id}`,
+      url: `/api/orders/storeorders?created=${date}`, //[date][$eq]=2020-01-01
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,
     });
-    console.log(response.data);
-    // const response = await api.request({
-    //   method: 'GET',
-    //   url: `/api/orders/${merchant_id}/${from}/${to}`,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${access_token}`,
-    //   },
-    //   signal: cancel
-    //     ? cancelApiObject[this.get.merchant_id].handleRequestCancellation()
-    //         .signal
-    //     : undefined,
-    // });
-    // const res = await response.data;
-    // return res;
+    const res = await response.data.data;
+    const data = res.reduce((acc, cur) => {
+      const { orderContent } = cur;
+
+      let isPickup = false;
+      const orders = JSON.parse(orderContent);
+      if (orders.orderType.labelKey) {
+        isPickup = orders.orderType.labelKey.includes('pick_up');
+      }
+      cur.isPickup = isPickup;
+      cur.orderContent = orders;
+      acc.push(cur);
+      return acc;
+    }, []);
+    return data;
+  },
+  getOrders: async function (dates, cancel = false) {
+    const { merchant_id, access_token } = merchantInfo();
+    const { from, to } = dates;
+    await api.request({
+      method: 'GET',
+      url: `/api/orders/cloverorders/${dayjs(from).valueOf()}/${dayjs(
+        to
+      ).valueOf()}/${merchant_id}/${access_token}`,
+      signal: cancel
+        ? cancelApiObject[this.get.id].handleRequestCancellation().signal
+        : undefined,
+    });
   },
   postOrder: async function (order, cancel = false) {
     const { merchant_id, access_token } = merchantInfo();
-    console.log('merchant_id', order);
-    const response = await api.request({
+    await api.request({
       method: 'POST',
       url: `/api/orders`,
       headers: {
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({ merchant_id, access_token, order }),
+      signal: cancel
+        ? cancelApiObject[this.get.id].handleRequestCancellation().signal
+        : undefined,
+    });
+  },
+  putOrder: async function (data, cancel = false) {
+    const { id } = data[0];
+    const val = data[1];
+
+    await api.request({
+      method: 'PUT',
+      url: `/api/orders/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({ data: val }),
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,

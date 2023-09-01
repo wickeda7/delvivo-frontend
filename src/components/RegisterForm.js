@@ -52,7 +52,15 @@ const RegisterForm = ({ values, admin, handleChange }) => {
             max={8}
             optClass='zipcodeField'
           />
+
           <br style={{ clear: 'both' }} />
+          <FormRow
+            type='text'
+            name='phoneNumber'
+            labelText='Phone Number'
+            value={values.phoneNumber}
+            handleChange={handleChange}
+          />
         </>
       )}
 

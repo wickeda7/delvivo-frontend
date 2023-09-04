@@ -7,7 +7,6 @@ const OrderContext = React.createContext();
 
 export const OrderProvider = ({ children }) => {
   const queryClient = useQueryClient();
-  const now = dayjs().format('YYYY-MM-DD');
   const mutation = useMutation({
     mutationFn: async (data) => {
       return apiOrders.putOrder(data);
@@ -26,12 +25,6 @@ export const OrderProvider = ({ children }) => {
           return item;
         });
       });
-    },
-  });
-  const { data, isLoading } = useQuery({
-    queryKey: ['orders'],
-    queryFn: async () => {
-      return apiOrders.getStoreOrders(now);
     },
   });
 
@@ -59,9 +52,6 @@ export const OrderProvider = ({ children }) => {
   };
 
   const context = {
-    data,
-    isLoading,
-    date: now,
     handleSave,
   };
   return (

@@ -9,6 +9,7 @@ const defaultColumns = [
     title: 'Order ID',
     dataIndex: 'orderId',
     width: 100,
+    key: 'orderId',
     // render: (text) => < dangerouslySetInnerHTML={{ __html: text }} />,
     render: (_, { orderId, orderContent }) => (
       <>
@@ -21,6 +22,7 @@ const defaultColumns = [
     title: 'Purchase Time',
     dataIndex: 'created',
     width: 100,
+    key: 'created',
     //render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />,
     render: (_, { isPickup, created, orderContent }) => {
       const time = dayjs(created).format('h:mm A');
@@ -46,6 +48,7 @@ const defaultColumns = [
     title: 'Driver',
     dataIndex: 'driverId',
     width: 100,
+    key: 'driverId',
     editable: true,
   },
   {
@@ -53,6 +56,7 @@ const defaultColumns = [
     dataIndex: 'departureTime',
     width: 100,
     editable: true,
+    key: 'departureTime',
     render: (_, { departureTime }) =>
       departureTime && (
         <>
@@ -67,6 +71,7 @@ const defaultColumns = [
     dataIndex: 'arriveTime',
     width: 100,
     editable: true,
+    key: 'arriveTime',
     render: (_, { arriveTime }) =>
       arriveTime && (
         <>
@@ -148,7 +153,6 @@ const EditableCell = ({
       </Form.Item>
     ) : (
       //   <TimePicker use12Hours format='h:mm a' />
-
       <div
         className='editable-cell-value-wrap'
         style={{

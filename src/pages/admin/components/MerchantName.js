@@ -1,18 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../../context/user_context';
 import { useOrderContext } from '../context/oders_context';
 const MerchantName = () => {
   const { user } = useUserContext();
   const { date, data } = useOrderContext();
   const total = data?.data?.length || 0;
+  const location = useLocation();
+  const path = location.pathname.split('/').pop();
+  let content = '';
+  if (path === 'admin') {
+    content = `Total ${total} Orders For Today (${date})`;
+  }
+  if (path === 'drivers') {
+    content = `Drivers`;
+  }
   return (
     <Wrapper>
       <div className='section-center'>
         <h3>Welcome {user?.merchant_name}</h3>
-        <h5>
-          Total {total} Orders For Today ({date})
-        </h5>
+        <h5>{content}</h5>
       </div>
     </Wrapper>
   );

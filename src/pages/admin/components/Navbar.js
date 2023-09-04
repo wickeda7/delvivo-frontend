@@ -2,34 +2,48 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FaUserMinus } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../context/user_context';
-import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const { logout } = useUserContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const handleLogout = () => {
     logout();
     navigate('/');
   };
-
+  const getNavLinkClass = (path) => {
+    return location.pathname === path ? 'activelink' : '';
+  };
   return (
     <NavContainer>
       <div className='nav-center'>
         <div className='nav-header'>
-          <Link to='/'>
+          <NavLink to='/'>
             <img src='/logo2.jpg' alt='Delvico' />
-          </Link>
+          </NavLink>
         </div>
         <ul className='nav-links'>
           <li>
-            <Link to='/admin'>Orders</Link>
+            <NavLink to='/admin' className={getNavLinkClass('/admin')}>
+              Orders
+            </NavLink>
           </li>
           <li>
-            <Link to='/admin/drivers'>Drivers</Link>
+            <NavLink
+              to='/admin/drivers'
+              className={getNavLinkClass('/admin/drivers')}
+            >
+              Drivers
+            </NavLink>
           </li>
           <li>
-            <Link to='/admin/synch'>Synch Data</Link>
+            <NavLink
+              to='/admin/synch'
+              className={getNavLinkClass('/admin/synch')}
+            >
+              Synch Data
+            </NavLink>
           </li>
         </ul>
         <div>
@@ -57,6 +71,9 @@ const NavContainer = styled.nav`
     width: 90vw;
     margin: 0 auto;
     max-width: var(--max-width);
+  }
+  .activelink {
+    border-bottom: 2px solid var(--clr-primary-7);
   }
   .nav-header {
     display: flex;

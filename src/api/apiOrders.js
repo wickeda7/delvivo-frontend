@@ -15,7 +15,7 @@ export const apiOrders = {
     const res = await response.data.data;
     const data = res.reduce((acc, cur) => {
       const { orderContent } = cur;
-
+      cur.key = cur.id;
       let isPickup = false;
       const orders = JSON.parse(orderContent);
       if (orders.orderType.labelKey) {

@@ -1,11 +1,11 @@
 import React from 'react';
-import { TimePicker } from 'antd';
+import { TimePicker, Switch } from 'antd';
 import dayjs from 'dayjs';
 
 const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
   const format = 'h:mm A';
   const now = dayjs().format(format);
-
+  console.log(dataIndex);
   switch (dataIndex) {
     case 'driverId':
       return <div>driverId</div>;
@@ -18,6 +18,16 @@ const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
           onChange={onChange}
           //   onOpenChange={onOpenChange}
           changeOnBlur={true}
+        />
+      );
+    case 'available':
+      return (
+        <Switch
+          defaultChecked
+          onChange={(checked) => {
+            console.log(checked);
+            toggleEdit(checked);
+          }}
         />
       );
     default:

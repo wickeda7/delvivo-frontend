@@ -3,18 +3,11 @@ import styled from 'styled-components';
 
 import DriversTable from './components/DriversTable';
 import DriverDetail from './components/DriverDetail';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { apiDrivers } from '../../api/apiDrivers';
 import { Loading } from '../../components';
+import { useGetDrivers } from '../../hooks/useDrivers';
 
 const Drivers = () => {
-  const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
-    queryKey: ['drivers'],
-    queryFn: async () => {
-      return apiDrivers.getDrivers();
-    },
-  });
+  const { data, isLoading } = useGetDrivers();
   if (!data) {
     return (
       <Wrapper>

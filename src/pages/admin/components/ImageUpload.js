@@ -57,12 +57,12 @@ const ImageUpload = ({ setValues, type, values }) => {
       return { ...state, [type]: '' };
     });
   };
-  if (values[type]) {
+  if (values && values[type] !== null) {
     return (
-      <span class='ant-upload-wrapper css-dev-only-do-not-override-byeoj0 ant-upload-picture-card-wrapper'>
-        <div class='ant-upload-list ant-upload-list-picture-card'>
-          <div class='ant-upload-list-item-container'>
-            <div class='ant-upload-list-item ant-upload-list-item-undefined'>
+      <span className='ant-upload-wrapper css-dev-only-do-not-override-byeoj0 ant-upload-picture-card-wrapper'>
+        <div className='ant-upload-list ant-upload-list-picture-card'>
+          <div className='ant-upload-list-item-container'>
+            <div className='ant-upload-list-item ant-upload-list-item-undefined'>
               <img
                 src={`http://localhost:1337${values[type]}`}
                 alt='Logo'

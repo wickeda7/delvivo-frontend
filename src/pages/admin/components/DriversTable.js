@@ -1,31 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
 import { Table, Button, Switch } from 'antd';
-import { apiDrivers } from '../../../api/apiDrivers';
 const DriversTable = () => {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(['drivers']);
-  const mutation = useMutation({
-    mutationFn: async (data) => {
-      return apiDrivers.putDriver(data);
-    },
-    onSuccess: (data1, variables) => {
-      const { id } = variables[0];
-      const data = queryClient.getQueryData(['drivers']);
-      queryClient.setQueryData(['drivers'], (old) => {
-        return data.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              ...variables[1],
-            };
-          }
-          return item;
-        });
-      });
-    },
-  });
+  const mutation = useUpdateDriver();
+  const data = useGetData();
   const defaultColumns = [
     {
       title: 'First Name',
@@ -53,11 +32,11 @@ const DriversTable = () => {
       dataIndex: 'available',
       width: 30,
       key: 'available',
-      render: (_, { available, id }) => {
+      render: (_, record) => {
         return (
           <Switch
-            defaultChecked={available}
-            onChange={() => onChange(available, id)}
+            checked={record.available}
+            onChange={() => onChange(record)}
             size='small'
           />
         );
@@ -65,24 +44,11 @@ const DriversTable = () => {
     },
   ];
   const handleAdd = async () => {};
-  const onChange = async (available, id) => {
-    available = !available;
-    try {
-      const res = await apiDrivers.putDriver(id, { available });
-    } catch (error) {
-      console.log(error);
-    }
-    queryClient.setQueryData(['drivers'], (old) => {
-      return old.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            available,
-          };
-        }
-        return item;
-      });
-    });
+  const onChange = async (row) => {
+    const { id, available } = row;
+    row.available = !available;
+    mutation.mutate({ id, data: row });
+    return;
   };
   return (
     <Wrapper>

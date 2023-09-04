@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { apiDrivers } from '../../../api/apiDrivers';
 import { FormRow } from '../../../components';
 import { Switch, Button } from 'antd';
 import ImageUpload from './ImageUpload';
+import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
 
 const initialState = {
   id: '',
@@ -29,29 +28,10 @@ const initialState = {
 };
 
 const DriverDetail = () => {
-  const queryClient = useQueryClient();
   const [values, setValues] = useState(initialState);
-  const data = queryClient.getQueryData(['drivers']);
-
-  const mutation = useMutation({
-    mutationFn: async (newEntry) => {
-      return apiDrivers.putDriver(newEntry);
-    },
-    onSuccess: (newData) => {
-      const { id, attributes } = newData;
-      queryClient.setQueryData(['drivers'], (old) => {
-        return old.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              ...attributes,
-            };
-          }
-          return item;
-        });
-      });
-    },
-  });
+  const [checked, setChecked] = useState(false);
+  const data = useGetData();
+  const mutation = useUpdateDriver();
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -59,12 +39,15 @@ const DriverDetail = () => {
     setValues({ ...values, [name]: value });
   };
   const onChange = (checked) => {
+    setChecked(checked);
     setValues({ ...values, available: checked });
   };
   useEffect(() => {
     const detail = data ? data[0] : initialState;
+    const available = detail.available ? true : false;
+    setChecked(available);
     setValues(detail);
-  }, []);
+  }, [data]);
   //
 
   const onSubmit = (e) => {
@@ -192,11 +175,7 @@ const DriverDetail = () => {
                 <label htmlFor='plate' className='form-label'>
                   Availability
                 </label>
-                <Switch
-                  defaultChecked={values?.available}
-                  onChange={onChange}
-                  size='small'
-                />
+                <Switch checked={checked} onChange={onChange} size='small' />
               </div>
             </div>
             <div className='form-row4 '>

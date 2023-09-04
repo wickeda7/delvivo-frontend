@@ -42,7 +42,6 @@ export const apiDrivers = {
   },
   putDriver: async function (newEntry, cancel = false) {
     const { id, data } = newEntry;
-
     try {
       const res = await api.request({
         method: 'PUT',

@@ -29,7 +29,28 @@ export const useUpdateDriver = () => {
     },
   });
 };
-export const useCreateDriver = () => {};
+export const useCreateDriver = () => {
+  const queryClient = useQueryClient();
+  return useMutation(apiDrivers.postDriver, {
+    onSuccess: (newData) => {
+      const newRow = {
+        key: newData.id,
+        id: newData.id,
+        ...newData.attributes,
+      };
+      queryClient.setQueryData(['drivers'], (old) => {
+        const newData = [newRow, ...old];
+        newData.sort((a, b) => b.id - a.id);
+        return newData;
+      });
+    },
+    onError: (err, newData, context) => {
+      console.log(err);
+      console.log(newData);
+      console.log(context);
+    },
+  });
+};
 export const useGetData = () => {
   const queryClient = useQueryClient();
   return queryClient.getQueryData(['drivers']);

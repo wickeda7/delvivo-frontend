@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import { FormRow } from '../../../components';
 import { Switch, Button } from 'antd';
 import ImageUpload from './ImageUpload';
-import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
+import {
+  useUpdateDriver,
+  useGetData,
+  useCreateDriver,
+} from '../../../hooks/useDrivers';
 
 const initialState = {
-  id: '',
   firstName: '',
   lastName: '',
   phone: '',
@@ -22,17 +25,17 @@ const initialState = {
   color: '',
   plate: '',
   available: true,
-  profileImg: '',
-  carImg: '',
+  profileImg: null,
+  carImg: null,
   merchant_id: '',
 };
 
-const DriverDetail = () => {
+const DriverDetail = ({ newDriver, setNewDriver }) => {
   const [values, setValues] = useState(initialState);
   const [checked, setChecked] = useState(false);
-  const data = useGetData();
-  const mutation = useUpdateDriver();
-
+  let data = useGetData();
+  const mutationPut = useUpdateDriver();
+  const mutationPost = useCreateDriver();
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -42,12 +45,27 @@ const DriverDetail = () => {
     setChecked(checked);
     setValues({ ...values, available: checked });
   };
+
   useEffect(() => {
+    console.log('data', data);
     const detail = data ? data[0] : initialState;
     const available = detail.available ? true : false;
     setChecked(available);
     setValues(detail);
   }, [data]);
+
+  useEffect(() => {
+    if (!newDriver) return;
+    console.log('newDriver', newDriver);
+    if (newDriver.id) {
+      setValues(newDriver);
+      return;
+    }
+    const detail = initialState;
+    const available = detail.available ? true : false;
+    setChecked(available);
+    setValues(detail);
+  }, [newDriver]);
   //
 
   const onSubmit = (e) => {
@@ -55,7 +73,16 @@ const DriverDetail = () => {
     return false;
   };
   const handleAdd = async () => {
-    mutation.mutate({ id: data[0].id, data: values });
+    const { id } = values;
+    if (id) {
+      mutationPut.mutate({ id, data: values });
+    } else {
+      try {
+        mutationPost.mutate(values);
+        setNewDriver(false);
+      } catch (error) {}
+    }
+
     return false;
   };
   return (

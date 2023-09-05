@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
 import { Table, Button, Switch } from 'antd';
-const DriversTable = () => {
+const DriversTable = ({ setNewDriver }) => {
   const mutation = useUpdateDriver();
   const data = useGetData();
   const defaultColumns = [
@@ -43,7 +43,9 @@ const DriversTable = () => {
       },
     },
   ];
-  const handleAdd = async () => {};
+  const handleAdd = async () => {
+    setNewDriver(true);
+  };
   const onChange = async (row) => {
     const { id, available } = row;
     row.available = !available;
@@ -71,7 +73,12 @@ const DriversTable = () => {
           y: 1500,
         }}
         onRow={(r, i) => ({
-          onClick: (e) => console.log('sdfsf', r, i, e),
+          onClick: (e) => {
+            setNewDriver(r);
+            // console.log('1', r);
+            // console.log('2', i);
+            // console.log('3', e);
+          },
         })}
       />
     </Wrapper>

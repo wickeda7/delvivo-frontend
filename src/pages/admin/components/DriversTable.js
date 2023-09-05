@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
 import { Table, Button, Switch } from 'antd';

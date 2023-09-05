@@ -100,7 +100,8 @@ const EditableCell = ({
   children,
   dataIndex,
   record,
-  handleSave,
+  //handleSave,
+  mutation,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -118,10 +119,10 @@ const EditableCell = ({
     try {
       const values = await form.validateFields();
       toggleEdit();
-      const [val] = Object.entries(values)[0];
-      if (val) {
-        handleSave(record, values);
-      }
+      const data = {};
+      const [key, value] = Object.entries(values)[0];
+      data[key] = dayjs(value).valueOf();
+      mutation.mutate({ record, data });
     } catch (errInfo) {
       console.log('Save failed:', errInfo);
     }

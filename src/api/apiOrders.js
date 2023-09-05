@@ -2,7 +2,7 @@ import { api } from './configs/axiosConfigs';
 import dayjs from 'dayjs';
 import { defineCancelApiObject } from './configs/axiosUtils';
 import { merchantInfo } from '../utils/merchantInfo';
-
+import { toast } from 'react-toastify';
 export const apiOrders = {
   getStoreOrders: async function (date, cancel = false) {
     const response = await api.request({
@@ -55,21 +55,28 @@ export const apiOrders = {
         : undefined,
     });
   },
-  putOrder: async function (data, cancel = false) {
-    const { id } = data[0];
-    const val = data[1];
-
-    await api.request({
-      method: 'PUT',
-      url: `/api/orders/${id}`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({ data: val }),
-      signal: cancel
-        ? cancelApiObject[this.get.id].handleRequestCancellation().signal
-        : undefined,
-    });
+  putOrder: async function (val, cancel = false) {
+    const {
+      record: { id },
+      data,
+    } = val;
+    try {
+      const res = await api.request({
+        method: 'PUT',
+        url: `/api/orders/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({ data }),
+        signal: cancel
+          ? cancelApiObject[this.get.id].handleRequestCancellation().signal
+          : undefined,
+      });
+      return res.data.data;
+    } catch (error) {
+      toast.error(error.response.data.error.message);
+      throw new Error(error.response.data.error.message);
+    }
   },
 };
 const cancelApiObject = defineCancelApiObject(apiOrders);

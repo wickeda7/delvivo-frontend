@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
   const format = 'h:mm A';
   const now = dayjs().format(format);
-  console.log(dataIndex);
   switch (dataIndex) {
     case 'driverId':
       return <div>driverId</div>;
@@ -16,7 +15,6 @@ const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
           defaultValue={dayjs(now, format)}
           format={format}
           onChange={onChange}
-          //   onOpenChange={onOpenChange}
           changeOnBlur={true}
         />
       );

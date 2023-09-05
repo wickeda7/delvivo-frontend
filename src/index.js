@@ -7,7 +7,6 @@ import { FilterProvider } from './context/filter_context';
 import { CartProvider } from './context/cart_context';
 import { UserProvider } from './context/user_context';
 import { ModalProvider } from './context/modal_context';
-import { OrderProvider } from './pages/admin/context/oders_context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { router } from './App';
@@ -30,9 +29,7 @@ root.render(
         <ProductsProvider>
           <FilterProvider>
             <CartProvider>
-              <OrderProvider>
-                <RouterProvider router={router} />
-              </OrderProvider>
+              <RouterProvider router={router} />
             </CartProvider>
           </FilterProvider>
         </ProductsProvider>

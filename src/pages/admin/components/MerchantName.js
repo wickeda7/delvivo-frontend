@@ -2,16 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../../context/user_context';
-import { useOrderContext } from '../context/oders_context';
+import dayjs from 'dayjs';
+import { useGetData } from '../../../hooks/useOrders';
+
 const MerchantName = () => {
   const { user } = useUserContext();
-  const { date, data } = useOrderContext();
-  const total = data?.data?.length || 0;
+  const today = dayjs().format('M-DD-YYYY');
+  const data = useGetData();
+  //const { date, data } = useOrderContext();
+  const total = data?.length || 0;
   const location = useLocation();
   const path = location.pathname.split('/').pop();
   let content = '';
   if (path === 'admin') {
-    content = `Total ${total} Orders For Today (${date})`;
+    content = `Total ${total} Orders For Today (${today})`;
   }
   if (path === 'drivers') {
     content = `Drivers`;

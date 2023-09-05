@@ -10,6 +10,7 @@ export const useGetDrivers = () => {
   });
 };
 export const useGetDriver = () => {};
+
 export const useUpdateDriver = () => {
   const queryClient = useQueryClient();
   return useMutation(apiDrivers.putDriver, {

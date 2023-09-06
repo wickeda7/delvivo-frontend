@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useUpdateDriver, useGetData } from '../../../hooks/useDrivers';
+import { useUpdateDriver, useGetDriversData } from '../../../hooks/useDrivers';
 import { Table, Button, Switch } from 'antd';
 const DriversTable = ({ setNewDriver }) => {
   const mutation = useUpdateDriver();
-  const data = useGetData();
+  const data = useGetDriversData();
   const defaultColumns = [
     {
       title: 'First Name',

@@ -12,7 +12,7 @@ export const useGetOrders = () => {
   });
 };
 
-export const useGetData = () => {
+export const useGetOrdersData = () => {
   const queryClient = useQueryClient();
   return queryClient.getQueryData(['orders']);
 };
@@ -24,6 +24,11 @@ export const useUpdateOrder = () => {
       const { id, attributes } = newData;
       const orders = JSON.parse(attributes.orderContent);
       attributes.orderContent = orders;
+      if (attributes.driver) {
+        const temp = attributes.driver.data.attributes;
+        temp['id'] = id;
+        attributes.driver = temp;
+      }
       queryClient.setQueryData(['orders'], (old) => {
         return old.map((item) => {
           if (item.id === id) {

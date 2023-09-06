@@ -5,7 +5,7 @@ import { Switch, Button } from 'antd';
 import ImageUpload from './ImageUpload';
 import {
   useUpdateDriver,
-  useGetData,
+  useGetDriversData,
   useCreateDriver,
 } from '../../../hooks/useDrivers';
 
@@ -33,7 +33,7 @@ const initialState = {
 const DriverDetail = ({ newDriver, setNewDriver }) => {
   const [values, setValues] = useState(initialState);
   const [checked, setChecked] = useState(false);
-  let data = useGetData();
+  let data = useGetDriversData();
   const mutationPut = useUpdateDriver();
   const mutationPost = useCreateDriver();
   const handleChange = (e) => {

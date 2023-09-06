@@ -122,6 +122,10 @@ const CloverCheckout = () => {
         setValues(initialState);
         updatePaidInfo(resp);
         resp['cloverId'] = user.cloverId;
+        console.log('need to add relation to user and order see example below');
+        /* data[key] = value.toString();
+        const connect = { id: value };
+        data.driver = connect; */
         apiOrders.postOrder(resp);
       }
     }

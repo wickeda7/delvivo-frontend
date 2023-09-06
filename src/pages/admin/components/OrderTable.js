@@ -1,20 +1,104 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Table } from 'antd';
-import { useGetData, useUpdateOrder } from '../../../hooks/useOrders';
-import {
-  defaultColumns,
-  EditableCell,
-  EditableRow,
-} from '../context/editable_context';
+import { Table, Tag } from 'antd';
+import { useGetOrdersData, useUpdateOrder } from '../../../hooks/useOrders';
+import { useGetDriversOptions } from '../../../hooks/useDrivers';
+import { EditableCell, EditableRow } from '../context/editable_context';
+import dayjs from 'dayjs';
+import { formatPrice } from '../../../utils/helpers';
 
 const OrderTable = ({ setOrder }) => {
-  const data = useGetData();
+  const data = useGetOrdersData();
   const mutation = useUpdateOrder();
-  console.log(data);
-  //   if (data[0]) {
-  //     setOrder(data[0]);
-  //   }
+  const drivers = useGetDriversOptions();
+
+  const defaultColumns = [
+    {
+      title: 'Order ID',
+      dataIndex: 'orderId',
+      width: 100,
+      key: 'orderId',
+      // render: (text) => < dangerouslySetInnerHTML={{ __html: text }} />,
+      render: (_, { orderId, orderContent }) => (
+        <>
+          {orderId}
+          <br /> <b>{formatPrice(orderContent.total)}</b>
+        </>
+      ),
+    },
+    {
+      title: 'Purchase Time',
+      dataIndex: 'created',
+      width: 100,
+      key: 'created',
+      //render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />,
+      render: (_, { isPickup, created, orderContent }) => {
+        const time = dayjs(created).format('h:mm A');
+        if (isPickup) {
+          return (
+            <>
+              {time}
+              <br /> <b>{orderContent.note}</b>
+            </>
+          );
+        } else {
+          return (
+            <>
+              {time}
+              <br /> <b>Delivery</b>
+            </>
+          );
+        }
+      },
+    },
+
+    {
+      title: 'Driver',
+      dataIndex: 'driverId',
+      width: 100,
+      key: 'driverId',
+      editable: true,
+      render: (_, { driver }) =>
+        driver?.id && (
+          <>
+            <Tag color={'blue'} key={driver.id}>
+              {driver.firstName} {driver.lastName}
+            </Tag>
+          </>
+        ),
+    },
+    {
+      title: 'Start Delivery',
+      dataIndex: 'departureTime',
+      width: 100,
+      editable: true,
+      key: 'departureTime',
+      render: (_, { departureTime }) =>
+        departureTime && (
+          <>
+            <Tag color={'yellow'} key={departureTime}>
+              {dayjs(departureTime).format('h:mm A')}
+            </Tag>
+          </>
+        ),
+    },
+    {
+      title: 'Delivered',
+      dataIndex: 'arriveTime',
+      width: 100,
+      editable: true,
+      key: 'arriveTime',
+      render: (_, { arriveTime }) =>
+        arriveTime && (
+          <>
+            <Tag color={'green'} key={arriveTime}>
+              {dayjs(arriveTime).format('h:mm A')}
+            </Tag>
+          </>
+        ),
+    },
+  ];
+
   const columns = defaultColumns.map((col) => {
     if (!col.editable) {
       return col;

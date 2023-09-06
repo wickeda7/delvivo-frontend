@@ -7,7 +7,7 @@ export const apiOrders = {
   getStoreOrders: async function (date, cancel = false) {
     const response = await api.request({
       method: 'GET',
-      url: `/api/orders/storeorders?created=${date}`, //[date][$eq]=2020-01-01
+      url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,
@@ -63,7 +63,7 @@ export const apiOrders = {
     try {
       const res = await api.request({
         method: 'PUT',
-        url: `/api/orders/${id}`,
+        url: `/api/orders/${id}?populate=*`,
         headers: {
           'Content-Type': 'application/json',
         },

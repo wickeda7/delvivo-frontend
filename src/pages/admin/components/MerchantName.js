@@ -3,14 +3,17 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../../context/user_context';
 import dayjs from 'dayjs';
-import { useGetData } from '../../../hooks/useOrders';
+import { useGetOrdersData } from '../../../hooks/useOrders';
 
 const MerchantName = () => {
   const { user } = useUserContext();
   const today = dayjs().format('M-DD-YYYY');
-  const data = useGetData();
-  //const { date, data } = useOrderContext();
-  const total = data?.length || 0;
+  const data = useGetOrdersData();
+  let total = 0;
+  if (data) {
+    total = data.length;
+  }
+
   const location = useLocation();
   const path = location.pathname.split('/').pop();
   let content = '';

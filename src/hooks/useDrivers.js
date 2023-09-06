@@ -52,7 +52,24 @@ export const useCreateDriver = () => {
     },
   });
 };
-export const useGetData = () => {
+export const useGetDriversData = () => {
   const queryClient = useQueryClient();
   return queryClient.getQueryData(['drivers']);
+};
+
+export const useGetDriversOptions = () => {
+  const queryClient = useQueryClient();
+  let data = queryClient.getQueryData(['drivers']);
+  if (data) {
+    data = data.reduce((acc, driver) => {
+      if (driver.available) {
+        acc.push({
+          value: driver.id,
+          label: driver.firstName + ' ' + driver.lastName,
+        });
+      }
+      return acc;
+    }, []);
+  }
+  return data;
 };

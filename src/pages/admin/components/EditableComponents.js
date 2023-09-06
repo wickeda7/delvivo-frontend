@@ -1,13 +1,24 @@
 import React from 'react';
-import { TimePicker, Switch } from 'antd';
+import { TimePicker, Switch, Select } from 'antd';
 import dayjs from 'dayjs';
+import { useGetDriversOptions } from '../../../hooks/useDrivers';
 
 const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
   const format = 'h:mm A';
   const now = dayjs().format(format);
+  const drivers = useGetDriversOptions();
   switch (dataIndex) {
     case 'driverId':
-      return <div>driverId</div>;
+      return (
+        <Select
+          options={drivers}
+          onChange={onChange}
+          placeholder='Select Driver'
+          style={{
+            width: 120,
+          }}
+        />
+      );
     case 'departureTime':
     case 'arriveTime':
       return (

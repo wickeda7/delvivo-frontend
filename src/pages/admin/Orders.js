@@ -4,11 +4,13 @@ import OrderDetail from './components/OrderDetail';
 import OrderTable from './components/OrderTable';
 import { Loading } from '../../components';
 import { useGetOrders } from '../../hooks/useOrders';
+import { useGetDrivers } from '../../hooks/useDrivers';
 
 const Orders = () => {
-  const { data } = useGetOrders();
+  const { data: Orders } = useGetOrders();
   const [order, setOrder] = useState(null);
-  if (!data) {
+  const { data } = useGetDrivers();
+  if (!Orders) {
     return (
       <Wrapper>
         <Loading />

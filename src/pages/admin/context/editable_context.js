@@ -1,87 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Form, Tag } from 'antd';
+import { Form } from 'antd';
 import EditableComponents from '../components/EditableComponents';
 import dayjs from 'dayjs';
-import { formatPrice } from '../../../utils/helpers';
-const EditableContext = React.createContext(null);
-const defaultColumns = [
-  {
-    title: 'Order ID',
-    dataIndex: 'orderId',
-    width: 100,
-    key: 'orderId',
-    // render: (text) => < dangerouslySetInnerHTML={{ __html: text }} />,
-    render: (_, { orderId, orderContent }) => (
-      <>
-        {orderId}
-        <br /> <b>{formatPrice(orderContent.total)}</b>
-      </>
-    ),
-  },
-  {
-    title: 'Purchase Time',
-    dataIndex: 'created',
-    width: 100,
-    key: 'created',
-    //render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />,
-    render: (_, { isPickup, created, orderContent }) => {
-      const time = dayjs(created).format('h:mm A');
-      if (isPickup) {
-        return (
-          <>
-            {time}
-            <br /> <b>{orderContent.note}</b>
-          </>
-        );
-      } else {
-        return (
-          <>
-            {time}
-            <br /> <b>Delivery</b>
-          </>
-        );
-      }
-    },
-  },
 
-  {
-    title: 'Driver',
-    dataIndex: 'driverId',
-    width: 100,
-    key: 'driverId',
-    editable: true,
-  },
-  {
-    title: 'Start Delivery',
-    dataIndex: 'departureTime',
-    width: 100,
-    editable: true,
-    key: 'departureTime',
-    render: (_, { departureTime }) =>
-      departureTime && (
-        <>
-          <Tag color={'yellow'} key={departureTime}>
-            {dayjs(departureTime).format('h:mm A')}
-          </Tag>
-        </>
-      ),
-  },
-  {
-    title: 'Delivered',
-    dataIndex: 'arriveTime',
-    width: 100,
-    editable: true,
-    key: 'arriveTime',
-    render: (_, { arriveTime }) =>
-      arriveTime && (
-        <>
-          <Tag color={'green'} key={arriveTime}>
-            {dayjs(arriveTime).format('h:mm A')}
-          </Tag>
-        </>
-      ),
-  },
-];
+const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -121,7 +43,17 @@ const EditableCell = ({
       toggleEdit();
       const data = {};
       const [key, value] = Object.entries(values)[0];
-      data[key] = dayjs(value).valueOf();
+      if (key === 'departureTime' || key === 'arriveTime') {
+        data[key] = dayjs(value).valueOf();
+        // const connect = { id: 54 };
+        //console.log('connect', connect);
+        //data.user = connect;
+      } else {
+        data[key] = value.toString();
+        const connect = { id: value };
+        //console.log('connect', connect);
+        data.driver = connect;
+      }
       mutation.mutate({ record, data });
     } catch (errInfo) {
       console.log('Save failed:', errInfo);
@@ -168,4 +100,4 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-export { defaultColumns, EditableCell, EditableRow };
+export { EditableCell, EditableRow };

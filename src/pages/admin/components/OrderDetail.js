@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TimePicker, Switch, Select } from 'antd';
+import { FiMapPin } from 'react-icons/fi';
 import { useGetOrdersData, useUpdateOrder } from '../../../hooks/useOrders';
 import dayjs from 'dayjs';
 import TimePickers from './TimePicker';
+import Selects from './Selects';
+import LineItems from './LineItems';
 
 const OrderDetail = ({ orderDetail }) => {
   const data = useGetOrdersData();
@@ -11,6 +13,17 @@ const OrderDetail = ({ orderDetail }) => {
   const order = orderDetail ? orderDetail : data[0];
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
+  console.log(order);
+  const note = order.orderContent.note.split(':');
+  const handleMap = () => {
+    console.log('map');
+  };
+  const onChangeDriver = (val) => {
+    const data = { driverId: val.toString() };
+    const connect = { id: val };
+    data.driver = connect;
+    mutation.mutate({ record: order, data });
+  };
   const onChangeStart = (time) => {
     try {
       const data = { departureTime: dayjs(time).valueOf() };
@@ -63,6 +76,37 @@ const OrderDetail = ({ orderDetail }) => {
             </p>
           </div>
         </div>
+        <div className='container-order2'>
+          {!order.isPickup ? (
+            <>
+              <div>
+                <address>
+                  {' '}
+                  {order.orderContent.note}
+                  <a onClick={handleMap}>
+                    {' '}
+                    <FiMapPin />{' '}
+                  </a>
+                </address>
+              </div>
+              <div>
+                Driver:{' '}
+                <Selects driver={order.driver} onChange={onChangeDriver} />
+              </div>
+            </>
+          ) : (
+            <div>
+              <b>{order.orderContent.note}</b>
+            </div>
+          )}
+        </div>
+        Line Items
+        <div className='container-order1'>
+          <LineItems
+            lineItems={order.orderContent.lineItems.elements}
+            itemContent={order.itemContent}
+          />
+        </div>
       </section>
     </Wrapper>
   );
@@ -86,8 +130,23 @@ const Wrapper = styled.div`
     padding: 1rem 0;
     font-size: 13px;
   }
+  .container-order2 {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 0.4rem;
+    font-size: 13px;
+    margin-bottom: 0.8rem;
+  }
+  .container-order1{
+    padding: 1rem 0;
+    font-size: 13px;
+  }
+  a {
+    pointer: cursor;
+  }
   p {
     margin-bottom: 0.5rem;
   }
+  .
 `;
 export default OrderDetail;

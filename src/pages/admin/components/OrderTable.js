@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Table, Tag } from 'antd';
 import { useGetOrdersData, useUpdateOrder } from '../../../hooks/useOrders';
-import { useGetDriversOptions } from '../../../hooks/useDrivers';
 import { EditableCell, EditableRow } from '../context/editable_context';
 import dayjs from 'dayjs';
 import { formatPrice } from '../../../utils/helpers';
@@ -10,7 +9,7 @@ import { formatPrice } from '../../../utils/helpers';
 const OrderTable = ({ setOrder }) => {
   const data = useGetOrdersData();
   const mutation = useUpdateOrder();
-  const drivers = useGetDriversOptions();
+
   const defaultColumns = [
     {
       title: 'Order ID',
@@ -132,6 +131,7 @@ const OrderTable = ({ setOrder }) => {
         components={components}
         bordered
         rowClassName={() => 'editable-row'}
+        pagination={false}
         scroll={{
           x: 400,
           y: 1500,

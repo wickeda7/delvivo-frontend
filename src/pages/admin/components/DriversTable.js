@@ -72,12 +72,10 @@ const DriversTable = ({ setNewDriver }) => {
           x: 400,
           y: 1500,
         }}
+        pagination={false}
         onRow={(r, i) => ({
           onClick: (e) => {
             setNewDriver(r);
-            // console.log('1', r);
-            // console.log('2', i);
-            // console.log('3', e);
           },
         })}
       />

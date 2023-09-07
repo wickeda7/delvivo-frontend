@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import OrderDetail from './components/OrderDetail';
 import OrderTable from './components/OrderTable';
@@ -9,7 +9,14 @@ import { useGetDrivers } from '../../hooks/useDrivers';
 const Orders = () => {
   const { data: Orders } = useGetOrders();
   const [order, setOrder] = useState(null);
+  const [orderNum, setOrderNum] = useState(0);
   const { data } = useGetDrivers();
+  useEffect(() => {
+    if (!Orders) return;
+    const orderId = orderNum === 0 ? Orders[0].id : orderNum;
+    const order = Orders.find((order) => order.id === orderId);
+    setOrder(order);
+  }, [Orders, orderNum]);
   if (!Orders) {
     return (
       <Wrapper>
@@ -20,8 +27,8 @@ const Orders = () => {
   return (
     <Wrapper>
       <div className='container'>
-        <OrderTable setOrder={setOrder} />
-        <OrderDetail order={order} />
+        <OrderTable setOrder={setOrderNum} />
+        <OrderDetail orderDetail={order} />
       </div>
     </Wrapper>
   );

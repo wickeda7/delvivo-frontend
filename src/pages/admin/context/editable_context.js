@@ -31,6 +31,7 @@ const EditableCell = ({
   const form = useContext(EditableContext);
 
   const toggleEdit = () => {
+    if (dataIndex === 'driverId' && record.isPickup) return;
     setEditing(!editing);
     form.setFieldsValue({
       [dataIndex]: record[dataIndex],
@@ -43,15 +44,14 @@ const EditableCell = ({
       toggleEdit();
       const data = {};
       const [key, value] = Object.entries(values)[0];
+      if (value === null) return;
       if (key === 'departureTime' || key === 'arriveTime') {
         data[key] = dayjs(value).valueOf();
         // const connect = { id: 54 };
-        //console.log('connect', connect);
         //data.user = connect;
       } else {
         data[key] = value.toString();
         const connect = { id: value };
-        //console.log('connect', connect);
         data.driver = connect;
       }
       mutation.mutate({ record, data });

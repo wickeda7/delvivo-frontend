@@ -13,6 +13,8 @@ const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
         <Select
           options={drivers}
           onChange={onChange}
+          onBlur={toggleEdit}
+          autoFocus={true}
           placeholder='Select Driver'
           style={{
             width: 120,
@@ -45,36 +47,3 @@ const EditableComponents = ({ dataIndex, onChange, toggleEdit }) => {
 };
 
 export default EditableComponents;
-// <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-// const EditableComponents = (dataIndex, onChange) => {
-//     const time = dayjs().format('h:mm a');
-//     console.log(time);
-//     switch (dataIndex) {
-//       case 'driverId':
-//         console.log('select');
-//         return (
-//           <TimePicker
-//             use12Hours
-//             defaultValue={time}
-//             format='h:mm a'
-//             onChange={onChange}
-//           />
-//         );
-//       case 'departureTime':
-//       case 'arriveTime':
-//         return (
-//           <TimePicker
-//             use12Hours
-//             defaultValue={time}
-//             format='h:mm a'
-//             onChange={onChange}
-//           />
-//         );
-//     }
-//   };
-//const inputRef = useRef(null);
-//   useEffect(() => {
-//     if (editing) {
-//       inputRef.current.focus();
-//     }
-//   }, [editing]);

@@ -72,6 +72,7 @@ export const apiOrders = {
           ? cancelApiObject[this.get.id].handleRequestCancellation().signal
           : undefined,
       });
+
       return res.data.data;
     } catch (error) {
       toast.error(error.response.data.error.message);

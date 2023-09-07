@@ -11,7 +11,6 @@ const OrderTable = ({ setOrder }) => {
   const data = useGetOrdersData();
   const mutation = useUpdateOrder();
   const drivers = useGetDriversOptions();
-
   const defaultColumns = [
     {
       title: 'Order ID',
@@ -68,7 +67,7 @@ const OrderTable = ({ setOrder }) => {
         ),
     },
     {
-      title: 'Start Delivery',
+      title: 'Start Delivery / \n Ready for Pickup',
       dataIndex: 'departureTime',
       width: 100,
       editable: true,
@@ -83,7 +82,7 @@ const OrderTable = ({ setOrder }) => {
         ),
     },
     {
-      title: 'Delivered',
+      title: 'Delivered / \n Arrived for Pickup',
       dataIndex: 'arriveTime',
       width: 100,
       editable: true,
@@ -125,7 +124,7 @@ const OrderTable = ({ setOrder }) => {
       <Table
         onRow={(record, index) => ({
           onClick: () => {
-            setOrder(record);
+            setOrder(record.id);
           },
         })}
         columns={columns}

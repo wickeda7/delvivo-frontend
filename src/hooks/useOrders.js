@@ -24,10 +24,15 @@ export const useUpdateOrder = () => {
       const { id, attributes } = newData;
       const orders = JSON.parse(attributes.orderContent);
       attributes.orderContent = orders;
-      if (attributes.driver) {
+      if (attributes.driver.data !== null) {
         const temp = attributes.driver.data.attributes;
         temp['id'] = id;
         attributes.driver = temp;
+      }
+      if (attributes.user.data !== null) {
+        const temp = attributes.user.data.attributes;
+        temp['id'] = id;
+        attributes.user = temp;
       }
       queryClient.setQueryData(['orders'], (old) => {
         return old.map((item) => {

@@ -12,7 +12,7 @@ const Orders = () => {
   const [orderNum, setOrderNum] = useState(0);
   const { data } = useGetDrivers();
   useEffect(() => {
-    if (!Orders) return;
+    if (!Orders || Orders.length === 0) return;
     const orderId = orderNum === 0 ? Orders[0].id : orderNum;
     const order = Orders.find((order) => order.id === orderId);
     setOrder(order);

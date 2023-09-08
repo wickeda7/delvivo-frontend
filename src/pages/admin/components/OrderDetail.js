@@ -11,9 +11,11 @@ const OrderDetail = ({ orderDetail }) => {
   const data = useGetOrdersData();
   const mutation = useUpdateOrder();
   const order = orderDetail ? orderDetail : data[0];
+  if (!order) return <h4>No Order Selected</h4>;
+  console.log(order);
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
-  console.log(order);
+
   const note = order.orderContent.note.split(':');
   const handleMap = () => {
     console.log('map');

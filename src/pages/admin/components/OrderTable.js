@@ -9,7 +9,6 @@ import { formatPrice } from '../../../utils/helpers';
 const OrderTable = ({ setOrder }) => {
   const data = useGetOrdersData();
   const mutation = useUpdateOrder();
-
   const defaultColumns = [
     {
       title: 'Order ID',

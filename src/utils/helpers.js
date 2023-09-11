@@ -23,7 +23,18 @@ export const setStorage = (key, value) => {
     localStorage.setItem(key, value);
   }
 };
-
+export const getUser = (key) => {
+  let user_info = getStorage(key);
+  if (!user_info) return null;
+  user_info = JSON.parse(user_info);
+  const { user, timestamp } = user_info;
+  const now = Date.now();
+  if (now >= timestamp) {
+    removeStorage(key);
+    return null;
+  }
+  return user;
+};
 export const removeStorage = (key) => {
   localStorage.removeItem(key);
 };

@@ -48,6 +48,7 @@ export const strapi_url = url;
 export const single_product_url = `${url}/api/products`;
 export const API = `${url}/api`;
 export const AUTH_TOKEN = 'authToken';
+export const USER_INFO = 'USER';
 export const BEARER = 'Bearer ';
 export const RESTURL = process.env.REACT_APP_REST_URL;
 export const CLOVER = 'clover';

@@ -47,7 +47,7 @@ const DriverDetail = ({ newDriver, setNewDriver }) => {
   };
 
   useEffect(() => {
-    console.log('data', data);
+    if (data.length == 0) return;
     const detail = data ? data[0] : initialState;
     const available = detail.available ? true : false;
     setChecked(available);
@@ -56,7 +56,6 @@ const DriverDetail = ({ newDriver, setNewDriver }) => {
 
   useEffect(() => {
     if (!newDriver) return;
-    console.log('newDriver', newDriver);
     if (newDriver.id) {
       setValues(newDriver);
       return;

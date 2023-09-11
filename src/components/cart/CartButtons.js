@@ -18,7 +18,6 @@ const CartButton = () => {
   const { user, logout, clover } = useUserContext();
   const { loginWithRedirect } = useModalContext();
   const { access_token } = clover;
-
   let clover_access_token = access_token;
   if (!clover_access_token) {
     let info = getStorage(CLOVER);

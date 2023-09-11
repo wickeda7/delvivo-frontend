@@ -36,7 +36,6 @@ const CloverCheckout = () => {
   const { merchant_id } = merchantInfo();
   let orderTypeId = '';
   let note = '';
-
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />
   );
@@ -122,6 +121,7 @@ const CloverCheckout = () => {
         setValues(initialState);
         updatePaidInfo(resp);
         resp['cloverId'] = user.cloverId;
+        resp['userId'] = user.id;
         console.log('need to add relation to user and order see example below');
         /* data[key] = value.toString();
         const connect = { id: value };

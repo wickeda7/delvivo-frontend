@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../../context/user_context';
@@ -9,10 +9,12 @@ const MerchantName = () => {
   const { user } = useUserContext();
   const today = dayjs().format('M-DD-YYYY');
   const data = useGetOrdersData();
-  let total = 0;
-  if (data) {
-    total = data.length;
-  }
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    if (data) {
+      setTotal(data.length);
+    }
+  }, [data]);
 
   const location = useLocation();
   const path = location.pathname.split('/').pop();

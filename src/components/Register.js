@@ -11,7 +11,7 @@ const initialState = {
   lastName: '',
   address: '',
   city: '',
-  state: '',
+  state: 'CA',
   zip: '',
   country: 'US',
   email: '',

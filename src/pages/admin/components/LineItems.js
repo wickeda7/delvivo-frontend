@@ -5,7 +5,8 @@ import { formatPrice } from '../../../utils/helpers';
 
 const LineItems = ({ lineItems, itemContent }) => {
   //console.log(typeof itemContent); if (typeof itemContent === 'string') JSON.parse(itemContent);
-  const itemContents = JSON.parse(itemContent);
+  const itemParse = JSON.parse(itemContent);
+  const itemContents = itemParse.elements;
   const data = lineItems.reduce((acc, item) => {
     const {
       item: { id },

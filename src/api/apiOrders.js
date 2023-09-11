@@ -17,10 +17,12 @@ export const apiOrders = {
       const { orderContent } = cur;
       cur.key = cur.id;
       let isPickup = false;
-      const orders = JSON.parse(orderContent);
+      const ordersParse = JSON.parse(orderContent);
+      const orders = ordersParse.createdOrders;
       if (orders.orderType.labelKey) {
         isPickup = orders.orderType.labelKey.includes('pick_up');
       }
+      cur.created = orders.createdTime;
       cur.isPickup = isPickup;
       cur.orderContent = orders;
       acc.push(cur);

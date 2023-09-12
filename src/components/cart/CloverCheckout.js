@@ -14,7 +14,7 @@ import { Alert, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useUserContext } from '../../context/user_context';
 import { apiOrders } from '../../api/apiOrders';
-
+import dayjs from 'dayjs';
 const initialState = {
   name: '',
   number: '',
@@ -122,6 +122,10 @@ const CloverCheckout = () => {
         updatePaidInfo(resp);
         resp['cloverId'] = user.cloverId;
         resp['userId'] = user.id;
+        const created = dayjs(resp.created).format('YYYY-MM-DD');
+        console.log('created', created);
+        resp['created'] = created;
+        //delete resp.created;
         console.log('need to add relation to user and order see example below');
         /* data[key] = value.toString();
         const connect = { id: value };

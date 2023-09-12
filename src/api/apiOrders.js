@@ -4,6 +4,21 @@ import { defineCancelApiObject } from './configs/axiosUtils';
 import { merchantInfo } from '../utils/merchantInfo';
 import { toast } from 'react-toastify';
 export const apiOrders = {
+  sendEmail: async function (order, cancel = false) {
+    const response = await api.request({
+      method: 'POST',
+      url: `/api/orders/sendemail`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({ order }),
+      signal: cancel
+        ? cancelApiObject[this.get.id].handleRequestCancellation().signal
+        : undefined,
+    });
+    const res = await response.data.data;
+    return res;
+  },
   getStoreOrders: async function (date, cancel = false) {
     const response = await api.request({
       method: 'GET',
@@ -13,16 +28,16 @@ export const apiOrders = {
         : undefined,
     });
     const res = await response.data.data;
+
     const data = res.reduce((acc, cur) => {
       const { orderContent } = cur;
       cur.key = cur.id;
       let isPickup = false;
-      const ordersParse = JSON.parse(orderContent);
-      const orders = ordersParse.createdOrders;
-      if (orders.orderType.labelKey) {
-        isPickup = orders.orderType.labelKey.includes('pick_up');
+      const orders = JSON.parse(orderContent);
+      if (orders.createdOrders.orderType.labelKey) {
+        isPickup = orders.createdOrders.orderType.labelKey.includes('pick_up');
       }
-      cur.created = orders.createdTime;
+      cur.created = orders.createdOrders.createdTime;
       cur.isPickup = isPickup;
       cur.orderContent = orders;
       acc.push(cur);
@@ -45,6 +60,7 @@ export const apiOrders = {
   },
   postOrder: async function (order, cancel = false) {
     const { merchant_id, access_token } = merchantInfo();
+    console.log(order);
     await api.request({
       method: 'POST',
       url: `/api/orders`,

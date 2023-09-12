@@ -1,35 +1,109 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FiMapPin } from 'react-icons/fi';
-import { useGetOrdersData, useUpdateOrder } from '../../../hooks/useOrders';
+import {
+  useGetOrdersData,
+  useUpdateOrder,
+  useSendEmail,
+} from '../../../hooks/useOrders';
+import { Button } from 'antd';
 import dayjs from 'dayjs';
 import TimePickers from './TimePicker';
 import Selects from './Selects';
 import LineItems from './LineItems';
+import { toast } from 'react-toastify';
 
 const OrderDetail = ({ orderDetail }) => {
   const data = useGetOrdersData();
   const mutation = useUpdateOrder();
+  const { mutate: sendEmail } = useSendEmail();
+  const [loadings, setLoadings] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [text, setText] = useState('Notify Customer');
   const order = orderDetail ? orderDetail : data[0];
+  useEffect(() => {
+    console.log(order);
+    if (
+      order.notifiedDate == null &&
+      order.driver &&
+      order.departureTime &&
+      !order.isPickup
+    ) {
+      setDisable(false);
+      setText('Notify Customer');
+    } else if (
+      order.notifiedDate == null &&
+      order.isPickup &&
+      order.departureTime
+    ) {
+      setDisable(false);
+      setText('Notify Customer');
+    } else if (order.notifiedDate) {
+      setDisable(true);
+      setText(
+        'Notified Customer on ' +
+          dayjs(order.notifiedDate).format('MM/DD/YYYY h:mm A')
+      );
+    } else {
+      setDisable(true);
+      setText('Notify Customer');
+    }
+  }, [order]);
   if (!order) return <h4>No Order Selected</h4>;
-  console.log(order);
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
 
-  const note = order.orderContent.note.split(':');
+  const note = order.orderContent.createdOrders.note.split(':');
   const handleMap = () => {
     console.log('map');
+  };
+  const emailCustomer = () => {
+    setLoadings(true);
+    setText('Sending...');
+    sendEmail(order, {
+      onSuccess: (data) => {
+        setLoadings(false);
+        setDisable(true);
+        console.log(dayjs(data.notifiedDate).format('MM/DD/YYYY h:mm A'));
+        setText(
+          'Notified Customer on ' +
+            dayjs(data.notifiedDate).format('MM/DD/YYYY h:mm A')
+        );
+      },
+    });
   };
   const onChangeDriver = (val) => {
     const data = { driverId: val.toString() };
     const connect = { id: val };
     data.driver = connect;
-    mutation.mutate({ record: order, data });
+    mutation.mutate(
+      { record: order, data },
+      {
+        onSuccess: (data) => {
+          setDisable(false);
+          toast.success(
+            `Please notify the customer that the driver is on the way.`
+          );
+        },
+      }
+    );
   };
   const onChangeStart = (time) => {
     try {
       const data = { departureTime: dayjs(time).valueOf() };
-      mutation.mutate({ record: order, data });
+      mutation.mutate(
+        { record: order, data },
+        {
+          onSuccess: (data) => {
+            if (order.isPickup) {
+              setDisable(false);
+              toast.success(
+                `Please notify the customer that the order is ready.`
+              );
+            }
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -49,9 +123,13 @@ const OrderDetail = ({ orderDetail }) => {
         <div className='container-order'>
           <div>
             Order ID: {order.orderId} <br />
-            Date: {dayjs(order.createdAt).format('MM/DD/YYYY h:mm A')} <br />
-            Order Type: {order.orderContent.orderType.label} <br />
-            Status: {order.orderContent.paymentState} <br />
+            Date:{' '}
+            {dayjs(order.orderContent.createdOrders.createdTime).format(
+              'MM/DD/YYYY h:mm A'
+            )}{' '}
+            <br />
+            Order Type: {order.orderContent.createdOrders.orderType.label}{' '}
+            <br />
           </div>
           <div>
             Customer: {`${order.user.firstName} ${order.user.lastName}`} <br />
@@ -59,7 +137,10 @@ const OrderDetail = ({ orderDetail }) => {
             Phone: {order.user.phoneNumber} <br />
           </div>
           <div>
-            <p>Total Items: {order.orderContent.lineItems.elements.length}</p>
+            <p>
+              Total Items:{' '}
+              {order.orderContent.createdOrders.lineItems.elements.length}
+            </p>
             <p>
               {startText}:{' '}
               <TimePickers
@@ -84,7 +165,7 @@ const OrderDetail = ({ orderDetail }) => {
               <div>
                 <address>
                   {' '}
-                  {order.orderContent.note}
+                  {order.orderContent.createdOrders.note}
                   <a onClick={handleMap}>
                     {' '}
                     <FiMapPin />{' '}
@@ -98,14 +179,26 @@ const OrderDetail = ({ orderDetail }) => {
             </>
           ) : (
             <div>
-              <b>{order.orderContent.note}</b>
+              <b>{order.orderContent.createdOrders.note}</b>
             </div>
           )}
         </div>
-        Line Items
+        <div className='container-tableheader'>
+          <div>Line Items</div>
+          <div style={{ textAlign: 'right' }}>
+            <Button
+              type='primary'
+              loading={loadings}
+              onClick={() => emailCustomer()}
+              disabled={disable}
+            >
+              {text}
+            </Button>
+          </div>
+        </div>
         <div className='container-order1'>
           <LineItems
-            lineItems={order.orderContent.lineItems.elements}
+            lineItems={order.orderContent.createdOrders.lineItems.elements}
             itemContent={order.itemContent}
           />
         </div>
@@ -125,6 +218,10 @@ const Wrapper = styled.div`
     box-shadow: var(--shadow-2);
     transition: var(--transition);
   }
+  .container-tableheader {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  },
   .container-order {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

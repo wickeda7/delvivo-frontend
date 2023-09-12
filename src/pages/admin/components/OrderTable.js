@@ -19,7 +19,7 @@ const OrderTable = ({ setOrder }) => {
       render: (_, { orderId, orderContent }) => (
         <>
           {orderId}
-          <br /> <b>{formatPrice(orderContent.total)}</b>
+          <br /> <b>{formatPrice(orderContent.createdOrders.total)}</b>
         </>
       ),
     },
@@ -35,7 +35,7 @@ const OrderTable = ({ setOrder }) => {
           return (
             <>
               {time}
-              <br /> <b>{orderContent.note}</b>
+              <br /> <b>{orderContent.createdOrders.note}</b>
             </>
           );
         } else {

@@ -16,19 +16,38 @@ export const useGetOrdersData = () => {
   const queryClient = useQueryClient();
   return queryClient.getQueryData(['orders']);
 };
-
+export const useSendEmail = () => {
+  const queryClient = useQueryClient();
+  return useMutation(apiOrders.sendEmail, {
+    onSuccess: (newData) => {
+      const { id, notifiedDate } = newData;
+      queryClient.setQueryData(['orders'], (old) => {
+        return old.map((item) => {
+          if (item.id === id) {
+            return {
+              ...item,
+              notifiedDate,
+            };
+          }
+          return item;
+        });
+      });
+    },
+  });
+};
 export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
   return useMutation(apiOrders.putOrder, {
     onSuccess: (newData) => {
       const { id, attributes } = newData;
-      const ordersParse = JSON.parse(attributes.orderContent);
-      const orders = ordersParse.createdOrders;
+      const orders = JSON.parse(attributes.orderContent);
       attributes.orderContent = orders;
       if (attributes.driver.data !== null) {
         const temp = attributes.driver.data.attributes;
         temp['id'] = id;
         attributes.driver = temp;
+      } else {
+        attributes.driver = null;
       }
       if (attributes.user.data !== null) {
         const temp = attributes.user.data.attributes;

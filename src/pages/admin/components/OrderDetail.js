@@ -22,7 +22,7 @@ const OrderDetail = ({ orderDetail }) => {
   const [text, setText] = useState('Notify Customer');
   const order = orderDetail ? orderDetail : data[0];
   useEffect(() => {
-    console.log(order);
+    if (!order) return;
     if (
       order.notifiedDate == null &&
       order.driver &&
@@ -49,7 +49,7 @@ const OrderDetail = ({ orderDetail }) => {
       setText('Notify Customer');
     }
   }, [order]);
-  if (!order) return <h4>No Order Selected</h4>;
+  if (!order) return <h5>No Order Selected</h5>;
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
 

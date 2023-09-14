@@ -4,9 +4,12 @@ import styled from 'styled-components';
 import { formatPrice } from '../../../utils/helpers';
 
 const LineItems = ({ lineItems, itemContent }) => {
-  console.log('lineItems', lineItems);
-  console.log('itemContent', itemContent);
-  const itemParse = JSON.parse(itemContent);
+  let itemParse = {};
+  if (typeof itemContent === 'string') {
+    itemParse = JSON.parse(itemContent);
+  } else {
+    itemParse = itemContent;
+  }
   const itemContents = itemParse.elements;
   const data = lineItems.reduce((acc, item) => {
     const {

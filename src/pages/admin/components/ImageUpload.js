@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Upload, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { apiDrivers } from '../../../api/apiDrivers';
+import { ENV } from '../../../utils/constants';
+console.log(ENV);
 
 const ImageUpload = ({ setValues, type, values }) => {
   const [file, setFile] = useState();

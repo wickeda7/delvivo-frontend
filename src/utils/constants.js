@@ -52,3 +52,4 @@ export const USER_INFO = 'USER';
 export const BEARER = 'Bearer ';
 export const RESTURL = process.env.REACT_APP_REST_URL;
 export const CLOVER = 'clover';
+export const ENV = process.env.REACT_APP_NODE_ENV;

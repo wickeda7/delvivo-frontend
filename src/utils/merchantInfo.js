@@ -76,7 +76,7 @@ export const initMerchant = async (url) => {
 export const merchantInfo = () => {
   let info = getStorage(CLOVER);
   info = JSON.parse(info);
-
+  if (!info) return null;
   if (typeof info.orderTypes === 'string') {
     info.orderTypes = JSON.parse(info.orderTypes);
   }

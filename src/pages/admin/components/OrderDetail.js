@@ -53,7 +53,7 @@ const OrderDetail = ({ orderDetail }) => {
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
 
-  const note = order.orderContent.createdOrders.note.split(':');
+  const note = order.order_content.createdOrders.note.split(':');
   const handleMap = () => {
     console.log('map');
   };
@@ -124,11 +124,11 @@ const OrderDetail = ({ orderDetail }) => {
           <div>
             Order ID: {order.orderId} <br />
             Date:{' '}
-            {dayjs(order.orderContent.createdOrders.createdTime).format(
+            {dayjs(order.order_content.createdOrders.createdTime).format(
               'MM/DD/YYYY h:mm A'
             )}{' '}
             <br />
-            Order Type: {order.orderContent.createdOrders.orderType.label}{' '}
+            Order Type: {order.order_content.createdOrders.orderType.label}{' '}
             <br />
           </div>
           <div>
@@ -139,7 +139,7 @@ const OrderDetail = ({ orderDetail }) => {
           <div>
             <p>
               Total Items:{' '}
-              {order.orderContent.createdOrders.lineItems.elements.length}
+              {order.order_content.createdOrders.lineItems.elements.length}
             </p>
             <p>
               {startText}:{' '}
@@ -165,7 +165,7 @@ const OrderDetail = ({ orderDetail }) => {
               <div>
                 <address>
                   {' '}
-                  {order.orderContent.createdOrders.note}
+                  {order.order_content.createdOrders.note}
                   <a onClick={handleMap}>
                     {' '}
                     <FiMapPin />{' '}
@@ -179,7 +179,7 @@ const OrderDetail = ({ orderDetail }) => {
             </>
           ) : (
             <div>
-              <b>{order.orderContent.createdOrders.note}</b>
+              <b>{order.order_content.createdOrders.note}</b>
             </div>
           )}
         </div>
@@ -198,7 +198,7 @@ const OrderDetail = ({ orderDetail }) => {
         </div>
         <div className='container-order1'>
           <LineItems
-            lineItems={order.orderContent.createdOrders.lineItems.elements}
+            lineItems={order.order_content.createdOrders.lineItems.elements}
             itemContent={order.itemContent}
           />
         </div>

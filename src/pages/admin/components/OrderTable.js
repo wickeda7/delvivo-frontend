@@ -16,10 +16,10 @@ const OrderTable = ({ setOrder }) => {
       width: 100,
       key: 'orderId',
       // render: (text) => < dangerouslySetInnerHTML={{ __html: text }} />,
-      render: (_, { orderId, orderContent }) => (
+      render: (_, { orderId, order_content }) => (
         <>
           {orderId}
-          <br /> <b>{formatPrice(orderContent.createdOrders.total)}</b>
+          <br /> <b>{formatPrice(order_content.createdOrders.total)}</b>
         </>
       ),
     },
@@ -29,13 +29,13 @@ const OrderTable = ({ setOrder }) => {
       width: 100,
       key: 'created',
       //render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />,
-      render: (_, { isPickup, created, orderContent }) => {
+      render: (_, { isPickup, created, order_content }) => {
         const time = dayjs(created).format('h:mm A');
         if (isPickup) {
           return (
             <>
               {time}
-              <br /> <b>{orderContent.createdOrders.note}</b>
+              <br /> <b>{order_content.createdOrders.note}</b>
             </>
           );
         } else {

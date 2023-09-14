@@ -30,16 +30,16 @@ export const apiOrders = {
     const res = await response.data.data;
 
     const data = res.reduce((acc, cur) => {
-      const { orderContent } = cur;
+      const { order_content } = cur;
       cur.key = cur.id;
       let isPickup = false;
-      const orders = JSON.parse(orderContent);
+      const orders = JSON.parse(order_content);
       if (orders.createdOrders.orderType.labelKey) {
         isPickup = orders.createdOrders.orderType.labelKey.includes('pick_up');
       }
       cur.created = orders.createdOrders.createdTime;
       cur.isPickup = isPickup;
-      cur.orderContent = orders;
+      cur.order_content = orders;
       acc.push(cur);
       return acc;
     }, []);

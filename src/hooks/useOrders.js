@@ -40,8 +40,8 @@ export const useUpdateOrder = () => {
   return useMutation(apiOrders.putOrder, {
     onSuccess: (newData) => {
       const { id, attributes } = newData;
-      const orders = JSON.parse(attributes.orderContent);
-      attributes.orderContent = orders;
+      const orders = JSON.parse(attributes.order_content);
+      attributes.order_content = orders;
       if (attributes.driver.data !== null) {
         const temp = attributes.driver.data.attributes;
         temp['id'] = id;

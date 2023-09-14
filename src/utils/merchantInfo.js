@@ -6,6 +6,7 @@ import { setStorage } from '../utils/helpers';
 const environment = process.env.REACT_APP_NODE_ENV;
 export const initMerchant = async (url) => {
   let info = merchantInfo();
+
   const isMerchant = url.includes('merchant');
   if (!info && !isMerchant) {
     //get id from db
@@ -18,13 +19,23 @@ export const initMerchant = async (url) => {
           const clover = {
             merchant_id: 'B65VCADF79ZR1',
             access_token: tempInfo.access_token,
-            orderTypes: tempInfo.orderTypes,
+            orderTypes: tempInfo.order_types,
           };
           setStorage(CLOVER, JSON.stringify(clover));
           return clover;
         }
       } catch (error) {
         throw { message: 'unauthorized', status: 403 }; // eslint-disable-line
+      }
+    } else {
+      const tempInfo = await apiMerchant.getMechant('M04E9FZBWVB71');
+      if (tempInfo) {
+        const clover = {
+          merchant_id: 'M04E9FZBWVB71',
+          access_token: tempInfo.access_token,
+          orderTypes: tempInfo.order_types,
+        };
+        setStorage(CLOVER, JSON.stringify(clover));
       }
     }
   }

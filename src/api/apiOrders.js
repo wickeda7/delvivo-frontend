@@ -34,7 +34,6 @@ export const apiOrders = {
       const { order_content } = cur;
       cur.key = cur.id;
       let isPickup = false;
-      console.log(typeof order_content);
       if (typeof order_content === 'string') {
         orders = JSON.parse(order_content);
       } else {

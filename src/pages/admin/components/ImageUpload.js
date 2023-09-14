@@ -4,7 +4,11 @@ import { Upload, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { apiDrivers } from '../../../api/apiDrivers';
 import { ENV } from '../../../utils/constants';
-console.log(ENV);
+
+const ImageURL =
+  ENV === 'local'
+    ? 'http://localhost:1337'
+    : 'https://delvivo-backend-4cc08716e517.herokuapp.com';
 
 const ImageUpload = ({ setValues, type, values }) => {
   const [file, setFile] = useState();
@@ -65,11 +69,7 @@ const ImageUpload = ({ setValues, type, values }) => {
         <div className='ant-upload-list ant-upload-list-picture-card'>
           <div className='ant-upload-list-item-container'>
             <div className='ant-upload-list-item ant-upload-list-item-undefined'>
-              <img
-                src={`http://localhost:1337${values[type]}`}
-                alt='Logo'
-                width={86}
-              />
+              <img src={`${ImageURL}${values[type]}`} alt='Logo' width={86} />
             </div>
           </div>
         </div>

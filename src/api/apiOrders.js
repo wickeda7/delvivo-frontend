@@ -30,10 +30,16 @@ export const apiOrders = {
     const res = await response.data.data;
 
     const data = res.reduce((acc, cur) => {
+      let orders = {};
       const { order_content } = cur;
       cur.key = cur.id;
       let isPickup = false;
-      const orders = JSON.parse(order_content);
+      console.log(typeof order_content);
+      if (typeof order_content === 'string') {
+        orders = JSON.parse(order_content);
+      } else {
+        orders = order_content;
+      }
       if (orders.createdOrders.orderType.labelKey) {
         isPickup = orders.createdOrders.orderType.labelKey.includes('pick_up');
       }

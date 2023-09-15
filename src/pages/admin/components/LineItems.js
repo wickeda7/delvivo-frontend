@@ -10,6 +10,7 @@ const LineItems = ({ lineItems, itemContent }) => {
   } else {
     itemParse = itemContent;
   }
+  console.log('lineItems', lineItems);
   const itemContents = itemParse.elements;
   const data = lineItems.reduce((acc, item) => {
     const {

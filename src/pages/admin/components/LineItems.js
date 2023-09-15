@@ -28,6 +28,7 @@ const LineItems = ({ lineItems, itemContent }) => {
     });
     return acc;
   }, []);
+  console.log('data', data);
   const columns = [
     {
       title: 'Item',

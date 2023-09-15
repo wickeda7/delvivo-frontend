@@ -38,4 +38,4 @@ root.render(
     <ToastContainer position='top-center' />
   </QueryClientProvider>
 );
-console.log('V 0.1.9');
+console.log('V 0.2.0');

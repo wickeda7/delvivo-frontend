@@ -40,7 +40,9 @@ export const useUpdateOrder = () => {
   return useMutation(apiOrders.putOrder, {
     onSuccess: (newData) => {
       const { id, attributes } = newData;
+      console.log('newData', newData);
       const orders = JSON.parse(attributes.order_content);
+      console.log('orders', orders);
       attributes.order_content = orders;
       if (attributes.driver.data !== null) {
         const temp = attributes.driver.data.attributes;
@@ -56,6 +58,7 @@ export const useUpdateOrder = () => {
       }
       queryClient.setQueryData(['orders'], (old) => {
         return old.map((item) => {
+          console.log('item', item);
           if (item.id === id) {
             return {
               ...item,

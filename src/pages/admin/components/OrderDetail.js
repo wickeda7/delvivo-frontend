@@ -64,7 +64,6 @@ const OrderDetail = ({ orderDetail }) => {
       onSuccess: (data) => {
         setLoadings(false);
         setDisable(true);
-        console.log(dayjs(data.notifiedDate).format('MM/DD/YYYY h:mm A'));
         setText(
           'Notified Customer on ' +
             dayjs(data.notifiedDate).format('MM/DD/YYYY h:mm A')
@@ -81,6 +80,7 @@ const OrderDetail = ({ orderDetail }) => {
       {
         onSuccess: (data) => {
           setDisable(false);
+
           toast.success(
             `Please notify the customer that the driver is on the way.`
           );

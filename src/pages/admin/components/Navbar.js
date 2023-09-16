@@ -39,6 +39,14 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
+              to='/admin/settings'
+              className={getNavLinkClass('/admin/settings')}
+            >
+              Settings
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to='/admin/synch'
               className={getNavLinkClass('/admin/synch')}
             >

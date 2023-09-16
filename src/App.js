@@ -22,6 +22,7 @@ import {
   Orders,
   Drivers,
   Synch,
+  Settings,
 } from './pages/admin';
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: '/admin/drivers',
         element: <Drivers />,
+      },
+      {
+        path: '/admin/settings',
+        element: <Settings />,
       },
       {
         path: '/admin/synch',

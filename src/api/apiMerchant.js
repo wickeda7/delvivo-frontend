@@ -103,6 +103,30 @@ export const apiMerchant = {
         : undefined,
     });
   },
+  putMerchant: async function (data, cancel) {
+    const { info, values, email } = data;
+    info.orderTypes.delivery.minOrderAmount = values.minOrderAmount
+      ? Math.round(values.minOrderAmount * 100)
+      : '';
+    info.orderTypes.delivery.fee = values.fee
+      ? Math.round(values.fee * 100)
+      : '';
+    info.orderTypes.delivery.maxRadius = values.maxRadius;
+    info['notify_email'] = email;
+    const response = await api.request({
+      method: 'PUT',
+      url: `/api/merchants/${info.merchant_id}`,
+      data: JSON.stringify({ data: info }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: cancel
+        ? cancelApiObject[this.get.merchant_id].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    return response.data;
+  },
 };
 
 const cancelApiObject = defineCancelApiObject(apiMerchant);

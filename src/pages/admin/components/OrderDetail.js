@@ -52,8 +52,6 @@ const OrderDetail = ({ orderDetail }) => {
   if (!order) return <h5>No Order Selected</h5>;
   const startText = order.isPickup ? 'Items Ready' : 'Start Delivery';
   const endText = order.isPickup ? 'Items Picked Up' : 'End Delivery';
-
-  const note = order.order_content.createdOrders.note.split(':');
   const handleMap = () => {
     console.log('map');
   };

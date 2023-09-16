@@ -1,3 +1,4 @@
+import { formatPrice } from './helpers';
 export const cardCheckoutCss = (inputtxt) => {
   var matches = inputtxt.match(/(\d+)/);
   var cardno = '';
@@ -138,7 +139,7 @@ export const checkErrors = (shipping_info, total_amount) => {
       return 'Our delivery radius is ' + radius + ' miles';
     }
     if (total_amount < minAmount) {
-      return 'Minimum order amount is $' + minAmount;
+      return 'Minimum order amount is ' + formatPrice(minAmount);
     }
   }
 

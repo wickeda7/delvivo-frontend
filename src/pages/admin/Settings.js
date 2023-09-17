@@ -12,7 +12,7 @@ import { CLOVER } from '../../utils/constants';
 export const Settings = () => {
   const info = merchantInfo();
   const {
-    notify_email,
+    notify_email = '',
     orderTypes: { delivery },
   } = info;
 

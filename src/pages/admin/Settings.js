@@ -21,7 +21,7 @@ export const Settings = () => {
     : '';
   delivery.fee = delivery.fee ? parseFloat(delivery.fee / 100).toFixed(2) : '';
   const [values, setValues] = useState(delivery);
-  const [email, setEmail] = useState(notify_email || '');
+  const [email, setEmail] = useState(notify_email);
   const [isLoading, setIsLoading] = useState(false);
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />

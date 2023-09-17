@@ -63,7 +63,7 @@ const ImageUpload = ({ setValues, type, values }) => {
       return { ...state, [type]: '' };
     });
   };
-  if (values && (values[type] !== null || values[type] !== '')) {
+  if (values && values[type] !== null && values[type] !== '') {
     return (
       <span className='ant-upload-wrapper css-dev-only-do-not-override-byeoj0 ant-upload-picture-card-wrapper'>
         <div className='ant-upload-list ant-upload-list-picture-card'>

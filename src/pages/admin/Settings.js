@@ -11,10 +11,8 @@ import { CLOVER } from '../../utils/constants';
 
 export const Settings = () => {
   const info = merchantInfo();
-  const {
-    orderTypes: { delivery },
-  } = info;
 
+  const delivery = info.orderTypes.delivery ? info.orderTypes.delivery : {};
   const notify_email = info.notify_email ? info.notify_email : '';
   delivery.minOrderAmount = delivery.minOrderAmount
     ? parseFloat(delivery.minOrderAmount / 100).toFixed(2)

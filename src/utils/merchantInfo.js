@@ -19,6 +19,7 @@ export const initMerchant = async (url) => {
           const clover = {
             merchant_id: 'B65VCADF79ZR1',
             access_token: tempInfo.access_token,
+            notify_email: tempInfo.notify_email,
             orderTypes: tempInfo.order_types,
           };
           setStorage(CLOVER, JSON.stringify(clover));
@@ -33,6 +34,7 @@ export const initMerchant = async (url) => {
         const clover = {
           merchant_id: 'M04E9FZBWVB71',
           access_token: tempInfo.access_token,
+          notify_email: tempInfo.notify_email,
           orderTypes: tempInfo.order_types,
         };
         setStorage(CLOVER, JSON.stringify(clover));

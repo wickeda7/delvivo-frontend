@@ -7,6 +7,10 @@ import { toast } from 'react-toastify';
 import { apiMerchant } from '../api/apiMerchant';
 import { apiUser } from '../api/apiUser';
 import socket from 'socket.io-client';
+const environment = process.env.REACT_APP_NODE_ENV;
+const REACT_APP_STRAPI_URL = process.env.REACT_APP_STRAPI_URL;
+const REACT_APP_STRAPI_URL_PROD = process.env.REACT_APP_STRAPI_URL_PROD;
+
 const initialState = {
   isLoading: false,
   //user: undefined,
@@ -22,8 +26,13 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isLogin, setIsLogin] = React.useState(false);
   let user = getUser(USER_INFO);
+  console.log('user', REACT_APP_STRAPI_URL);
+  const url =
+    environment === 'production'
+      ? REACT_APP_STRAPI_URL_PROD
+      : REACT_APP_STRAPI_URL;
 
-  const io = socket('http://localhost:1337'); //Connecting to Socket.io backend
+  const io = socket(REACT_APP_STRAPI_URL); //Connecting to Socket.io backend
 
   useEffect(() => {
     user = getUser(USER_INFO);

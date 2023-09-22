@@ -6,7 +6,7 @@ import { setStorage, removeStorage, getUser } from '../utils/helpers';
 import { toast } from 'react-toastify';
 import { apiMerchant } from '../api/apiMerchant';
 import { apiUser } from '../api/apiUser';
-
+import socket from 'socket.io-client';
 const initialState = {
   isLoading: false,
   //user: undefined,
@@ -22,8 +22,14 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isLogin, setIsLogin] = React.useState(false);
   let user = getUser(USER_INFO);
+
+  const io = socket('http://localhost:1337'); //Connecting to Socket.io backend
+
   useEffect(() => {
     user = getUser(USER_INFO);
+    io.on('test', async (data, error) => {
+      console.log(data);
+    });
   }, [isLogin]);
 
   const members = async (data) => {

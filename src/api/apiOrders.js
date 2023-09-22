@@ -19,10 +19,12 @@ export const apiOrders = {
     const res = await response.data.data;
     return res;
   },
-  getStoreOrders: async function (date, cancel = false) {
+  getStoreOrders: async function (cancel = false) {
+    let val = '';
     const response = await api.request({
       method: 'GET',
-      url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01
+      //url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01
+      url: `/api/orders/storeorders?populate=*`, //[date][$eq]=2020-01-01
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,
@@ -65,8 +67,7 @@ export const apiOrders = {
   },
   postOrder: async function (order, cancel = false) {
     const { merchant_id, access_token } = merchantInfo();
-    console.log(order);
-    await api.request({
+    const res = await api.request({
       method: 'POST',
       url: `/api/orders`,
       headers: {
@@ -77,6 +78,7 @@ export const apiOrders = {
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,
     });
+    return true;
   },
   putOrder: async function (val, cancel = false) {
     const {

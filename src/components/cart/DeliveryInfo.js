@@ -63,6 +63,7 @@ const DeliveryInfo = () => {
         headers: headers,
       });
       const res = response.data.data;
+      console.log(res);
       const tempRange = res.rows[0].elements[0].distance.text.split(' ');
       const range = tempRange[1] === 'ft' ? 1 : tempRange[0];
 
@@ -77,6 +78,7 @@ const DeliveryInfo = () => {
         distance: res.rows[0].elements[0].distance.text,
         duration: res.rows[0].elements[0].duration.text,
         range: range,
+        geometry: res.geometry,
       });
       setMapGoogle({
         origin: res.origin_addresses[0],

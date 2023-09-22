@@ -3,11 +3,12 @@ import { apiOrders } from '../api/apiOrders';
 import dayjs from 'dayjs';
 
 export const useGetOrders = () => {
-  const now = dayjs().format('YYYY-MM-DD');
+  // const now = dayjs().format('YYYY-MM-DD');
+  // console.log('now', now); //now 2023-09-21
   return useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
-      return apiOrders.getStoreOrders(now);
+      return apiOrders.getStoreOrders();
     },
   });
 };

@@ -28,6 +28,7 @@ const initialState = {
   profileImg: null,
   carImg: null,
   merchant_id: '',
+  password: '',
 };
 
 const DriverDetail = ({ newDriver, setNewDriver }) => {
@@ -148,6 +149,14 @@ const DriverDetail = ({ newDriver, setNewDriver }) => {
                 name='dl'
                 labelText='DL '
                 value={values?.dl}
+                handleChange={handleChange}
+              />
+            </div>
+            <div className='form-row4 '>
+              <FormRow
+                type='password'
+                name='password'
+                value={values?.password}
                 handleChange={handleChange}
               />
             </div>

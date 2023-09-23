@@ -34,11 +34,13 @@ export const useCreateDriver = () => {
   const queryClient = useQueryClient();
   return useMutation(apiDrivers.postDriver, {
     onSuccess: (newData) => {
+      console.log(newData);
       const newRow = {
         key: newData.id,
         id: newData.id,
-        ...newData.attributes,
+        ...newData,
       };
+      console.log(newRow);
       queryClient.setQueryData(['drivers'], (old) => {
         const newData = [newRow, ...old];
         newData.sort((a, b) => b.id - a.id);

@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { defineCancelApiObject } from './configs/axiosUtils';
 import { merchantInfo } from '../utils/merchantInfo';
 import { toast } from 'react-toastify';
+
 export const apiOrders = {
   sendEmail: async function (order, cancel = false) {
     const response = await api.request({
@@ -21,10 +22,14 @@ export const apiOrders = {
   },
   getStoreOrders: async function (cancel = false) {
     let val = '';
+    let date = new Date().toLocaleDateString('en-US', {
+      timeZone: 'America/Los_Angeles',
+    });
+    const today = dayjs(date).format('YYYY-MM-DD');
     const response = await api.request({
       method: 'GET',
       //url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01
-      url: `/api/orders/storeorders?populate=*`, //[date][$eq]=2020-01-01
+      url: `/api/orders/storeorders?created=${today}`, //[date][$eq]=2020-01-01
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,

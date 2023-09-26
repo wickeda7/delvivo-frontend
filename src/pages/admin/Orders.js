@@ -20,12 +20,16 @@ const Orders = () => {
   const queryClient = useQueryClient();
   const io = socket(REACT_APP_STRAPI_URL); //Connecting to Socket.io backend
   useEffect(() => {
-    io.on('updateOrder', async (data, error) => {
+    const handler = (data) => {
       updateOrderRow(data, queryClient);
       console.log('updateOrder', data);
-      const res = await apiOrders.sendEmail(data);
-      console.log('updateOrdersendEmail res', res);
-    });
+      apiOrders.sendEmail(data);
+    };
+
+    io.on('updateOrder', handler);
+    return () => {
+      io.off('updateOrder', handler);
+    };
   }, []);
 
   useEffect(() => {

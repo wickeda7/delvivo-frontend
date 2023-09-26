@@ -23,7 +23,9 @@ const Orders = () => {
     const handler = (data) => {
       updateOrderRow(data, queryClient);
       console.log('updateOrder', data);
-      apiOrders.sendEmail(data);
+      if (data.arrivedTime !== null) {
+        apiOrders.sendEmail(data);
+      }
     };
 
     io.on('updateOrder', handler);

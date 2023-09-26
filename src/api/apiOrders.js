@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 
 export const apiOrders = {
   sendEmail: async function (order, cancel = false) {
+    console.log('sendEmail', order);
+    order.notifiedDate = dayjs().valueOf();
     const response = await api.request({
       method: 'POST',
       url: `/api/orders/sendemail`,
@@ -18,6 +20,7 @@ export const apiOrders = {
         : undefined,
     });
     const res = await response.data.data;
+    console.log('sendEmail res', res);
     return res;
   },
   getStoreOrders: async function (cancel = false) {
@@ -93,6 +96,8 @@ export const apiOrders = {
     // data.driver = connect;
     // data.driverId = '4';
     // data.putType = 'Mobile';
+    // data.notifiedDate = dayjs().valueOf();
+
     try {
       const res = await api.request({
         method: 'PUT',
@@ -105,8 +110,13 @@ export const apiOrders = {
           ? cancelApiObject[this.get.id].handleRequestCancellation().signal
           : undefined,
       });
-
-      return res.data.data;
+      const resId = res.data.data.id;
+      const newData = res.data.data.attributes;
+      newData.id = resId;
+      if (!newData.driverId) {
+        newData.driver = null;
+      }
+      return newData;
     } catch (error) {
       toast.error(error.response.data.error.message);
       throw new Error(error.response.data.error.message);

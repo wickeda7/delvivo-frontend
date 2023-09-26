@@ -7,6 +7,7 @@ import updateOrderRow, { useGetOrders } from '../../hooks/useOrders';
 import { useGetDrivers } from '../../hooks/useDrivers';
 import socket from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { apiOrders } from '../../api/apiOrders';
 
 const REACT_APP_STRAPI_URL = process.env.REACT_APP_STRAPI_URL;
 const REACT_APP_STRAPI_URL_PROD = process.env.REACT_APP_STRAPI_URL_PROD;
@@ -20,9 +21,14 @@ const Orders = () => {
   const io = socket(REACT_APP_STRAPI_URL); //Connecting to Socket.io backend
   useEffect(() => {
     io.on('updateOrder', async (data, error) => {
-      //console.log('updateOrder', data);
       updateOrderRow(data, queryClient);
+      console.log('updateOrder', data);
+      const res = await apiOrders.sendEmail(data);
+      console.log('updateOrdersendEmail res', res);
     });
+  }, []);
+
+  useEffect(() => {
     if (!Orders || Orders.length === 0) return;
     const orderId = orderNum === 0 ? Orders[0].id : orderNum;
     const order = Orders.find((order) => order.id === orderId);

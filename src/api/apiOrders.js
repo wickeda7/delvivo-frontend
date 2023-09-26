@@ -22,10 +22,9 @@ export const apiOrders = {
   },
   getStoreOrders: async function (cancel = false) {
     let val = '';
-    let date = new Date().toLocaleDateString('en-US', {
-      timeZone: 'America/Los_Angeles',
-    });
-    const today = dayjs(date).format('YYYY-MM-DD');
+    let now = dayjs();
+    const today = now.format('YYYY-MM-DD');
+
     const response = await api.request({
       method: 'GET',
       //url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01

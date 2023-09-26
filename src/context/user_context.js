@@ -26,7 +26,6 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isLogin, setIsLogin] = React.useState(false);
   let user = getUser(USER_INFO);
-  console.log('user', REACT_APP_STRAPI_URL);
   const url =
     environment === 'production'
       ? REACT_APP_STRAPI_URL_PROD

@@ -40,41 +40,52 @@ export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
   return useMutation(apiOrders.putOrder, {
     onSuccess: (newData) => {
-      const { id, attributes } = newData;
-      let orders = {};
-      console.log('newData', newData);
-      if (typeof attributes.order_content === 'string') {
-        orders = JSON.parse(attributes.order_content);
-      } else {
-        orders = attributes.order_content;
-      }
-
-      console.log('orders', orders);
-      attributes.order_content = orders;
-      if (attributes.driver.data !== null) {
-        const temp = attributes.driver.data.attributes;
-        temp['id'] = id;
-        attributes.driver = temp;
-      } else {
-        attributes.driver = null;
-      }
-      if (attributes.user.data !== null) {
-        const temp = attributes.user.data.attributes;
-        temp['id'] = id;
-        attributes.user = temp;
-      }
-      queryClient.setQueryData(['orders'], (old) => {
-        return old.map((item) => {
-          console.log('item', item);
-          if (item.id === id) {
-            return {
-              ...item,
-              ...attributes,
-            };
-          }
-          return item;
-        });
-      });
+      updateOrderRow(newData, queryClient);
     },
   });
 };
+
+const updateOrderRow = (data, queryClient) => {
+  console.log('data', data);
+  let orders = {};
+  let attributes = data.attributes ? data.attributes : data;
+  const id = data.id ? data.id : attributes.id;
+  console.log(id);
+  if (typeof attributes.order_content === 'string') {
+    orders = JSON.parse(attributes.order_content);
+  } else {
+    orders = attributes.order_content;
+  }
+  attributes.order_content = orders;
+  const driver = attributes.driver;
+
+  if (driver && driver?.data !== undefined) {
+    console.log('driver1', driver);
+    const temp = attributes.driver.data.attributes;
+    temp['id'] = id;
+    attributes.driver = temp;
+  } else if (driver && driver?.data === undefined && driver === null) {
+    console.log('driver2', driver);
+    attributes.driver = null;
+  }
+  const user = attributes.user;
+  console.log('user', user?.data);
+  if (user && user?.data !== undefined) {
+    const temp = user.data.attributes;
+    temp['id'] = id;
+    attributes.user = temp;
+  }
+  queryClient.setQueryData(['orders'], (old) => {
+    return old.map((item) => {
+      console.log('item', item);
+      if (item.id === id) {
+        return {
+          ...item,
+          ...attributes,
+        };
+      }
+      return item;
+    });
+  });
+};
+export default updateOrderRow;

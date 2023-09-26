@@ -43,8 +43,10 @@ export const Settings = () => {
         toast.success('Settings updated');
         setIsLoading(false);
         setStorage(CLOVER, JSON.stringify(res.data));
+        setIsLoading(false);
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };

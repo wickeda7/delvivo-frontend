@@ -89,6 +89,10 @@ export const apiOrders = {
       record: { id },
       data,
     } = val;
+    // const connect = { id: 4 };
+    // data.driver = connect;
+    // data.driverId = '4';
+    // data.putType = 'Mobile';
     try {
       const res = await api.request({
         method: 'PUT',

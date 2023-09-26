@@ -39,6 +39,7 @@ const OrderDetail = ({ orderDetail }) => {
       setDisable(false);
       setText('Notify Customer');
     } else if (order.notifiedDate) {
+      console.log('order.notifiedDate', order.notifiedDate);
       setDisable(true);
       setText(
         'Notified Customer on ' +

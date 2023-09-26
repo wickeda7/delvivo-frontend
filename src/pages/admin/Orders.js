@@ -24,7 +24,7 @@ const Orders = () => {
       updateOrderRow(data, queryClient);
       console.log('updateOrder', data);
       if (data.arrivedTime == null) {
-        // apiOrders.sendEmail(data);
+        apiOrders.sendEmail(data);
       }
     };
 

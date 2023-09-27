@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { apiOrders } from '../api/apiOrders';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 export const useGetOrders = () => {
   // const now = dayjs().format('YYYY-MM-DD');
@@ -82,4 +83,21 @@ const updateOrderRow = (data, queryClient) => {
     });
   });
 };
-export default updateOrderRow;
+
+const updateNewRow = (data, oldOrders, queryClient) => {
+  const { order, entry } = data;
+  order.order_content = JSON.parse(order.order_content);
+  order.itemContent = entry.itemContent;
+  order.user = entry.user;
+  order.created = order.order_content.createdOrders.createdTime;
+  // Add optimistic todo to todos list
+  queryClient.setQueryData(['orders'], [order, ...oldOrders]);
+  toast.success(
+    `New Order: ${order.orderId} at ${dayjs(order.created).format(
+      'MM/DD/YYYY h:mm A'
+    )} `,
+    { autoClose: false }
+  );
+};
+
+export { updateOrderRow, updateNewRow };

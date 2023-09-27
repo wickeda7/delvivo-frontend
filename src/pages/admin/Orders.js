@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import OrderDetail from './components/OrderDetail';
 import OrderTable from './components/OrderTable';
 import { Loading } from '../../components';
-import updateOrderRow, { useGetOrders } from '../../hooks/useOrders';
+import {
+  useGetOrders,
+  updateOrderRow,
+  updateNewRow,
+} from '../../hooks/useOrders';
 import { useGetDrivers } from '../../hooks/useDrivers';
 import socket from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,24 +24,29 @@ const Orders = () => {
   const queryClient = useQueryClient();
   const io = socket(REACT_APP_STRAPI_URL); //Connecting to Socket.io backend
   useEffect(() => {
-    const handler = (data) => {
+    const handlerUpdateOrder = (data) => {
       updateOrderRow(data, queryClient);
-      console.log('updateOrder', data);
       if (data.arriveTime == null) {
         apiOrders.sendEmail(data);
       }
     };
-
-    io.on('updateOrder', handler);
-    return () => {
-      io.off('updateOrder', handler);
+    const handlerNewOrder = (data) => {
+      updateNewRow(data, Orders, queryClient);
     };
-  }, []);
+
+    io.on('updateOrder', handlerUpdateOrder);
+    io.on('newOrder', handlerNewOrder);
+    return () => {
+      io.off('updateOrder', handlerUpdateOrder);
+      io.off('newOrder', handlerNewOrder);
+    };
+  }, [Orders]);
 
   useEffect(() => {
     if (!Orders || Orders.length === 0) return;
     const orderId = orderNum === 0 ? Orders[0].id : orderNum;
     const order = Orders.find((order) => order.id === orderId);
+
     setOrder(order);
   }, [Orders, orderNum]);
   if (!Orders) {

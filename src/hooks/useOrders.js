@@ -86,7 +86,13 @@ const updateOrderRow = (data, queryClient) => {
 
 const updateNewRow = (data, oldOrders, queryClient) => {
   const { order, entry } = data;
-  order.order_content = JSON.parse(order.order_content);
+  let orders = {};
+  if (typeof order.order_content === 'string') {
+    orders = JSON.parse(order.order_content);
+  } else {
+    orders = order.order_content;
+  }
+  order.order_content = orders;
   order.itemContent = entry.itemContent;
   order.user = entry.user;
   order.created = order.order_content.createdOrders.createdTime;

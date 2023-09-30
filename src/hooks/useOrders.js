@@ -47,7 +47,6 @@ export const useUpdateOrder = () => {
 };
 
 const updateOrderRow = (data, queryClient) => {
-  console.log('updateOrderRow data', data);
   let orders = {};
   // let attributes = data.attributes ? data.attributes : data;
   // const id = data.id ? data.id : attributes.id;
@@ -60,24 +59,35 @@ const updateOrderRow = (data, queryClient) => {
   let driver = data.driver;
   let path = data.path;
   if (path && path?.data !== undefined) {
-    const tempP = path.data.attributes;
-    tempP['id'] = data.id;
-    data.path = tempP;
+    if (path.data?.attributes !== undefined) {
+      const tempP = path.data.attributes;
+      tempP['id'] = data.id;
+      data.path = tempP;
+    } else {
+      data.path = null;
+    }
   }
 
   if (driver && driver?.data !== undefined) {
-    const temp = driver.data.attributes;
-    temp['id'] = data.id;
-    data.driver = temp;
+    if (driver.data?.attributes !== undefined) {
+      const temp = driver.data.attributes;
+      temp['id'] = data.id;
+      data.driver = temp;
+    } else {
+      data.driver = null;
+    }
   }
   const user = data.user;
 
   if (user && user?.data !== undefined) {
-    const temp = user.data.attributes;
-    temp['id'] = data.id;
-    data.user = temp;
+    if (user.data?.attributes !== undefined) {
+      const temp = user.data.attributes;
+      temp['id'] = data.id;
+      data.user = temp;
+    } else {
+      data.user = null;
+    }
   }
-  console.log('updateOrderRow data2', data);
   queryClient.setQueryData(['orders'], (old) => {
     return old.map((item) => {
       if (item.id === data.id) {

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 export const apiOrders = {
   sendEmail: async function (order, cancel = false) {
     console.log('sendEmail', order);
+    return;
     order.notifiedDate = dayjs().valueOf();
     const response = await api.request({
       method: 'POST',

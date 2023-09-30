@@ -14,6 +14,7 @@ import {
   PrivateRoute,
   Layout,
   layoutLoader,
+  MapPage,
 } from './pages';
 
 import {
@@ -39,6 +40,11 @@ export const router = createBrowserRouter([
         path: '/:categoryId?',
         exact: true,
         element: <Products />,
+      },
+      {
+        path: 'maps/:orderId',
+        exact: true,
+        element: <MapPage />,
       },
       { path: 'products/:id', element: <SingleProduct /> },
       {

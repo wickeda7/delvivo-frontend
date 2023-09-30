@@ -7,6 +7,7 @@ import Error from './ErrorPage';
 import Checkout from './CheckoutPage';
 import PrivateRoute from './PrivateRoute';
 import { Layout, loader as layoutLoader } from './Layout';
+import MapPage from './MapPage';
 export {
   Home,
   SingleProduct,
@@ -18,4 +19,5 @@ export {
   PrivateRoute,
   Layout,
   layoutLoader,
+  MapPage,
 };

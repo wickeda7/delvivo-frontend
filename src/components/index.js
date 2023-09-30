@@ -20,6 +20,7 @@ import FormRow from './FormRow';
 import ShippingMethods from './cart/ShippingMethods';
 import SetUp from './SetUp';
 import RegisterForm from './RegisterForm';
+import MapComponent from './Map';
 
 export {
   FeaturedProducts,
@@ -44,4 +45,5 @@ export {
   ShippingMethods,
   SetUp,
   RegisterForm,
+  MapComponent,
 };

@@ -77,6 +77,7 @@ const updateOrderRow = (data, queryClient) => {
     temp['id'] = data.id;
     data.user = temp;
   }
+  console.log('updateOrderRow data2', data);
   queryClient.setQueryData(['orders'], (old) => {
     return old.map((item) => {
       if (item.id === data.id) {

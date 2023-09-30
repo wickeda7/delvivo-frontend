@@ -58,6 +58,12 @@ const updateOrderRow = (data, queryClient) => {
   }
   data.order_content = orders;
   let driver = data.driver;
+  let path = data.path;
+  if (path && path?.data !== undefined) {
+    const tempP = path.data.attributes;
+    tempP['id'] = data.id;
+    data.path = tempP;
+  }
 
   if (driver && driver?.data !== undefined) {
     const temp = driver.data.attributes;

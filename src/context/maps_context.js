@@ -44,6 +44,9 @@ export const MapsProvider = ({ children }) => {
   useEffect(() => {
     const handlerUpdatePath = (data) => {
       const { orderId, paths, id } = data;
+      console.log('orderId = ', orderId);
+      console.log('pathId = ', pathId);
+      console.log('id = ', id);
       if (orderId !== orderId && id !== pathId) return;
       setUpdatePath(paths[paths.length - 1]);
     };

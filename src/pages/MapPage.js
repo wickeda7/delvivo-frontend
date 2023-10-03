@@ -8,22 +8,34 @@ import { Loading } from '../components';
 //https://codesandbox.io/s/googlemaps-react-t5s84?file=/src/Main.js:2873-3027
 
 function MapPage() {
-  const { orderId } = useParams();
-  const { setOrderId, mapConfig } = useMapsContext();
+  const { orderId, pathId } = useParams();
+  const { setOrderId, setPathId, mapConfig, error, isLoadind } =
+    useMapsContext();
   setOrderId(orderId);
-
+  setPathId(pathId);
+  if (isLoadind) {
+    return (
+      <Wrapper>
+        <Loading />
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper>
       <PageHero title='Traker' />
       <div className='section section-center'>
-        <div style={{ width: '100%', height: '80vh' }}>
-          <MapComponent
-            googleMapURL={mapConfig.url}
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
-        </div>
+        {error ? (
+          <div>{error}</div>
+        ) : (
+          <div style={{ width: '100%', height: '80vh' }}>
+            <MapComponent
+              googleMapURL={mapConfig.url}
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `100%` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+            />
+          </div>
+        )}
       </div>
     </Wrapper>
   );

@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: 'maps/:orderId',
+        path: 'maps/:orderId/:pathId',
         exact: true,
         element: <MapPage />,
       },

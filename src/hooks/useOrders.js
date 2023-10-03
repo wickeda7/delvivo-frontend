@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 
 export const useGetOrders = () => {
-  // const now = dayjs().format('YYYY-MM-DD');
-  // console.log('now', now); //now 2023-09-21
   return useQuery({
     queryKey: ['orders'],
     queryFn: async () => {

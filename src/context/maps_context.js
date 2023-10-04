@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { api } from '../api/configs/axiosConfigs';
+import { getStoreAddress } from '../utils/merchantInfo';
 import socket from 'socket.io-client';
 const GOOGLE_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const REACT_APP_STRAPI_URL = process.env.REACT_APP_STRAPI_URL;
@@ -17,8 +18,8 @@ export const MapsProvider = ({ children }) => {
   const GOOOGLE_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
   const mapConfig = {
     center: { lat: 18.559008, lng: -68.388881 },
-    store: { lat: 37.785834, lng: -122.406417 },
-    home: { lat: 37.707539, lng: -122.455769 },
+    store: { lat: 34.070096576867115, lng: -118.09023057635576 },
+    home: { lat: 34.07731314918914, lng: -118.13940911223644 },
     zoom: 13,
     url: GOOOGLE_URL,
   };
@@ -59,6 +60,8 @@ export const MapsProvider = ({ children }) => {
   useEffect(() => {
     if (!orderId) return;
     fethPath(orderId, pathId);
+    const address = getStoreAddress();
+    console.log('address = ', address);
   }, [orderId]);
   const value = {
     orderId,

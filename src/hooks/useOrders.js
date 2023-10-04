@@ -107,6 +107,11 @@ const updateNewRow = (data, oldOrders, queryClient) => {
   } else {
     orders = order.order_content;
   }
+  let isPickup = false;
+  if (orders.createdOrders.orderType.labelKey) {
+    isPickup = orders.createdOrders.orderType.labelKey.includes('pick_up');
+  }
+  order.isPickup = isPickup;
   order.order_content = orders;
   order.itemContent = entry.itemContent;
   order.user = entry.user;

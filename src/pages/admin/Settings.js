@@ -48,6 +48,7 @@ export const Settings = () => {
     setIsLoading(true);
     try {
       const res = await apiMerchant.putMerchant({ info, values, email });
+      console.log(res);
       if (res.data) {
         toast.success('Settings updated');
         setIsLoading(false);

@@ -14,11 +14,12 @@ export const MapsProvider = ({ children }) => {
   const [updatePath, setUpdatePath] = useState(null);
   const [isLoadind, setIsLoading] = useState(true);
   const io = socket(REACT_APP_STRAPI_URL);
+  const address = getStoreAddress();
 
   const GOOOGLE_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
   const mapConfig = {
     center: { lat: 18.559008, lng: -68.388881 },
-    store: { lat: 34.070096576867115, lng: -118.09023057635576 },
+    store: { lat: address.lat, lng: address.lng },
     home: { lat: 34.07731314918914, lng: -118.13940911223644 },
     zoom: 13,
     url: GOOOGLE_URL,
@@ -60,8 +61,6 @@ export const MapsProvider = ({ children }) => {
   useEffect(() => {
     if (!orderId) return;
     fethPath(orderId, pathId);
-    const address = getStoreAddress();
-    console.log('address = ', address);
   }, [orderId]);
   const value = {
     orderId,

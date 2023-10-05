@@ -22,6 +22,7 @@ export const apiOrders = {
     return res;
   },
   getStoreOrders: async function (cancel = false) {
+    const { merchant_id } = merchantInfo();
     let val = '';
     let now = dayjs();
     const today = now.format('YYYY-MM-DD');
@@ -29,7 +30,7 @@ export const apiOrders = {
     const response = await api.request({
       method: 'GET',
       //url: `/api/orders/storeorders?created=${date}&populate=*`, //[date][$eq]=2020-01-01
-      url: `/api/orders/storeorders?created=${today}`, //[date][$eq]=2020-01-01
+      url: `/api/orders/storeorders?created=${today}&merchant_id=${merchant_id}`, //[date][$eq]=2020-01-01
       signal: cancel
         ? cancelApiObject[this.get.id].handleRequestCancellation().signal
         : undefined,

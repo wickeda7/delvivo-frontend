@@ -13,6 +13,7 @@ export const Settings = () => {
   const info = merchantInfo();
 
   const delivery = info?.orderTypes ? info.orderTypes.delivery : {};
+  const addr = info?.address ? info.address : {};
   const notify_email = info?.notify_email ? info.notify_email : '';
   delivery.minOrderAmount = delivery.minOrderAmount
     ? parseFloat(delivery.minOrderAmount / 100).toFixed(2)
@@ -21,10 +22,11 @@ export const Settings = () => {
   const [values, setValues] = useState(delivery);
   const [email, setEmail] = useState(notify_email);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAd, setIsLoadingAd] = useState(false);
+  const [address, setAddress] = useState(addr);
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: '#eaded7' }} spin />
   );
-
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -33,6 +35,13 @@ export const Settings = () => {
     } else {
       setValues({ ...values, [name]: value });
     }
+  };
+  const onGetAddress = async (e) => {
+    e.preventDefault();
+    setIsLoadingAd(true);
+    const res = await apiMerchant.getAddress1(info);
+    setIsLoadingAd(false);
+    setAddress(res);
   };
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +109,70 @@ export const Settings = () => {
             </button>
           </form>
         </div>
+        <div>
+          <form className='form'>
+            <h3>Address</h3>
+            <FormRow
+              type='text'
+              name='address'
+              value={address.address1}
+              // handleChange={handleChange}
+              disabled={true}
+            />
+            <FormRow
+              type='text'
+              name='city'
+              value={address.city}
+              // handleChange={handleChange}
+              disabled={true}
+            />
+            <div className='container2'>
+              <FormRow
+                type='text'
+                name='state'
+                value={address.state}
+                //handleChange={handleChange}
+                optClass='inputWidth'
+                disabled={true}
+              />
+              <FormRow
+                type='text'
+                name='zip'
+                value={address.zip}
+                // handleChange={handleChange}
+                optClass='inputWidth'
+                disabled={true}
+              />
+            </div>
+            <div className='container2'>
+              <FormRow
+                type='text'
+                name='latitute'
+                value={address.lat}
+                // handleChange={handleChange}
+                optClass='inputWidth'
+                disabled={true}
+              />
+              <FormRow
+                type='text'
+                name='longitude'
+                value={address.lng}
+                // handleChange={handleChange}
+                optClass='inputWidth'
+                disabled={true}
+              />
+            </div>
+            <button
+              type='submit'
+              className='btn btn-block marginTop'
+              disabled={isLoadingAd}
+              onClick={onGetAddress}
+            >
+              <span>Synch </span>
+              {isLoadingAd ? <Spin indicator={antIcon} /> : ''}
+            </button>
+          </form>
+        </div>
       </div>
     </Wrapper>
   );
@@ -110,8 +183,12 @@ const Wrapper = styled.main`
 
   .container {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     padding: 1.5rem;
+  }
+  .container2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
   .ordersLabel {
     font-size: 0.8rem;

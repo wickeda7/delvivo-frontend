@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useReducer, useState } from 'react';
 import reducer from '../reducers/cart_reducer';
 import { merchantInfo } from '../utils/merchantInfo';
+import { apiMerchant } from '../api/apiMerchant';
 //import dayjs from 'dayjs';
 import {
   ADD_TO_CART,
@@ -37,7 +38,6 @@ export const CartProvider = ({ children }) => {
   const merchInfo = merchantInfo();
 
   const updateShippingInfo = (type, info = undefined) => {
-    console.log('updateShippingInfo', type, info);
     let shipping_info = {};
     if (type) {
       if (info) {

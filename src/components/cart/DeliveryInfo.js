@@ -47,7 +47,7 @@ const DeliveryInfo = () => {
   useEffect(() => {
     setError(errorText);
   }, [errorText]);
-
+  console.log(storeAddress);
   const getDistance = async () => {
     const addresses = {
       origins: `${storeAddress.address}, ${storeAddress.city}, ${storeAddress.state}, ${storeAddress.zip}`,
@@ -63,7 +63,6 @@ const DeliveryInfo = () => {
         headers: headers,
       });
       const res = response.data.data;
-      console.log(res);
       const tempRange = res.rows[0].elements[0].distance.text.split(' ');
       const range = tempRange[1] === 'ft' ? 1 : tempRange[0];
 

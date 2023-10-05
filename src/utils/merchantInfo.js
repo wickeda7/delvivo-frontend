@@ -21,6 +21,7 @@ export const initMerchant = async (url) => {
             access_token: tempInfo.access_token,
             notify_email: tempInfo.notify_email,
             orderTypes: tempInfo.order_types,
+            address: tempInfo.address,
           };
           setStorage(CLOVER, JSON.stringify(clover));
           return clover;
@@ -36,6 +37,7 @@ export const initMerchant = async (url) => {
           access_token: tempInfo.access_token,
           notify_email: tempInfo.notify_email,
           orderTypes: tempInfo.order_types,
+          address: tempInfo.address,
         };
         setStorage(CLOVER, JSON.stringify(clover));
       }
@@ -86,12 +88,14 @@ export const merchantInfo = () => {
 };
 
 export const setStoreAddress = () => {
-  let address = getStorage('address');
-  if (!address) {
-    apiMerchant.getAddress(merchantInfo());
+  let info = getStorage(CLOVER);
+  info = JSON.parse(info);
+  if (!info.address) {
+    apiMerchant.getAddress(info);
   }
 };
 export const getStoreAddress = () => {
-  let address = getStorage('address');
-  return JSON.parse(address);
+  let info = getStorage(CLOVER);
+  info = JSON.parse(info);
+  return info.address;
 };

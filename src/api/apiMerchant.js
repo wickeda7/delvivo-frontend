@@ -119,6 +119,10 @@ export const apiMerchant = {
       }
       info.address = address;
       setStorage(CLOVER, JSON.stringify(info));
+      console.log(
+        'todo: address to reduce??',
+        JSON.stringify({ address: address })
+      );
       await api.request({
         method: 'PUT',
         url: `/api/merchants/${merchant_id}`,

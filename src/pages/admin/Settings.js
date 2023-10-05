@@ -115,7 +115,7 @@ export const Settings = () => {
             <FormRow
               type='text'
               name='address'
-              value={address.address1}
+              value={address.address}
               // handleChange={handleChange}
               disabled={true}
             />

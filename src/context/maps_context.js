@@ -14,8 +14,8 @@ export const MapsProvider = ({ children }) => {
   const [updatePath, setUpdatePath] = useState(null);
   const [isLoadind, setIsLoading] = useState(true);
   const io = socket(REACT_APP_STRAPI_URL);
-  const address = getStoreAddress();
-  console.log(address);
+  let address = getStoreAddress();
+  address = address ? address : { lat: '', lng: '' };
 
   const GOOOGLE_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
   const mapConfig = {

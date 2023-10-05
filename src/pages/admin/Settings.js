@@ -39,7 +39,7 @@ export const Settings = () => {
   const onGetAddress = async (e) => {
     e.preventDefault();
     setIsLoadingAd(true);
-    const res = await apiMerchant.getAddress1(info);
+    const res = await apiMerchant.getAddress(info);
     setIsLoadingAd(false);
     setAddress(res);
   };

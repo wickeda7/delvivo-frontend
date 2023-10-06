@@ -10,7 +10,8 @@ import { useMapsContext } from '../context/maps_context';
 import { AiOutlineHome, AiOutlineShop } from 'react-icons/ai';
 /* global google */
 const Map = () => {
-  const { mapConfig, initPaths, updatePath } = useMapsContext();
+  const { mapConfig, initPaths, updatePath, customerCoord, storeCoord } =
+    useMapsContext();
   const [updateRoute, setUpdatRoute] = useState(false);
   const [routes, setRoutes] = useState([]);
   const [path, setPath] = useState([]);
@@ -159,7 +160,6 @@ const Map = () => {
     console.log('latitide = ', e.latLng.lat());
     console.log('longitude = ', e.latLng.lng());
   };
-
   return (
     <>
       {path.length > 0 && (
@@ -173,7 +173,7 @@ const Map = () => {
             onClick={handleMapClick}
           >
             <GoogleMarker
-              position={{ lat: mapConfig.home.lat, lng: mapConfig.home.lng }}
+              position={customerCoord}
               icon={{
                 path: AiOutlineHome().props.children[0].props.d,
                 fillColor: '#EADED7',
@@ -184,7 +184,7 @@ const Map = () => {
               }}
             />
             <GoogleMarker
-              position={{ lat: mapConfig.store.lat, lng: mapConfig.store.lng }}
+              position={storeCoord}
               icon={{
                 path: AiOutlineShop().props.children[0].props.d,
                 fillColor: '#EADED7',

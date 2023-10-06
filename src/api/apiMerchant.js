@@ -7,7 +7,8 @@ import { CLOVER } from '../utils/constants';
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 export const apiMerchant = {
-  getAddress1: async function (merchant_id, cancel = false) {
+  getMechant1: async function (cancel = false) {
+    const { access_token, merchant_id } = merchantInfo();
     const response = await api.request({
       url: `/api/merchants/${merchant_id}`,
       method: 'get',
@@ -20,6 +21,7 @@ export const apiMerchant = {
         : undefined,
     });
     const data = await response.data;
+    console.log(data);
     return data;
   },
   getOrderType: async function (cancel = false) {

@@ -12,16 +12,15 @@ export const MapsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [initPaths, setInitPaths] = useState(null);
   const [updatePath, setUpdatePath] = useState(null);
+  const [storeCoord, setStoreCoord] = useState(null); // [lat, lng
+  const [customerCoord, setCustomerCoord] = useState(null); // [lat, lng
   const [isLoadind, setIsLoading] = useState(true);
   const io = socket(REACT_APP_STRAPI_URL);
-  let address = getStoreAddress();
-  address = address ? address : { lat: '', lng: '' };
 
   const GOOOGLE_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
-  const mapConfig = {
-    center: { lat: 18.559008, lng: -68.388881 },
-    store: { lat: address.lat, lng: address.lng },
-    home: { lat: 34.07731314918914, lng: -118.13940911223644 },
+  let mapConfig = {
+    // store: { lat: address.lat, lng: address.lng },
+    // home: { lat: 34.07731314918914, lng: -118.13940911223644 },
     zoom: 13,
     url: GOOOGLE_URL,
   };
@@ -31,11 +30,15 @@ export const MapsProvider = ({ children }) => {
         method: 'GET',
         url: `/api/order-paths/${pathId}`,
       });
-      const { orderId, paths } = res.data.data.attributes;
+      console.log('res = ', res.data.data.attributes);
+      const { orderId, paths, store_coord, customer_coord } =
+        res.data.data.attributes;
       if (orderId !== orderId) {
         setError('Order not found');
         return;
       }
+      setStoreCoord(store_coord);
+      setCustomerCoord(customer_coord);
       setInitPaths(paths);
       setIsLoading(false);
     } catch (error) {
@@ -72,6 +75,8 @@ export const MapsProvider = ({ children }) => {
     initPaths,
     updatePath,
     isLoadind,
+    storeCoord,
+    customerCoord,
   };
   return <MapsContext.Provider value={value}>{children}</MapsContext.Provider>;
 };
